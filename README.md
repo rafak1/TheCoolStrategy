@@ -1,6 +1,6 @@
 # tower_defence_the_game
 
-##Table of contents
+## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Changelog](#changelog)  
@@ -15,16 +15,18 @@ Tower defence game
 * JavaFx 17.0.1
 * Maven .....
 
-##Changelog
+## Changelog
 * Work in progress 
 
-##TODO
+## TODO
 * the whole game
 * Level creator
-##Installation
+* Graphic interface
+
+## Installation
 ```
 lepiej nie instalować
 ```
-##Contributors
+## Contributors
 * Rafau
 * Kamił
