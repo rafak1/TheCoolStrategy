@@ -19,8 +19,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
         Menu menu = new Menu(stage);
         stage.show();
     }
