@@ -1,4 +1,4 @@
 package project;
 
-public class GameMaster {
-}
+public class GameMaster
+{}

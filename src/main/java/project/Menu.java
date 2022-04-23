@@ -15,17 +15,23 @@ public class Menu {
     * Creates menu on a given stage
      */
     public Menu(Stage stage){
-        root = new Group();
-        scene = new Scene(root);
+        root=new Group();
+        scene=new Scene(root);
         stage.setScene(scene);
-        Canvas canvas = new Canvas(MainVariables.sizeX, MainVariables.sizeY);
+
+        Canvas canvas=new Canvas(MainVariables.sizeX, MainVariables.sizeY);
         root.getChildren().add(canvas);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Image title = new Image(getClass().getResource("/title.png").toString());
-        Image button1 = new Image(getClass().getResource("/Button1.png").toString());
-        Image button2 = new Image(getClass().getResource("/Button2.png").toString());
-        gc.drawImage(title,(MainVariables.sizeX-300)/2,50) ;
-        gc.drawImage(button1,50,300) ;
-        gc.drawImage(button2,500,300) ;
+        GraphicsContext gc=canvas.getGraphicsContext2D();
+
+        Image title=new Image(getClass().getResource("/images/title.png").toString());
+        gc.drawImage(title, (MainVariables.sizeX-300)/2, 50);
+
+
+        ImageButton startButton=new ImageButton("/images/Button1.png", 50, 300);
+        root.getChildren().add(startButton.get());
+
+        ImageButton exitButton=new ImageButton("/images/Button2.png", 500, 300);
+        root.getChildren().add(exitButton.get());
+        exitButton.get().setOnAction(arg0->System.exit(0));
     }
 }

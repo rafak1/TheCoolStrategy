@@ -1,4 +1,4 @@
 package project;
 
-public interface Enemy {
-}
+public interface Enemy
+{}
