@@ -29,6 +29,10 @@ public class Menu {
 
         ImageButton startButton=new ImageButton("/images/Button1.png", 50, 300);
         root.getChildren().add(startButton.get());
+        startButton.get().setOnAction(e->{
+            LevelSelection game=new LevelSelection(root, scene);
+            scene.setRoot(game.getRoot());
+        });
 
         ImageButton exitButton=new ImageButton("/images/Button2.png", 500, 300);
         root.getChildren().add(exitButton.get());
