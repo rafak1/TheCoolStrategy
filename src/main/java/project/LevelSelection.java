@@ -11,6 +11,7 @@ import javafx.scene.layout.FlowPane;
 public class LevelSelection
 {
 	Group root;
+	GamePlane gamePlane = new GamePlane();
 
 	public LevelSelection(Group menuRoot, Scene scene)
 	{
@@ -22,6 +23,11 @@ public class LevelSelection
 		{
 			possibleLevels[i]=new Button(String.valueOf(i+1));
 			possibleLevels[i].setPrefSize(100, 20);
+			int finalI = i;
+			possibleLevels[i].setOnAction(value->{
+				gamePlane.loadLevel(finalI);
+				scene.setRoot(gamePlane.getRoot());
+			});
 		}
 		FlowPane flow=new FlowPane((MainVariables.sizeX-500)/4, 30, possibleLevels);
 		flow.setPrefWrapLength(MainVariables.sizeX);
