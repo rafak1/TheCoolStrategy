@@ -4,6 +4,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Objects;
+
 /**
  * This class makes creating buttons with images much faster
  */
@@ -18,14 +20,14 @@ public class ImageButton
 	 * @param x    x coordinate
 	 * @param y    y coordinate
 	 */
-	public ImageButton(String path, int x, int y)
+	public ImageButton(String path, double x, double y, int sizeX, int sizeY)
 	{
 		theButton=new Button();
-		Image img=new Image(getClass().getResource(path).toString());
-		ImageView exitIV=new ImageView(img);
-		theButton.setGraphic(exitIV);
+		ImageView IV=new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).toString(), sizeX, sizeY, true, true));
+		theButton.setGraphic(IV);
 		theButton.setLayoutX(x);
 		theButton.setLayoutY(y);
+		theButton.setBackground(null);
 	}
 
 	/**
