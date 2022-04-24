@@ -7,7 +7,6 @@ import javafx.stage.Stage;
  * Main JavaFx app
  */
 public class App extends Application {
-
     @Override
     public void start(Stage stage) {
         stage.setTitle("Tower Defence the Game!");
