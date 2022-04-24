@@ -1,9 +1,16 @@
 package project;
 
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+
 public class Level
 {
 
-    public int[][] levelObjects;
+    public int[][] levelObjects;        //can be deleted and replaced only with path
+    public ArrayList<Pair<Integer,Integer>> path = new ArrayList<>();
+    public int startY;
+    public int startX;
 
     public Level(int k)
     {
@@ -16,26 +23,33 @@ public class Level
                 levelObjects[i][j]=0;
             }
         }
-        levelObjects[0][k]=1;
-        levelObjects[1][k]=1;
-        levelObjects[2][k]=1;
-        levelObjects[3][k]=1;
-        levelObjects[4][k]=1;
-        levelObjects[5][k]=1;
-        levelObjects[6][k]=1;
-        levelObjects[7][k]=1;
-        levelObjects[8][k]=1;
-        levelObjects[9][k]=1;
-        levelObjects[k][0]=1;
-        levelObjects[k][1]=1;
-        levelObjects[k][2]=1;
-        levelObjects[k][3]=1;
-        levelObjects[k][4]=1;
-        levelObjects[k][5]=1;
-        levelObjects[k][6]=1;
-        levelObjects[k][7]=1;
-        levelObjects[k][8]=1;
-        levelObjects[k][9]=1;
+        startX = 2;
+        startY = 0;
+        path.add(new Pair<>(2,1));
+        path.add(new Pair<>(2,2));
+        path.add(new Pair<>(3,2));
+        path.add(new Pair<>(4,2));
+        path.add(new Pair<>(5,2));
+        path.add(new Pair<>(5,3));
+        path.add(new Pair<>(5,4));
+        path.add(new Pair<>(5,6));
+        path.add(new Pair<>(5,7));
+        path.add(new Pair<>(5,8));
+        path.add(new Pair<>(5,9));
+        path.add(new Pair<>(-1,-1));
+        levelObjects[2][0]=1;
+        levelObjects[2][1]=2;
+        levelObjects[2][2]=3;
+        levelObjects[3][2]=4;
+        levelObjects[4][2]=5;
+        levelObjects[5][2]=6;
+        levelObjects[5][3]=7;
+        levelObjects[5][4]=8;
+        levelObjects[5][5]=9;
+        levelObjects[5][6]=10;
+        levelObjects[5][7]=11;
+        levelObjects[5][8]=12;
+        levelObjects[5][9]=13;
 
     }
 }

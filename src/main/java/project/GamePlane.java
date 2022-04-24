@@ -1,5 +1,7 @@
 package project;
 
+import javafx.animation.AnimationTimer;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -52,7 +54,7 @@ public class GamePlane
         {
             for(int j=0; j<10; j++)
             {
-                if(currLevel.levelObjects[i][j]==1)
+                if(currLevel.levelObjects[i][j]!=0)
                 {grid.add(new ImageView(dirtImg), i, j, 1, 1);}
                 else
                 {grid.add(new ImageView(grassImg), i, j, 1, 1);}
@@ -69,4 +71,13 @@ public class GamePlane
         return root;
     }
 
+
+    /**
+     * starts level currently loaded into GamePlane
+     */
+    public void startLevel() {
+        if(currLevel == null) return;
+        Timeline enemyTimeLine = new Timeline();
+        //TODO
+    }
 }
