@@ -14,12 +14,12 @@ import static project.MainVariables.sizeY;
 public class LevelSelection
 {
 	Group root;
-	GamePlane gamePlane;
+	GameMaster gameMaster;
 
 	public LevelSelection(Group menuRoot, Scene scene)
 	{
 		root=new Group();
-		gamePlane=new GamePlane(scene, root);
+		gameMaster =new GameMaster(scene, root);
 
 		Button[] possibleLevels=new Button[10];
 
@@ -29,8 +29,8 @@ public class LevelSelection
 			possibleLevels[i].setPrefSize(100, 20);
 			int finalI=i;
 			possibleLevels[i].setOnAction(value->{
-				gamePlane.loadLevel(finalI);
-				scene.setRoot(gamePlane.getRoot());
+				gameMaster.loadLevel(finalI);
+				scene.setRoot(gameMaster.getRoot());
 			});
 		}
 		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);
