@@ -1,25 +1,28 @@
 package project;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 
+import static project.GameMaster.masterRoot;
 import static project.MainVariables.sizeX;
 import static project.MainVariables.sizeY;
+import static project.Menu.menuRoot;
+import static project.Menu.scene;
 
 /**
  * You can select a level from this class
  */
 public class LevelSelection
 {
-	Group root;
+	public static Group selectionRoot;
 	GameMaster gameMaster;
+	int currentLevel;
 
-	public LevelSelection(Group menuRoot, Scene scene)
+	public LevelSelection()
 	{
-		root=new Group();
-		gameMaster =new GameMaster(scene, root);
+		selectionRoot=new Group();
+		gameMaster=new GameMaster();
 
 		Button[] possibleLevels=new Button[10];
 
@@ -27,25 +30,28 @@ public class LevelSelection
 		{
 			possibleLevels[i]=new Button(String.valueOf(i+1));
 			possibleLevels[i].setPrefSize(100, 20);
-			int finalI=i;
+			currentLevel=i;
 			possibleLevels[i].setOnAction(value->{
-				gameMaster.loadLevel(finalI);
-				scene.setRoot(gameMaster.getRoot());
+				gameMaster.loadLevel(currentLevel);
+				scene.setRoot(masterRoot);
+				try
+				{
+					gameMaster.startLevel();
+				}catch(InterruptedException e)
+				{
+
+				}
 			});
 		}
 		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);
 		flow.setPrefWrapLength(sizeX);
 
-		root.getChildren().add(flow);
+		selectionRoot.getChildren().add(flow);
 
 
 		ImageButton backButton=new ImageButton("/images/back.png", sizeX-125, sizeY-125, 100, 100);
-		root.getChildren().add(backButton.get());
+		selectionRoot.getChildren().add(backButton.get());
 		backButton.get().setOnAction(e->scene.setRoot(menuRoot));
-	}
 
-	public Group getRoot()
-	{
-		return root;
 	}
 }

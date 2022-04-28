@@ -1,10 +1,5 @@
 package project;
 
-import project.gameObjects.BasicEnemy;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class Player
 {
     int playerHealth = MainVariables.playerHealth;

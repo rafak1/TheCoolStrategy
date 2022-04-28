@@ -1,9 +1,6 @@
 package project;
 
-import javafx.animation.AnimationTimer;
-import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -15,22 +12,16 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
+import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
+import static project.Menu.scene;
 
 public class GameMaster
 {
-    Scene masterScene;
     Level currLevel;
-    Group root;
-    Group masterRoot;
-    Queue<? extends BasicEnemy> enemies = new LinkedList<>();
+    public static Group masterRoot;
+    Queue <? extends BasicEnemy> enemies=new LinkedList <>();
     GridPane grid;
-
-    public GameMaster(Scene scene, Group mroot)
-    {
-        masterScene=scene;
-        masterRoot=mroot;
-    }
 
     /**
      * loads an i-th level from GameMaster
@@ -40,23 +31,26 @@ public class GameMaster
     public void loadLevel(int n)
     {
         currLevel=new Level(n);
-        root=new Group();
-        grid = new GridPane();
+        masterRoot=new Group();
+        grid=new GridPane();
 
-        for(int i=0; i<10; i++)
+        for(int i=0; i<gridSizeY; i++)
         {
             ColumnConstraints column=new ColumnConstraints(50);
-            RowConstraints row=new RowConstraints(50);
             grid.getColumnConstraints().add(column);
+        }
+        for(int i=0; i<gridSizeX; i++)
+        {
+            RowConstraints row=new RowConstraints(50);
             grid.getRowConstraints().add(row);
         }
 
 
         Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), 50, 50, true, true);
         Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), 50, 50, true, true);
-        for(int i=0; i<10; i++)
+        for(int i=0; i<gridSizeX; i++)
         {
-            for(int j=0; j<10; j++)
+            for(int j=0; j<gridSizeY; j++)
             {
                 if(currLevel.levelObjects[i][j]!=0)
                 {grid.add(new ImageView(dirtImg), i, j, 1, 1);}
@@ -64,15 +58,11 @@ public class GameMaster
                 {grid.add(new ImageView(grassImg), i, j, 1, 1);}
             }
         }
-        root.getChildren().add(grid);
-        ImageButton backButton=new ImageButton("/images/back.png", (int)(sizeX-125), (int)(sizeY-125), 100, 100);
-        root.getChildren().add(backButton.get());
-        backButton.get().setOnAction(e->masterScene.setRoot(masterRoot));
+        masterRoot.getChildren().add(grid);
+        ImageButton backButton=new ImageButton("/images/back.png", sizeX-125, sizeY-125, 100, 100);
+        masterRoot.getChildren().add(backButton.get());
+        backButton.get().setOnAction(e->scene.setRoot(selectionRoot));
 
-    }
-
-    public Group getRoot(){
-        return root;
     }
 
 
@@ -80,7 +70,6 @@ public class GameMaster
      * starts level currently loaded into GamePlane
      * Should be called in a thread
      */
-    @SuppressWarnings("All")
     public void  startLevel() throws InterruptedException {
         if(currLevel == null) return;
 
@@ -89,13 +78,16 @@ public class GameMaster
 
             synchronized (enemies) {
                 for (BasicEnemy enemy : enemies) {
-                    if(enemy.isDeployed){
+                    if(enemy.isDeployed)
+                    {
                         enemy.moveEnemy();
-                        if(enemy.coords.getKey() == -1){
+                        if(enemy.coords.getKey()==-1)
+                        {
                             enemies.remove(enemy);
                             continue;
                         }
-                    }   //TODO logic for deplying new enemies in intervals
+                        //TODO logic for deploying new enemies in intervals
+                    }
                     else grid.add(new ImageView(enemy.enemySprite), enemy.coords.getKey(), enemy.coords.getValue(), 1, 1);
                     //TODO removing enemies
                 }

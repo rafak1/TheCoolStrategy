@@ -4,29 +4,32 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 
+import static project.MainVariables.gridSizeX;
+import static project.MainVariables.gridSizeY;
+
 public class Level
 {
 
     public int[][] levelObjects;        //can be deleted and replaced only with path
-    public ArrayList<Pair<Integer,Integer>> path = new ArrayList<>();
+    public ArrayList <Pair <Integer, Integer>> path=new ArrayList <>();
     public int startY;
     public int startX;
 
     public Level(int k)
     {
         //this is temporary, it fills grid with random values. In the future this data will be read from a file
-        levelObjects=new int[10][10];
-        for(int i=0; i<10; i++)
+        levelObjects=new int[gridSizeX][gridSizeY];
+        for(int i=0; i<gridSizeX; i++)
         {
-            for(int j=0; j<10; j++)
+            for(int j=0; j<gridSizeY; j++)
             {
                 levelObjects[i][j]=0;
             }
         }
-        startX = 2;
-        startY = 0;
-        path.add(new Pair<>(2,1));
-        path.add(new Pair<>(2,2));
+        startX=2;
+        startY=0;
+        path.add(new Pair <>(2, 1));
+        path.add(new Pair <>(2, 2));
         path.add(new Pair<>(3,2));
         path.add(new Pair<>(4,2));
         path.add(new Pair<>(5,2));
