@@ -36,18 +36,18 @@ public class GameMaster
 
         for(int i=0; i<gridSizeY; i++)
         {
-            ColumnConstraints column=new ColumnConstraints(50);
+            ColumnConstraints column=new ColumnConstraints(sizeY/10);
             grid.getColumnConstraints().add(column);
         }
         for(int i=0; i<gridSizeX; i++)
         {
-            RowConstraints row=new RowConstraints(50);
+            RowConstraints row=new RowConstraints(sizeY/10);
             grid.getRowConstraints().add(row);
         }
 
 
-        Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), 50, 50, true, true);
-        Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), 50, 50, true, true);
+        Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), sizeY/10, sizeY/10, true, true);
+        Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), sizeY/10, sizeY/10, true, true);
         for(int i=0; i<gridSizeX; i++)
         {
             for(int j=0; j<gridSizeY; j++)
@@ -88,7 +88,9 @@ public class GameMaster
                         }
                         //TODO logic for deploying new enemies in intervals
                     }
-                    else grid.add(new ImageView(enemy.enemySprite), enemy.coords.getKey(), enemy.coords.getValue(), 1, 1);
+                    else{
+                        grid.add(new ImageView(enemy.enemySprite), enemy.coords.getKey(), enemy.coords.getValue(), 1, 1);
+                    }
                     //TODO removing enemies
                 }
             }

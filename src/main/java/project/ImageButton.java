@@ -19,6 +19,8 @@ public class ImageButton
 	 * @param path path to the image
 	 * @param x    x coordinate
 	 * @param y    y coordinate
+	 * @param sizeX width of the button
+	 * @param sizeY  height of button
 	 */
 	public ImageButton(String path, double x, double y, int sizeX, int sizeY)
 	{

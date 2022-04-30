@@ -3,6 +3,7 @@ package project.gameObjects;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 import project.Level;
+import project.MainVariables;
 
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class BasicEnemy {
     public Pair<Integer,Integer> coords;
     int pathIndex;
     public Image enemySprite;
+    public int health;
 
 
     /**
@@ -23,9 +25,19 @@ public class BasicEnemy {
         currLevel =  level;
         coords = new Pair<>(level.startX, level.startY);
         pathIndex=0;
-        enemySprite=new Image(Objects.requireNonNull(getClass().getResource("/images/BasicEnemy.png")).toString(), 50, 50, true, true);
+        enemySprite=new Image(Objects.requireNonNull(getClass().getResource("/images/BasicEnemy.png")).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
     }
 
+    /**
+     * Damages an enemy by a given amount
+     * @param value damage value
+     */
+    public void damageEnemy(int value){
+        health-=value;
+        if(health<=0){
+            //TODO DIE
+        }
+    }
     /**
      * Move enemy to next field
      */
