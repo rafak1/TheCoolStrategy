@@ -34,13 +34,13 @@ public class LevelSelection
 			possibleLevels[i].setOnAction(value->{
 				gameMaster.loadLevel(currentLevel);
 				scene.setRoot(masterRoot);
-				try
+				/*try
 				{
 					gameMaster.startLevel();
 				}catch(InterruptedException e)
 				{
 
-				}
+				}*/
 			});
 		}
 		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);

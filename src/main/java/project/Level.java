@@ -1,8 +1,11 @@
 package project;
 
 import javafx.util.Pair;
+import project.gameObjects.BasicEnemy;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import static project.MainVariables.gridSizeX;
 import static project.MainVariables.gridSizeY;
@@ -14,6 +17,7 @@ public class Level
     public ArrayList <Pair <Integer, Integer>> path=new ArrayList <>();
     public int startY;
     public int startX;
+    public Queue<BasicEnemy> enemies=new LinkedList<>();
 
     public Level(int k)
     {
@@ -28,6 +32,9 @@ public class Level
         }
         startX=2;
         startY=0;
+        enemies.add(new BasicEnemy(this));
+        enemies.add(new BasicEnemy(this));
+        enemies.add(new BasicEnemy(this));
         path.add(new Pair <>(2, 1));
         path.add(new Pair <>(2, 2));
         path.add(new Pair<>(3,2));
@@ -35,6 +42,7 @@ public class Level
         path.add(new Pair<>(5,2));
         path.add(new Pair<>(5,3));
         path.add(new Pair<>(5,4));
+        path.add(new Pair<>(5,5));
         path.add(new Pair<>(5,6));
         path.add(new Pair<>(5,7));
         path.add(new Pair<>(5,8));
