@@ -7,5 +7,6 @@ public class MainVariables
     public static int gridSizeX=15;
     public static int gridSizeY=10;
     public static int playerHealth=100;
-    public static long timeIntervals=1000;
+    public static long timeIntervals = 1000;
+    public static int moneyGivenWithTimeInterval = 1;
 }

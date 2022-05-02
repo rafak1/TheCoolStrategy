@@ -5,26 +5,30 @@ import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import project.Level;
 import project.MainVariables;
+import project.Player;
 
 import java.util.Objects;
 
 public class BasicEnemy {
     public boolean isDeployed;
     Level currLevel;
-    public Pair<Integer,Integer> cords;
+    public Pair<Integer, Integer> cords;
     int pathIndex;
     public Image enemySprite;
     public ImageView enemyImageView;
     public int health;
+    int moneyGiven = 10;
+    public int damage = 1;
 
 
     /**
-     *  Creates an enemy at a given level
+     * Creates an enemy at a given level
+     *
      * @param level in question
      */
-    public BasicEnemy(Level level){
+    public BasicEnemy(Level level) {
         isDeployed = false;
-        currLevel =  level;
+        currLevel = level;
         cords = new Pair<>(level.startX, level.startY);
         pathIndex=0;
         enemySprite=new Image(Objects.requireNonNull(getClass().getResource("/images/BasicEnemy.png")).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
@@ -37,7 +41,7 @@ public class BasicEnemy {
     public void damageEnemy(int value){
         health-=value;
         if(health<=0){
-            //TODO DIE
+            this.kill();
         }
     }
     /**
@@ -52,6 +56,7 @@ public class BasicEnemy {
      * Deletes enemy's imageView
      */
     public void kill(){
+        Player.money += moneyGiven;
         enemyImageView.setImage(null);
         isDeployed = false;
     }

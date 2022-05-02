@@ -1,18 +1,19 @@
 package project;
 
-public class Player
-{
-    int playerHealth = MainVariables.playerHealth;
+public class Player {
+    public static int playerHealth = MainVariables.playerHealth;
+    public static int money = 0;
 
     /**
-     *  Decrease players health by a given amount
+     * Decrease players health by a given amount
+     *
      * @param number amount subtracted from players health
      */
-    void decreasePlayerHealth(int number){
-        playerHealth -=number;
+    void decreasePlayerHealth(int number) {
+        playerHealth -= number;
     }
 
-    int getPlayerHealth(){
+    int getPlayerHealth() {
         return playerHealth;
     }
 }
