@@ -2,6 +2,7 @@ package project;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -23,30 +24,39 @@ import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
 
-public class GameMaster {
-    Level currLevel;
+public class GameMaster
+{
+    public static Level currLevel;
     public static Group masterRoot;
-    public Queue<BasicEnemy> enemies = new LinkedList<>();
-    GridPane grid;
-    Label moneyText;
+    public Queue <BasicEnemy> enemies=new LinkedList <>();
+    public static Node[][] board;
+    public static GridPane grid;
+    public static Label moneyText;//TODO: make a new thread to refresh it every second(or more often)
     Label healthText;
+    public static Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
 
     /**
      * loads an i-th level from GameMaster
      *
      * @param n level id
      */
-    public void loadLevel(int n) {
-        currLevel = new Level(n);
-        masterRoot = new Group();
+    public void loadLevel(int n)
+    {
+        gameState=0;
+        currLevel=new Level(n);
+        masterRoot=new Group();
         grid=new GridPane();
-        enemies = currLevel.enemies;
-        for(int i=0; i<gridSizeY; i++) {
-            ColumnConstraints column = new ColumnConstraints(sizeY / 10);
+        enemies=currLevel.enemies;
+        board=new Node[gridSizeX][gridSizeY];
+
+        for(int i=0; i<gridSizeY; i++)
+        {
+            ColumnConstraints column=new ColumnConstraints(sizeY/10);
             grid.getColumnConstraints().add(column);
         }
-        for (int i = 0; i < gridSizeX; i++) {
-            RowConstraints row = new RowConstraints(sizeY / 10);
+        for(int i=0; i<gridSizeX; i++)
+        {
+            RowConstraints row=new RowConstraints(sizeY/10);
             grid.getRowConstraints().add(row);
         }
 
@@ -59,24 +69,17 @@ public class GameMaster {
         for (int i = 0; i < gridSizeX; i++) {
             for (int j = 0; j < gridSizeY; j++) {
                 if (currLevel.levelObjects[i][j] != 0) {
-                    grid.add(new ImageView(dirtImg), i, j, 1, 1);
-                } else {
-                    grid.add(new ImageView(grassImg), i, j, 1, 1);
+                    board[i][j]=new ImageView(dirtImg);
+                    grid.add(board[i][j], i, j, 1, 1);
+                }
+                else
+                {
+                    board[i][j]=new ImageView(grassImg);
+                    grid.add(board[i][j], i, j, 1, 1);
                 }
             }
         }
         masterRoot.getChildren().add(grid);
-
-        //buttons
-        ImageButton backButton = new ImageButton("/images/back.png", sizeX - 225, sizeY - 325, 100, 100);
-        masterRoot.getChildren().add(backButton.get());
-        backButton.get().setOnAction(e -> scene.setRoot(selectionRoot));
-        ImageButton startLevelButton = new ImageButton("/images/start.png", sizeX - 225, sizeY - 475, 100, 100);
-        masterRoot.getChildren().add(startLevelButton.get());
-        startLevelButton.get().setOnAction(e -> {
-            masterRoot.getChildren().remove(startLevelButton.get());
-            startLevel();
-        });
 
         //money and player health
         moneyText = new Label();
@@ -85,32 +88,56 @@ public class GameMaster {
         healthText.setText(String.valueOf(Player.playerHealth));
         moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
         moneyText.setLayoutX(sizeX - 180);
-        moneyText.setLayoutY(sizeY - 110);
+        moneyText.setLayoutY(sizeY-110);
         healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        healthText.setLayoutX(sizeX - 180);
-        healthText.setLayoutY(sizeY - 210);
+        healthText.setLayoutX(sizeX-180);
+        healthText.setLayoutY(sizeY-210);
         masterRoot.getChildren().add(moneyText);
         masterRoot.getChildren().add(healthText);
-        Image coin = new Image(Objects.requireNonNull(getClass().getResource("/images/heart.png")).toString(), 75, 75, true, true);
-        Image heart = new Image(Objects.requireNonNull(getClass().getResource("/images/coin.png")).toString(), 75, 75, true, true);
-        gc.drawImage(heart, sizeX - 275, sizeY - 100);
-        gc.drawImage(coin, sizeX - 275, sizeY - 200);
+        Image coin=new Image(Objects.requireNonNull(getClass().getResource("/images/heart.png")).toString(), 75, 75, true, true);
+        Image heart=new Image(Objects.requireNonNull(getClass().getResource("/images/coin.png")).toString(), 75, 75, true, true);
+        gc.drawImage(heart, sizeX-275, sizeY-100);
+        gc.drawImage(coin, sizeX-275, sizeY-200);
+
+        //buttons
+        ImageButton backButton=new ImageButton("/images/back.png", sizeX-225, sizeY-325, 100, 100);
+        masterRoot.getChildren().add(backButton.get());
+        backButton.get().setOnAction(e->{
+            //TODO: Move it to clearLevel function
+            playerHealth=100;
+            Player.money=100;
+            scene.setRoot(selectionRoot);
+        });
+
+        ImageButton startLevelButton=new ImageButton("/images/start.png", sizeX-225, sizeY-475, 100, 100);
+        masterRoot.getChildren().add(startLevelButton.get());
+        startLevelButton.get().setOnAction(e->{
+            gameState=1;
+            masterRoot.getChildren().remove(startLevelButton.get());
+            moveEnemies();
+        });
+
+        //temp. mouse listener
+        new DeployTurret();
     }
 
     /**
      * Starts currently loaded level into GamePane
      */
-    public void startLevel(){
-        Thread enemyThread = new Thread(()->
-        {
+    public void moveEnemies()
+    {
+        Thread enemyThread=new Thread(()->{
             Platform.setImplicitExit(false);
-            try {
+            try
+            {
                 startEnemyFlow();
-            } catch (InterruptedException ignored) {
+            }catch(InterruptedException ignored)
+            {
             }
         });
         enemyThread.start();
     }
+//Rafal my mamy zrobic wiezyczki, nie potrzebujemy teraz przeciwnikow
 
     /**
      * starts to create and moves enemies currently loaded into GamePlane
@@ -140,7 +167,7 @@ public class GameMaster {
                             Player.playerHealth -= enemy.damage;
                             enemy.kill();
                             Platform.runLater(() -> {
-                                moneyText.setText(String.valueOf(Player.money));
+                                moneyText.setText(String.valueOf(Player.money));//ogólnie to ja to usunąłem i działało wszystko, więc chyba tego nie potrzebujemy
                                 healthText.setText(String.valueOf(Player.playerHealth));
                                 grid.getChildren().remove(finalEnemy.enemyImageView);
                             });

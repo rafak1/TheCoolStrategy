@@ -1,8 +1,8 @@
 package project;
 
 public class Player {
-    public static int playerHealth = MainVariables.playerHealth;
-    public static int money = 0;
+    public static int playerHealth=MainVariables.playerHealth;
+    public static int money=100;
 
     /**
      * Decrease players health by a given amount
