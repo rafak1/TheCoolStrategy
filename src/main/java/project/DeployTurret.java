@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import static project.GameMaster.*;
 import static project.MainVariables.sizeX;
 import static project.MainVariables.sizeY;
-import static project.TurretVariables.bigTurretPrice;
-import static project.TurretVariables.smallTurretPrice;
+import static project.gameObjects.BigTurret.bigTurretPrice;
+import static project.gameObjects.SmallTurret.smallTurretPrice;
 
 public class DeployTurret
 {

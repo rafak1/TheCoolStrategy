@@ -10,12 +10,12 @@ import java.util.Objects;
 import static project.GameMaster.board;
 import static project.GameMaster.grid;
 import static project.MainVariables.sizeY;
-import static project.TurretVariables.smallTurretPrice;
 
 public class SmallTurret implements Tower
 {
 	Integer X;
 	Integer Y;
+	public static Integer smallTurretPrice=25;
 	Integer radius;
 	Integer damage;
 
