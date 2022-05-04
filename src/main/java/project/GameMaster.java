@@ -102,12 +102,7 @@ public class GameMaster
         //buttons
         ImageButton backButton=new ImageButton("/images/back.png", sizeX-225, sizeY-325, 100, 100);
         masterRoot.getChildren().add(backButton.get());
-        backButton.get().setOnAction(e->{
-            //TODO: Move it to clearLevel function
-            playerHealth=100;
-            Player.money=100;
-            scene.setRoot(selectionRoot);
-        });
+        backButton.get().setOnAction(e->clearLevel());
 
         ImageButton startLevelButton=new ImageButton("/images/start.png", sizeX-225, sizeY-475, 100, 100);
         masterRoot.getChildren().add(startLevelButton.get());
@@ -119,6 +114,16 @@ public class GameMaster
 
         //temp. mouse listener
         new DeployTurret();
+    }
+
+    /**
+     * Method responsible for removing/clearing everything in the level when leaving
+     */
+    void clearLevel()
+    {
+        playerHealth=100;
+        Player.money=100;
+        scene.setRoot(selectionRoot);
     }
 
     /**

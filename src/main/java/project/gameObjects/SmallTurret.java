@@ -18,13 +18,6 @@ public class SmallTurret implements Tower
 	public static Integer smallTurretPrice=25;
 	Integer radius;
 	Integer damage;
-
-	/**
-	 * This is base tower- this class is supposed to be extended. But we don't have any turret types yet, so everything is here
-	 *
-	 * @param posX
-	 * @param posY
-	 */
 	public SmallTurret()
 	{
 		radius=2;

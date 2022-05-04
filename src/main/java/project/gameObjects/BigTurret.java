@@ -19,12 +19,6 @@ public class BigTurret implements Tower
 	Integer radius;
 	Integer damage;
 
-	/**
-	 * This is base tower- this class is supposed to be extended. But we don't have any turret types yet, so everything is here
-	 *
-	 * @param posX
-	 * @param posY
-	 */
 	public BigTurret()
 	{
 		radius=4;
