@@ -1,47 +1,29 @@
 package project.gameObjects;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import project.Player;
 
-import java.util.Objects;
-
-import static project.GameMaster.board;
-import static project.GameMaster.grid;
-import static project.MainVariables.sizeY;
-
-public class SmallTurret implements Tower
+public class SmallTurret extends Tower
 {
 	Integer X;
 	Integer Y;
-	public static Integer smallTurretPrice=25;
-	Integer radius;
-	Integer damage;
-	public SmallTurret()
-	{
-		radius=2;
-		damage=20;
-	}
+	public static Integer price=25;
+	Integer radius=2;
+	Integer damage=20;
+	Node turretImage;
 
+	/**
+	 * Places a new turret
+	 *
+	 * @param posX row of new turret
+	 * @param posY column of new turret
+	 */
 	public SmallTurret(int posX, int posY)
 	{
 		X=posX;
 		Y=posY;
-		drawTurret("/images/smallTurret.png");
-	}
-
-	@Override
-	public void drawTurret(String imgSrc)
-	{
-		Player.changePlayerMoney(-smallTurretPrice);
-		Image turretImage=new Image(Objects.requireNonNull(getClass().getResource(imgSrc)).toString(), sizeY/10, sizeY/10, true, true);
-		board[X][Y]=new ImageView(turretImage);
-		grid.add(board[X][Y], X, Y, 1, 1);
-	}
-
-	@Override
-	public void towerListener()
-	{
-//shooting logic
+		Player.changePlayerMoney(-price);
+		turretImage=drawTurret("/images/smallTurret.png", X, Y);
+		rotateTurret(turretImage);
 	}
 }
