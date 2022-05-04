@@ -1,4 +1,4 @@
-package project.gameObjects;
+package project.gameObjects.Turrets;
 
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
@@ -13,7 +13,7 @@ import static project.GameMaster.board;
 import static project.GameMaster.grid;
 import static project.MainVariables.sizeY;
 
-public class Tower
+public class Turret
 {
 	/**
 	 * Draws a turret on the board

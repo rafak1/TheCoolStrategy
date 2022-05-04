@@ -1,9 +1,9 @@
 package project;
 
 import javafx.util.Pair;
-import project.gameObjects.BigEnemy;
-import project.gameObjects.Enemy;
-import project.gameObjects.SmallEnemy;
+import project.gameObjects.Enemies.BigEnemy;
+import project.gameObjects.Enemies.Enemy;
+import project.gameObjects.Enemies.SmallEnemy;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

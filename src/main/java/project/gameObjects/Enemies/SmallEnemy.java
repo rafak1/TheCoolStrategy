@@ -1,4 +1,4 @@
-package project.gameObjects;
+package project.gameObjects.Enemies;
 
 import project.Level;
 

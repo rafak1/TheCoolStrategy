@@ -11,9 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import project.gameObjects.Enemy;
+import project.gameObjects.Enemies.Enemy;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -54,20 +55,26 @@ public class GameMaster {
             ColumnConstraints column = new ColumnConstraints(sizeY / 10);
             grid.getColumnConstraints().add(column);
         }
-        for (int i = 0; i < gridSizeX; i++) {
-            RowConstraints row = new RowConstraints(sizeY / 10);
+        for(int i=0; i<gridSizeX; i++)
+        {
+            RowConstraints row=new RowConstraints(sizeY/10);
             grid.getRowConstraints().add(row);
         }
 
-        Canvas canvas = new Canvas(sizeX, sizeY);
+        Canvas canvas=new Canvas(sizeX, sizeY);
         masterRoot.getChildren().add(canvas);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        GraphicsContext gc=canvas.getGraphicsContext2D();
+        gc.setFill(Color.web("0xfd4d5d"));
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        Image dirtImg = new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), sizeY / 10, sizeY / 10, true, true);
-        Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), sizeY / 10, sizeY / 10, true, true);
-        for (int i = 0; i < gridSizeX; i++) {
-            for (int j = 0; j < gridSizeY; j++) {
-                if (currLevel.levelObjects[i][j] != 0) {
+        Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), sizeY/10, sizeY/10, true, true);
+        Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), sizeY/10, sizeY/10, true, true);
+        for(int i=0; i<gridSizeX; i++)
+        {
+            for(int j=0; j<gridSizeY; j++)
+            {
+                if(currLevel.levelObjects[i][j]!=0)
+                {
                     board[i][j]=new ImageView(dirtImg);
                     grid.add(board[i][j], i, j, 1, 1);
                 }

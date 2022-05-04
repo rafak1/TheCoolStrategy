@@ -14,9 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import project.gameObjects.BigTurret;
-import project.gameObjects.SmallTurret;
-import project.gameObjects.Tower;
+import project.gameObjects.Turrets.BigTurret;
+import project.gameObjects.Turrets.SmallTurret;
+import project.gameObjects.Turrets.Turret;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class DeployTurret
 	Double clickY;
 	Integer colIndex;
 	Integer rowIndex;
-	ArrayList <Tower> allTowers=new ArrayList <>();//I don't know if wee need it, but it may be useful
+	ArrayList <Turret> allTowers=new ArrayList <>();//I don't know if wee need it, but it may be useful
 
 	/**
 	 * Placing turrets on the map
@@ -62,18 +62,18 @@ public class DeployTurret
 	{
 		if(currLevel.levelObjects[rowIndex][colIndex]==0)
 		{
-			if(gameState==0)
+			//if(gameState==0)
+			//{
+			if(turretType==0)
 			{
-				if(turretType==0)
+				showMessage("Select a Tower", 180, 40, 2);
+			}
+			else if(turretType==1)
+			{
+				if(Player.money.get()<SmallTurret.price)
 				{
-					showMessage("Select a Tower", 180, 40, 2);
+					showMessage("You are broke", 180, 40, 2);
 				}
-				else if(turretType==1)
-				{
-					if(Player.money.get()<SmallTurret.price)
-					{
-						showMessage("You are broke", 180, 40, 2);
-					}
 					else
 					{
 						currLevel.levelObjects[rowIndex][colIndex]=2;
@@ -92,11 +92,11 @@ public class DeployTurret
 						allTowers.add(new BigTurret(rowIndex, colIndex));
 					}
 				}
-			}
-			else
-			{
-				showMessage("You can't place turrets\n while enemies are walking!", 250, 50, 3);
-			}
+			//}
+			//else
+			//{
+			//	showMessage("You can't place turrets\n while enemies are walking!", 250, 50, 3);
+			//}
 		}
 	}
 
