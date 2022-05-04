@@ -1,8 +1,11 @@
 package project;
 
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 
 import static project.GameMaster.masterRoot;
 import static project.MainVariables.sizeX;
@@ -28,22 +31,23 @@ public class LevelSelection
 
 		for(int i=0; i<10; i++)
 		{
+
+			Canvas canvas=new Canvas(sizeX, sizeY);
+			selectionRoot.getChildren().add(canvas);
+			GraphicsContext gc=canvas.getGraphicsContext2D();
+			gc.setFill(Color.web("0xfd4d5d"));
+			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
 			possibleLevels[i]=new Button(String.valueOf(i+1));
 			possibleLevels[i].setPrefSize(100, 20);
 			currentLevel=i;
 			possibleLevels[i].setOnAction(value->{
 				gameMaster.loadLevel(currentLevel);
 				scene.setRoot(masterRoot);
-				/*try
-				{
-					gameMaster.startLevel();
-				}catch(InterruptedException e)
-				{
-
-				}*/
 			});
 		}
 		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);
+		flow.setStyle("-fx-background-color: #fd4d5d;");
 		flow.setPrefWrapLength(sizeX);
 
 		selectionRoot.getChildren().add(flow);
