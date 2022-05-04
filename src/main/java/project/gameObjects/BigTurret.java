@@ -2,7 +2,6 @@ package project.gameObjects;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import project.GameMaster;
 import project.Player;
 
 import java.util.Objects;
@@ -35,8 +34,7 @@ public class BigTurret implements Tower
 	@Override
 	public void drawTurret(String imgSrc)
 	{
-		Player.money-=bigTurretPrice;
-		GameMaster.moneyText.setText(String.valueOf(Player.money));
+		Player.changePlayerMoney(-bigTurretPrice);
 		Image turretImage=new Image(Objects.requireNonNull(getClass().getResource(imgSrc)).toString(), sizeY/10, sizeY/10, true, true);
 		board[X][Y]=new ImageView(turretImage);
 		grid.add(board[X][Y], X, Y, 1, 1);
