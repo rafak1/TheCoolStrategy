@@ -63,27 +63,18 @@ public class DeployTurret
 		{
 			if(gameState==0)
 			{
-				if(turretType==0)
-				{
-					if(Player.money<smallTurretPrice)
-					{
+				if (turretType == 0) {
+					if (Player.money.get() < smallTurretPrice) {
 						showMessage("You are broke", 180, 40, 2);
-					}
-					else
-					{
-						currLevel.levelObjects[rowIndex][colIndex]=2;
+					} else {
+						currLevel.levelObjects[rowIndex][colIndex] = 2;
 						allTowers.add(new SmallTurret(rowIndex, colIndex));
 					}
-				}
-				else
-				{
-					if(Player.money<bigTurretPrice)
-					{
+				} else {
+					if (Player.money.get() < bigTurretPrice) {
 						showMessage("You are broke", 180, 40, 2);
-					}
-					else
-					{
-						currLevel.levelObjects[rowIndex][colIndex]=2;
+					} else {
+						currLevel.levelObjects[rowIndex][colIndex] = 2;
 						allTowers.add(new BigTurret(rowIndex, colIndex));
 					}
 				}

@@ -48,14 +48,12 @@ public class GameMaster {
         enemies=currLevel.enemies;
         board=new Node[gridSizeX][gridSizeY];
 
-        for(int i=0; i<gridSizeY; i++)
-        {
-            ColumnConstraints column=new ColumnConstraints(sizeY/10);
+        for (int i = 0; i < gridSizeY; i++) {
+            ColumnConstraints column = new ColumnConstraints(sizeY / 10);
             grid.getColumnConstraints().add(column);
         }
-        for(int i=0; i<gridSizeX; i++)
-        {
-            RowConstraints row=new RowConstraints(sizeY/10);
+        for (int i = 0; i < gridSizeX; i++) {
+            RowConstraints row = new RowConstraints(sizeY / 10);
             grid.getRowConstraints().add(row);
         }
 
@@ -153,7 +151,6 @@ public class GameMaster {
         while (true) {
             Thread.sleep(timeIntervals);
             Player.changePlayerMoney(passiveIncome);
-
             deployedThisCycle = false;
             synchronized (grid) {
                 Iterator<BasicEnemy> iter = enemies.iterator();
