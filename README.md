@@ -31,7 +31,7 @@ based on classic tower defence games.
 
 ## Installation
 ```
-lepiej nie instalować
+mvn clean package
 ```
 ## Contributors
 * Kamil Chrząszczyk
