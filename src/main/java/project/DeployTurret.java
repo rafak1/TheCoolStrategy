@@ -4,14 +4,14 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import project.gameObjects.BigTurret;
@@ -19,6 +19,7 @@ import project.gameObjects.SmallTurret;
 import project.gameObjects.Tower;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static project.GameMaster.*;
 import static project.MainVariables.sizeX;
@@ -42,28 +43,7 @@ public class DeployTurret
 	public DeployTurret()
 	{
 		turretType=0;
-		ImageButton bigButton=new ImageButton("/images/bigTurret.png", sizeX-250, sizeY-675, 100, 100);
-		masterRoot.getChildren().add(bigButton.get());
-		bigButton.get().setOnAction(e->{
-			turretType=1;
-		});
-		Label bigPrice=new Label(bigTurretPrice.toString()+" $");
-		bigPrice.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		bigPrice.setLayoutX(sizeX-150);
-		bigPrice.setLayoutY(sizeY-665);
-		masterRoot.getChildren().add(bigPrice);
-
-
-		ImageButton smallButton=new ImageButton("/images/smallTurret.png", sizeX-250, sizeY-575, 100, 100);
-		masterRoot.getChildren().add(smallButton.get());
-		smallButton.get().setOnAction(e->{
-			turretType=0;
-		});
-		Label smallPrice=new Label(smallTurretPrice.toString()+" $");
-		smallPrice.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-		smallPrice.setLayoutX(sizeX-150);
-		smallPrice.setLayoutY(sizeY-565);
-		masterRoot.getChildren().add(smallPrice);
+		drawButtons();
 
 
 		EventHandler <MouseEvent> eventHandler=e->{
@@ -115,7 +95,7 @@ public class DeployTurret
 		}
 	}
 
-	public void showMessage(String s, double width, double height, double delay)
+	void showMessage(String s, double width, double height, double delay)
 	{
 		Rectangle r=new Rectangle();
 		r.setWidth(width);
@@ -144,5 +124,28 @@ public class DeployTurret
 		PauseTransition transition=new PauseTransition(Duration.seconds(delay));
 		transition.play();
 		transition.setOnFinished(e->masterRoot.getChildren().remove(stack));
+	}
+
+	void drawButtons()
+	{
+		Button smallButton=showButton("/images/smallTurret.png", sizeX-290, sizeY-600, smallTurretPrice);
+		smallButton.setOnAction(e->{
+			turretType=0;
+		});
+		Button bigButton=showButton("/images/bigTurret.png", sizeX-290, sizeY-750, bigTurretPrice);
+		bigButton.setOnAction(e->{
+			turretType=1;
+		});
+	}
+
+	Button showButton(String path, double posX, double posY, Integer price)
+	{
+		Button button=new Button(price+" $");
+		button.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).toString(), 100, 100, true, true)));
+		button.setLayoutX(posX);
+		button.setLayoutY(posY);
+		button.setStyle("-fx-font-size:40");
+		masterRoot.getChildren().add(button);
+		return button;
 	}
 }
