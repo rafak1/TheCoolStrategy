@@ -9,16 +9,17 @@ import project.Player;
 
 import java.util.Objects;
 
-public class BasicEnemy {
-    public boolean isDeployed;
+public abstract class BasicEnemy implements Enemy {
+    boolean deployed;
     Level currLevel;
-    public Pair<Integer, Integer> cords;
+    Pair<Integer, Integer> cords;
     int pathIndex;
-    public Image enemySprite;
-    public ImageView enemyImageView;
+    Image enemySprite;
+    ImageView enemyImageView;
     public int health;
     int moneyGiven = 10;
     public int damage = 1;
+    String imageUrl = "/images/BasicEnemy.png";
 
 
     /**
@@ -27,11 +28,11 @@ public class BasicEnemy {
      * @param level in question
      */
     public BasicEnemy(Level level) {
-        isDeployed = false;
+        deployed = false;
         currLevel = level;
         cords = new Pair<>(level.startX, level.startY);
-        pathIndex=0;
-        enemySprite=new Image(Objects.requireNonNull(getClass().getResource("/images/BasicEnemy.png")).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
+        pathIndex = 0;
+        enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
     }
 
     /**
@@ -44,20 +45,59 @@ public class BasicEnemy {
             this.kill();
         }
     }
+
     /**
      * Move enemy to next field
      */
-    public void moveEnemy(){
-        if(pathIndex >=currLevel.path.size()) return;
+    public void moveEnemy() {
+        if (pathIndex >= currLevel.path.size()) return;
         cords = currLevel.path.get(pathIndex++);
+    }
+
+    void deleteEnemy(int a) {
+        Player.changePlayerMoney(a);
+        enemyImageView.setImage(null);
+        deployed = false;
     }
 
     /**
      * Deletes enemy's imageView
      */
-    public void kill(){
-        Player.changePlayerMoney(moneyGiven);
-        enemyImageView.setImage(null);
-        isDeployed = false;
+    public void kill() {
+        this.deleteEnemy(moneyGiven);
+    }
+
+    public boolean isDeployed() {
+        return deployed;
+    }
+
+    public void SetDeployed() {
+        deployed = true;
+    }
+
+    public Pair<Integer, Integer> getCords() {
+        return cords;
+    }
+
+    public Image getEnemySprite() {
+        return enemySprite;
+    }
+
+    ;
+
+    public ImageView getEnemyImageView() {
+        return enemyImageView;
+    }
+
+    ;
+
+    public void setEnemyImageView(ImageView a) {
+        enemyImageView = a;
+    }
+
+    ;
+
+    public int getEnemyDamage() {
+        return damage;
     }
 }

@@ -1,7 +1,9 @@
 package project;
 
 import javafx.util.Pair;
-import project.gameObjects.BasicEnemy;
+import project.gameObjects.BigEnemy;
+import project.gameObjects.Enemy;
+import project.gameObjects.SmallEnemy;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,34 +19,56 @@ public class Level
     public ArrayList <Pair <Integer, Integer>> path=new ArrayList <>();
     public int startY;
     public int startX;
-    public Queue<BasicEnemy> enemies=new LinkedList<>();
+    public Queue<Enemy> enemies = new LinkedList<>();
 
     public Level(int k)
     {
         //this is temporary, it fills grid with random values. In the future this data will be read from a file
-        levelObjects=new int[gridSizeX][gridSizeY];
-        for(int i=0; i<gridSizeX; i++)
-        {
-            for(int j=0; j<gridSizeY; j++)
-            {
-                levelObjects[i][j]=0;
+        levelObjects = new int[gridSizeX][gridSizeY];
+        for (int i = 0; i < gridSizeX; i++) {
+            for (int j = 0; j < gridSizeY; j++) {
+                levelObjects[i][j] = 0;
             }
         }
-        startX=2;
-        startY=0;
-        enemies.add(new BasicEnemy(this));
-        enemies.add(new BasicEnemy(this));
-        enemies.add(new BasicEnemy(this));
-        path.add(new Pair <>(2, 1));
-        path.add(new Pair <>(2, 2));
-        path.add(new Pair<>(3,2));
-        path.add(new Pair<>(4,2));
-        path.add(new Pair<>(5,2));
-        path.add(new Pair<>(5,3));
-        path.add(new Pair<>(5,4));
-        path.add(new Pair<>(5,5));
-        path.add(new Pair<>(5,6));
-        path.add(new Pair<>(5,7));
+        startX = 2;
+        startY = 0;
+        enemies.add(new SmallEnemy(this));
+        enemies.add(new SmallEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(null);
+        enemies.add(null);
+        enemies.add(new SmallEnemy(this));
+        enemies.add(new SmallEnemy(this));
+        enemies.add(new SmallEnemy(this));
+        enemies.add(null);
+        enemies.add(null);
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(null);
+        enemies.add(null);
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(null);
+        enemies.add(null);
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        enemies.add(new BigEnemy(this));
+        path.add(new Pair<>(2, 1));
+        path.add(new Pair<>(2, 2));
+        path.add(new Pair<>(3, 2));
+        path.add(new Pair<>(4, 2));
+        path.add(new Pair<>(5, 2));
+        path.add(new Pair<>(5, 3));
+        path.add(new Pair<>(5, 4));
+        path.add(new Pair<>(5, 5));
+        path.add(new Pair<>(5, 6));
+        path.add(new Pair<>(5, 7));
         path.add(new Pair<>(5,8));
         path.add(new Pair<>(5,9));
         path.add(new Pair<>(-1,-1));

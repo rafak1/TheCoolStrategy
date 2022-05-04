@@ -3,6 +3,7 @@ package project;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -65,56 +66,54 @@ public class DeployTurret
 			{
 				if (turretType == 0) {
 					if (Player.money.get() < smallTurretPrice) {
-						showMessage("You are broke", 180, 40, 2);
+						showMessage("You are broke", 180, 40, 2, clickX, clickY, masterRoot);
 					} else {
 						currLevel.levelObjects[rowIndex][colIndex] = 2;
 						allTowers.add(new SmallTurret(rowIndex, colIndex));
 					}
 				} else {
 					if (Player.money.get() < bigTurretPrice) {
-						showMessage("You are broke", 180, 40, 2);
+						showMessage("You are broke", 180, 40, 2, clickX, clickY, masterRoot);
 					} else {
 						currLevel.levelObjects[rowIndex][colIndex] = 2;
 						allTowers.add(new BigTurret(rowIndex, colIndex));
 					}
 				}
-			}
-			else
-			{
-				showMessage("You can't place turrets\n while enemies are walking!", 250, 50, 3);
+			} else {
+				showMessage("You can't place turrets\n while enemies are walking!", 250, 50, 3, clickX, clickY, masterRoot);
 			}
 		}
 	}
 
-	void showMessage(String s, double width, double height, double delay)
+	public static void showMessage(String s, double width, double height, double delay, double clickX, double clickY, Group root)    //TODO można wykorzystać gdzieś indziej więc może swoja klasa na to? albo nawet połączyć z imagebutton
 	{
-		Rectangle r=new Rectangle();
+		Rectangle r = new Rectangle();
 		r.setWidth(width);
 		r.setHeight(height);
 		r.setFill(Color.RED);
 
-		Text text=new Text(s);
+		Text text = new Text(s);
 		text.setFill(Color.BEIGE);
 		text.setStyle("-fx-font: 20 arial;");
 
-		StackPane stack=new StackPane();
+		StackPane stack = new StackPane();
 		stack.getChildren().addAll(r, text);
 		stack.setLayoutX(clickX);
 		stack.setLayoutY(clickY);
 
-		masterRoot.getChildren().add(stack);
+		root.getChildren().add(stack);
 
 		//fancy fade away transition
-		FadeTransition ft=new FadeTransition(Duration.seconds(delay), stack);
+		FadeTransition ft = new FadeTransition(Duration.seconds(delay), stack);
 		ft.setFromValue(1.0);
 		ft.setToValue(0);
 		ft.setCycleCount(4);
 		ft.play();
 
 		//remove after it fades away
-		PauseTransition transition=new PauseTransition(Duration.seconds(delay));
+		PauseTransition transition = new PauseTransition(Duration.seconds(delay));
 		transition.play();
-		transition.setOnFinished(e->masterRoot.getChildren().remove(stack));
+		transition.setOnFinished(e -> root.getChildren().remove(stack));
 	}
 
 	void drawButtons()
