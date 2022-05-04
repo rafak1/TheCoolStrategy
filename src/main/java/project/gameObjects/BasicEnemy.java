@@ -56,7 +56,7 @@ public class BasicEnemy {
      * Deletes enemy's imageView
      */
     public void kill(){
-        Player.money += moneyGiven;
+        Player.changePlayerMoney(moneyGiven);
         enemyImageView.setImage(null);
         isDeployed = false;
     }
