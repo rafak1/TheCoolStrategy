@@ -1,19 +1,37 @@
 package project;
 
+import javafx.application.Platform;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static project.MainVariables.startingMoney;
+
 public class Player {
-    public static int playerHealth=MainVariables.playerHealth;
-    public static int money=100;
+    public static AtomicInteger health = new AtomicInteger(MainVariables.playerHealth);
+    public static AtomicInteger money = new AtomicInteger(startingMoney);
 
     /**
-     * Decrease players health by a given amount
+     * Changes players health by a given value
      *
-     * @param number amount subtracted from players health
+     * @param value value in question
      */
-    void decreasePlayerHealth(int number) {
-        playerHealth -= number;
+    public static void changePlayerHealth(int value) {
+        health.addAndGet(value);
+        Platform.runLater(() -> {
+            GameMaster.healthText.setText(String.valueOf(health));
+        });
     }
 
-    int getPlayerHealth() {
-        return playerHealth;
+
+    /**
+     * Changes players money by a given value
+     *
+     * @param value value in question
+     */
+    public static void changePlayerMoney(int value) {
+        money.addAndGet(value);
+        Platform.runLater(() -> {
+            GameMaster.moneyText.setText(String.valueOf(money));
+        });
     }
 }

@@ -24,24 +24,23 @@ import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
 
-public class GameMaster
-{
+public class GameMaster {
     public static Level currLevel;
     public static Group masterRoot;
-    public Queue <BasicEnemy> enemies=new LinkedList <>();
+    public Queue<BasicEnemy> enemies = new LinkedList<>();
     public static Node[][] board;
     public static GridPane grid;
-    public static Label moneyText;//TODO: make a new thread to refresh it every second(or more often)
-    Label healthText;
+    public static Label moneyText;//TODO: make a new thread to refresh it every second(or more often) //TODO dlaczego nie czaje mordo
+    public static Label healthText;
     public static Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
+    Thread enemyThread;
 
     /**
      * loads an i-th level from GameMaster
      *
      * @param n level id
      */
-    public void loadLevel(int n)
-    {
+    public void loadLevel(int n) {
         gameState=0;
         currLevel=new Level(n);
         masterRoot=new Group();
@@ -85,7 +84,7 @@ public class GameMaster
         moneyText = new Label();
         healthText = new Label();
         moneyText.setText(String.valueOf(Player.money));
-        healthText.setText(String.valueOf(Player.playerHealth));
+        healthText.setText(String.valueOf(Player.health));
         moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
         moneyText.setLayoutX(sizeX - 180);
         moneyText.setLayoutY(sizeY-110);
@@ -119,30 +118,28 @@ public class GameMaster
     /**
      * Method responsible for removing/clearing everything in the level when leaving
      */
-    void clearLevel()
-    {
-        playerHealth=100;
-        Player.money=100;
+    void clearLevel() {
+        Player.changePlayerHealth(playerHealth);
+        Player.changePlayerMoney(startingMoney);
         scene.setRoot(selectionRoot);
+        if (enemyThread.isAlive()) enemyThread.interrupt();
     }
+
 
     /**
      * Starts currently loaded level into GamePane
      */
     public void moveEnemies()
     {
-        Thread enemyThread=new Thread(()->{
+        enemyThread = new Thread(() -> {
             Platform.setImplicitExit(false);
-            try
-            {
+            try {
                 startEnemyFlow();
-            }catch(InterruptedException ignored)
-            {
+            } catch (InterruptedException ignored) {
             }
         });
         enemyThread.start();
     }
-//Rafal my mamy zrobic wiezyczki, nie potrzebujemy teraz przeciwnikow
 
     /**
      * starts to create and moves enemies currently loaded into GamePlane
@@ -155,10 +152,8 @@ public class GameMaster
         outer:
         while (true) {
             Thread.sleep(timeIntervals);
-            Player.money += moneyGivenWithTimeInterval;
-            Platform.runLater(() -> {
-                moneyText.setText(String.valueOf(Player.money));
-            });
+            Player.changePlayerMoney(passiveIncome);
+
             deployedThisCycle = false;
             synchronized (grid) {
                 Iterator<BasicEnemy> iter = enemies.iterator();
@@ -169,16 +164,14 @@ public class GameMaster
                         enemy.moveEnemy();
                         if (enemy.cords.getValue() == -1) {
                             iter.remove();
-                            Player.playerHealth -= enemy.damage;
                             enemy.kill();
+                            Player.changePlayerMoney(-1);
                             Platform.runLater(() -> {
-                                moneyText.setText(String.valueOf(Player.money));//ogólnie to ja to usunąłem i działało wszystko, więc chyba tego nie potrzebujemy
-                                healthText.setText(String.valueOf(Player.playerHealth));
                                 grid.getChildren().remove(finalEnemy.enemyImageView);
                             });
-                            if (Player.playerHealth <= 0) {
+                            if (Player.health.get() <= 0) {
+                                clearLevel();
                                 break outer;
-                                //TODO END GAME
                             }
                         } else {
                                 Platform.runLater(() -> {
