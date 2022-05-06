@@ -2,7 +2,6 @@ package project;
 
 import javafx.application.Platform;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -28,8 +27,8 @@ import static project.Menu.scene;
 public class GameMaster {
     public static Level currLevel;
     public static Group masterRoot;
-    public Queue<Enemy> enemies = new LinkedList<>();
-    public static Node[][] board;
+    public Queue <Enemy> enemies=new LinkedList <>();
+    public static ImageView[][] board;
     public static GridPane grid;
     public static Label moneyText;//TODO: make a new thread to refresh it every second(or more often) //TODO dlaczego nie czaje mordo
     public static Label healthText;
@@ -49,7 +48,7 @@ public class GameMaster {
         masterRoot = new Group();
         grid = new GridPane();
         enemies=currLevel.enemies;
-        board=new Node[gridSizeX][gridSizeY];
+        board=new ImageView[gridSizeX][gridSizeY];
 
         for (int i = 0; i < gridSizeY; i++) {
             ColumnConstraints column = new ColumnConstraints(sizeY / 10);
@@ -146,13 +145,16 @@ public class GameMaster {
      */
     public void moveEnemies()
     {
-        enemyThread = new Thread(() -> {
+        enemyThread=new Thread(()->{
             Platform.setImplicitExit(false);
-            try {
+            try
+            {
                 startEnemyFlow();
-            } catch (InterruptedException ignored) {
+            }catch(InterruptedException ignored)
+            {
             }
         });
+        enemyThread.setDaemon(true);
         enemyThread.start();
     }
 

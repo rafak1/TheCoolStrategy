@@ -28,11 +28,14 @@ import static project.MainVariables.sizeY;
 public class DeployTurret
 {
 	Node clickedNode;
+	Node hoveredNode;
 	Integer turretType;//0-not selected, 1-small turret, 2- big turret
 	Double clickX;
 	Double clickY;
 	Integer colIndex;
 	Integer rowIndex;
+	Integer hoverColIndex;
+	Integer hoverRowIndex;
 	ArrayList <Turret> allTowers=new ArrayList <>();//I don't know if wee need it, but it may be useful
 
 	/**
@@ -43,6 +46,15 @@ public class DeployTurret
 		turretType=0;
 		drawButtons();
 
+		/*
+		EventHandler <MouseEvent> eventHandler2=e->{
+			hoveredNode=e.getPickResult().getIntersectedNode();
+			hoverColIndex=GridPane.getRowIndex(hoveredNode);
+			hoverRowIndex=GridPane.getColumnIndex(hoveredNode);
+			board[hoverRowIndex][hoverColIndex].setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/redFrame.png")).toString(), sizeY/10, sizeY/10, true, true));
+		};
+		grid.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler2);
+*/
 
 		EventHandler <MouseEvent> eventHandler=e->{
 			clickX=e.getSceneX();
@@ -99,6 +111,22 @@ public class DeployTurret
 			//}
 		}
 	}
+/*
+	void highlight(Integer type)
+	{
+		if(type==0)
+		{
+			ImageView x=new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/redFrame.png")).toString(), sizeY/10, sizeY/10, true, true));
+			grid.add(x, hoverRowIndex, hoverColIndex, 1, 1);
+			PauseTransition transition = new PauseTransition(Duration.seconds(0.1));
+			transition.play();
+			transition.setOnFinished(e->grid.getChildren().remove(x));
+		}else if(type==1){
+
+		}else{
+
+		}
+	}*/
 
 	/**
 	 * TODO można wykorzystać gdzieś indziej więc może swoja klasa na to? albo nawet połączyć z imagebutton
