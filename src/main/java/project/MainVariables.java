@@ -6,7 +6,9 @@ public class MainVariables {
     public static int gridSizeX = 15;
     public static int gridSizeY = 10;
     public static int playerHealth = 50;
-    public static long timeIntervals = 1000;
+    public static long pathLength = 10;
+    public static long timeIntervals = 100;
     public static int passiveIncome = 1;
     public static int startingMoney = 100;
+    public static int gridSize = (int) (sizeY / 10);
 }

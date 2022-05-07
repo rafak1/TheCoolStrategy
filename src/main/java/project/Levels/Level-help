@@ -1,0 +1,12 @@
+This is a template to how a Level should look like,
+Name of the file = 'LevelX'   , where X is an id number of the level,
+
+The file should contain:
+a                                           - pathLength of the level (time it takes for an enemy to get to the other end)
+b                                           - passive income of the level
+d                                           - length of the enemy path
+d1x d1y d2x d2y d3x d3y ...... ddx ddy      - coordinates of the next steps in the path
+c                                           - number of waves on this level
+c11 c12 c13 c14 c15 ......                  - description of the n-th wave where cij is the id of the enemy, 0 is null(empty space)
+c21 c22 c23 c24 c25 ......
+........

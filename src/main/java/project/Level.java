@@ -1,5 +1,8 @@
 package project;
 
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Pair;
 import project.gameObjects.Enemies.BigEnemy;
 import project.gameObjects.Enemies.Enemy;
@@ -9,17 +12,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static project.MainVariables.gridSizeX;
-import static project.MainVariables.gridSizeY;
+import static project.MainVariables.*;
 
 public class Level
 {
-
     public int[][] levelObjects;        //can be deleted and replaced only with path
     public ArrayList <Pair <Integer, Integer>> path=new ArrayList <>();
     public int startY;
     public int startX;
     public Queue<Enemy> enemies = new LinkedList<>();
+    public Path enemyPath;
 
     public Level(int k)
     {
@@ -59,29 +61,23 @@ public class Level
         enemies.add(new BigEnemy(this));
         enemies.add(new BigEnemy(this));
         enemies.add(new BigEnemy(this));
-        path.add(new Pair<>(2, 1));
-        path.add(new Pair<>(2, 2));
-        path.add(new Pair<>(3, 2));
-        path.add(new Pair<>(4, 2));
-        path.add(new Pair<>(5, 2));
-        path.add(new Pair<>(5, 3));
-        path.add(new Pair<>(5, 4));
-        path.add(new Pair<>(5, 5));
-        path.add(new Pair<>(5, 6));
-        path.add(new Pair<>(5, 7));
-        path.add(new Pair<>(5,8));
-        path.add(new Pair<>(5,9));
-        path.add(new Pair<>(-1,-1));
-        levelObjects[2][0]=1;
-        levelObjects[2][1]=2;
-        levelObjects[2][2]=3;
-        levelObjects[3][2]=4;
-        levelObjects[4][2]=5;
-        levelObjects[5][2]=6;
-        levelObjects[5][3]=7;
-        levelObjects[5][4]=8;
-        levelObjects[5][5]=9;
-        levelObjects[5][6]=10;
+
+        //path
+        enemyPath = new Path();
+        enemyPath.getElements().add(new MoveTo(startX * gridSize + (double) gridSize / 2, -(double) gridSize / 2));
+        enemyPath.getElements().add(new LineTo(2 * gridSize + (double) gridSize / 2, 2 * gridSize + (double) gridSize / 2));
+        enemyPath.getElements().add(new LineTo(5 * gridSize + (double) gridSize / 2, 2 * gridSize + (double) gridSize / 2));
+        enemyPath.getElements().add(new LineTo(5 * gridSize + (double) gridSize / 2, 10 * gridSize + (double) gridSize / 2));
+        levelObjects[2][0] = 1;
+        levelObjects[2][1] = 2;
+        levelObjects[2][2] = 3;
+        levelObjects[3][2] = 4;
+        levelObjects[4][2] = 5;
+        levelObjects[5][2] = 6;
+        levelObjects[5][3] = 7;
+        levelObjects[5][4] = 8;
+        levelObjects[5][5] = 9;
+        levelObjects[5][6] = 10;
         levelObjects[5][7]=11;
         levelObjects[5][8]=12;
         levelObjects[5][9]=13;

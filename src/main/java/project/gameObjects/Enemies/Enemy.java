@@ -1,13 +1,13 @@
 package project.gameObjects.Enemies;
 
+import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Pair;
 
 public interface Enemy {
     void damageEnemy(int value);
 
-    void moveEnemy();
+    //void moveEnemy();
 
     void kill();
 
@@ -15,7 +15,9 @@ public interface Enemy {
 
     void SetDeployed();
 
-    Pair<Integer, Integer> getCords();
+    double getX();
+
+    double getY();
 
     Image getEnemySprite();
 
@@ -24,4 +26,10 @@ public interface Enemy {
     void setEnemyImageView(ImageView a);
 
     int getEnemyDamage();
+
+    PathTransition getPathTransition();
+
+    void setPathTransition(PathTransition a);
+
+    boolean isKilled();
 }
