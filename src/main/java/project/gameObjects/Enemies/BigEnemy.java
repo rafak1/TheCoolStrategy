@@ -1,19 +1,22 @@
 package project.gameObjects.Enemies;
 
 import javafx.scene.image.Image;
-import project.Level;
 import project.MainVariables;
 
 import java.util.Objects;
 
 public class BigEnemy extends BasicEnemy {
+    static {
+        Enemy.enemyId.put(2, BigEnemy.class);
+    }
+
     int damage = 5;
     int health = 10;
     int moneyGiven = 30;
     String imageUrl = "/images/BigEnemy.png";
 
-    public BigEnemy(Level level) {
-        super(level);
+    public BigEnemy() {
+        super();
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
     }
 

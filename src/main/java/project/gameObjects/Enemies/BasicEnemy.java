@@ -5,7 +5,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import project.Level;
 import project.MainVariables;
 import project.Player;
 
@@ -13,7 +12,6 @@ import java.util.Objects;
 
 public abstract class BasicEnemy implements Enemy {
     boolean deployed;
-    Level currLevel;
     DoubleProperty x;
     DoubleProperty y;
     int pathIndex;
@@ -32,11 +30,10 @@ public abstract class BasicEnemy implements Enemy {
      *
      * @param level in question
      */
-    public BasicEnemy(Level level) {
+    public BasicEnemy() {
         x = new SimpleDoubleProperty();
         y = new SimpleDoubleProperty();
         deployed = false;
-        currLevel = level;
         pathIndex = 0;
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
     }
