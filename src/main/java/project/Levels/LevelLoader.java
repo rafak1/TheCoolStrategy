@@ -1,5 +1,6 @@
 package project.Levels;
 
+import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Pair;
@@ -73,17 +74,28 @@ public class LevelLoader {
     void createPath() {
         enemyPath = new Path();
         Pair<Integer, Integer> curr = path.get(0);
-        enemyPath.getElements().add(new MoveTo(curr.getKey(), curr.getValue()));
+        Pair<Integer, Integer> next;
+        enemyPath.getElements().add(new MoveTo(curr.getKey() * gridSize + (double) gridSize / 2, -(double) gridSize / 2));
         int path_i = 1;
+        boolean isXTheSame;
+        curr = path.get(path_i++);
         while (path_i < path.size()) {
-            curr = path.get(path_i++);
-            //TODO reszta
+            next = path.get(path_i++);
+            isXTheSame = curr.getKey().equals(next.getKey());
+            while ((isXTheSame && curr.getKey().equals(next.getKey())) || (!isXTheSame && curr.getValue().equals(next.getValue()))) {
+                next = path.get(path_i++);
+            }
+            enemyPath.getElements().add(new LineTo(next.getKey() * gridSize + (double) gridSize / 2, next.getValue() * gridSize + (double) gridSize / 2));
+            curr = next;
         }
     }
 
-
+    /**
+     * Should be called after loading a level
+     *
+     * @return a path for enemies
+     */
     public Path getEnemyPath() {
-        createPath();
         return enemyPath;
     }
 
