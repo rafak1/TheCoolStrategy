@@ -42,9 +42,9 @@ public class LevelSelection
 			possibleLevels[i].setPrefSize(100, 20);
 			currentLevel=i;
 			possibleLevels[i].setOnAction(value->{
-				gameMaster.loadLevel(currentLevel);
-				scene.setRoot(masterRoot);
-			});
+                gameMaster.loadLevel(0);    //TODO change when levels added
+                scene.setRoot(masterRoot);
+            });
 		}
 		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);
 		flow.setStyle("-fx-background-color: #fd4d5d;");
@@ -56,6 +56,5 @@ public class LevelSelection
 		ImageButton backButton=new ImageButton("/images/back.png", sizeX-125, sizeY-125, 100, 100);
 		selectionRoot.getChildren().add(backButton.get());
 		backButton.get().setOnAction(e->scene.setRoot(menuRoot));
-
 	}
 }

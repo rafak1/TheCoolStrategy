@@ -18,31 +18,32 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import project.Levels.LevelLoader;
 import project.gameObjects.Enemies.Enemy;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Queue;
 
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
 
 public class GameMaster {
-    public static Level currLevel;
+    public static LevelLoader levelLoader = new LevelLoader();
     public static Group masterRoot;
-    public Queue<Enemy> enemies = new LinkedList<>();
+    public LinkedList<LinkedList<Enemy>> enemies = new LinkedList<>();
     public static ImageView[][] board;
     public static GridPane grid;
-    public static Label moneyText;//TODO: make a new thread to refresh it every second(or more often) //TODO dlaczego nie czaje mordo
+    public static Label moneyText;
     public static Label healthText;
     public static Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
     Thread enemyThread;
     Label waveText;
-    int currentWave = 0;
+    int currentWave = 1;
     Path enemyPath;
     PathTransition enemyFlow;
+
 
     /**
      * loads an i-th level from GameMaster
@@ -50,13 +51,17 @@ public class GameMaster {
      * @param n level id
      */
     public void loadLevel(int n) {
+        try {
+            levelLoader.load(n);
+        } catch (Throwable a) {
+            a.printStackTrace();
+        }
         gridSize = (int) (sizeY / 10);
         gameState = 0;
-        currLevel = new Level(n);
         masterRoot = new Group();
         grid = new GridPane();
-        enemies=currLevel.enemies;
-        board=new ImageView[gridSizeX][gridSizeY];
+        enemies = levelLoader.getEnemies();
+        board = new ImageView[gridSizeX][gridSizeY];
 
         for (int i = 0; i < gridSizeY; i++) {
             ColumnConstraints column = new ColumnConstraints(gridSize);
@@ -78,7 +83,7 @@ public class GameMaster {
         Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), gridSize, gridSize, true, true);
         for (int i = 0; i < gridSizeX; i++) {
             for (int j = 0; j < gridSizeY; j++) {
-                if (currLevel.levelObjects[i][j] != 0) {
+                if (levelLoader.getLevelObjects()[i][j] != 0) {
                     board[i][j] = new ImageView(dirtImg);
                     grid.add(board[i][j], i, j, 1, 1);
                 } else {
@@ -90,7 +95,8 @@ public class GameMaster {
         masterRoot.getChildren().add(grid);
 
         //path
-        enemyPath = currLevel.enemyPath;
+        enemyPath = levelLoader.getEnemyPath();
+        masterRoot.getChildren().add(enemyPath);
 
         //money and player health
         moneyText = new Label();
@@ -141,19 +147,19 @@ public class GameMaster {
      * Method responsible for removing/clearing everything in the level when leaving
      */
     void clearLevel() {
+        gameState = 0;
         if (enemyThread != null && enemyThread.isAlive()) enemyThread.interrupt();
         scene.setRoot(selectionRoot);
-        currentWave = 0;
-        Iterator<Enemy> iter = enemies.iterator();
+        Iterator<Enemy> iter = enemies.get(currentWave - 1).iterator();
         while (iter.hasNext()) {
             Enemy curr = iter.next();
-            if (curr != null && !curr.isKilled()) curr.kill();
+            if (curr != null) curr.kill();
             iter.remove();
         }
+        this.setWave(1);
         Player.health.set(playerHealth);  //TODO IOIOIOIOIOIOIOO coś sie pierdoli
         Player.money.set(startingMoney);  //TODO IOIOIOIOIOIOIOO coś sie pierdoli
     }
-
 
     /**
      * Starts currently loaded level into GamePane
@@ -162,11 +168,9 @@ public class GameMaster {
     {
         enemyThread=new Thread(()->{
             Platform.setImplicitExit(false);
-            try
-            {
+            try {
                 startEnemyFlow();
-            }catch(InterruptedException ignored)
-            {
+            } catch (InterruptedException ignored) {
             }
         });
         enemyThread.setDaemon(true);
@@ -174,65 +178,85 @@ public class GameMaster {
     }
 
     /**
+     * Sets waveText to a given value
+     *
+     * @param a value
+     */
+    void setWave(int a) {
+        Platform.runLater(() -> {
+            currentWave = a;
+            waveText.setText("wave: " + a);
+        });
+    }
+
+    /**
      * starts to create and moves enemies currently loaded into GamePlane
      * Should be called in a thread
      */
     void startEnemyFlow() throws InterruptedException {
+        LinkedList<Enemy> currWave;
         boolean deployedThisCycle = false;
-        if (currLevel == null) return;
+        if (levelLoader == null) return;
         Enemy enemy;
         int clock = 0;
-        while (true) {
-            Thread.sleep(timeIntervals);
-            synchronized (enemies) {
-                Iterator<Enemy> iter = enemies.iterator();
-                clock++;
-                while (iter.hasNext()) {
-                    enemy = iter.next();
-                    if (enemy != null && enemy.isDeployed()) {
-                        if (enemy.getY() == 0) {
-                            iter.remove();
-                        }
-                    }
-                }
-                if (Player.health.get() <= 0) {
-                    this.clearLevel();
-                    break;
-                }
-                iter = enemies.iterator();
-                if (clock % 10 == 0) {
-                    clock = 0;
-                    Player.changePlayerMoney(passiveIncome);
-                    deployedThisCycle = false;
+        outer:
+        while (currentWave < enemies.size()) {
+            currWave = enemies.get(currentWave - 1);
+            this.setWave(currentWave++);
+            while (true) {
+                Thread.sleep(timeIntervals);
+                synchronized (enemies) {
+                    Iterator<Enemy> iter = currWave.iterator();
+                    clock++;
                     while (iter.hasNext()) {
                         enemy = iter.next();
-                        if (enemy == null) {
-                            if (!deployedThisCycle) iter.remove();
-                            deployedThisCycle = true;
-                            continue;
+                        if (enemy != null && enemy.isDeployed()) {
+                            if (enemy.getY() == 0) {    //TODO ???
+                                iter.remove();
+                            }
                         }
-                        if (!enemy.isDeployed() && !deployedThisCycle) {
-                            Enemy finalEnemy = enemy;
-                            Platform.runLater(() -> {
-                                finalEnemy.SetDeployed();
-                                finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
-                                PathTransition next = new PathTransition();
-                                finalEnemy.setPathTransition(next);
-                                next.setDuration(Duration.seconds(pathLength));
-                                masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
-                                next.setNode(finalEnemy.getEnemyImageView());
-                                next.setPath(enemyPath);
-                                next.setOnFinished(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent actionEvent) {
-                                        Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
-                                        finalEnemy.kill();
-                                    }
+                    }
+                    if (Player.health.get() <= 0) {
+                        this.clearLevel();
+                        break outer;
+                    }
+                    if (clock % 10 == 0) {
+                        iter = currWave.iterator();
+                        clock = 0;
+                        Player.changePlayerMoney(passiveIncome);
+                        deployedThisCycle = false;
+                        while (iter.hasNext()) {
+                            enemy = iter.next();
+                            if (enemy == null) {
+                                if (!deployedThisCycle) iter.remove();
+                                deployedThisCycle = true;
+                                continue;
+                            }
+                            if (!enemy.isDeployed() && !deployedThisCycle) {
+                                Enemy finalEnemy = enemy;
+                                Platform.runLater(() -> {
+                                    finalEnemy.SetDeployed();
+                                    finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
+                                    PathTransition next = new PathTransition();
+                                    next.setDuration(Duration.seconds(pathLength));
+                                    masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
+                                    next.setNode(finalEnemy.getEnemyImageView());
+                                    next.setPath(enemyPath);
+                                    next.setOnFinished(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent actionEvent) {
+                                            if (gameState != 0) {
+                                                Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
+                                                finalEnemy.kill();
+                                            }
+                                        }
+                                    });
+                                    finalEnemy.setPathTransition(next);
+                                    next.play();
                                 });
-                                next.play();
-                            });
-                            deployedThisCycle = true;
-                        } else if (enemy.isDeployed() && enemy.isKilled()) iter.remove();
+                                deployedThisCycle = true;
+                            } else if (enemy.isDeployed() && enemy.isKilled()) iter.remove();
+                        }
                     }
                 }
             }

@@ -6,9 +6,6 @@ import project.MainVariables;
 import java.util.Objects;
 
 public class BigEnemy extends BasicEnemy {
-    static {
-        Enemy.enemyId.put(2, BigEnemy.class);
-    }
 
     int damage = 5;
     int health = 10;

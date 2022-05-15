@@ -11,6 +11,12 @@ import project.Player;
 import java.util.Objects;
 
 public abstract class BasicEnemy implements Enemy {
+    static {    //add all enemies and their ids here
+        //System.out.println("enemies - loaded");
+        Enemy.enemyId.put(1, SmallEnemy.class);
+        Enemy.enemyId.put(2, BigEnemy.class);
+    }
+
     boolean deployed;
     DoubleProperty x;
     DoubleProperty y;
@@ -25,11 +31,6 @@ public abstract class BasicEnemy implements Enemy {
     String imageUrl = "/images/BasicEnemy.png";
 
 
-    /**
-     * Creates an enemy at a given level
-     *
-     * @param level in question
-     */
     public BasicEnemy() {
         x = new SimpleDoubleProperty();
         y = new SimpleDoubleProperty();
@@ -58,11 +59,11 @@ public abstract class BasicEnemy implements Enemy {
     }
 
     void deleteEnemy(int a) {
+        if (pathTransition != null) pathTransition.stop();
         isDead = true;
         Player.changePlayerMoney(a);
         if (enemyImageView != null) enemyImageView.setImage(null);
         deployed = false;
-        if (pathTransition != null) pathTransition.stop();
     }
 
     /**

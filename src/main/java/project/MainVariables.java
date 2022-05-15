@@ -10,5 +10,5 @@ public class MainVariables {
     public static long timeIntervals = 100;
     public static int passiveIncome = 1;
     public static int startingMoney = 100;
-    public static int gridSize = (int) (sizeY / 10);
+    public static double gridSize = (double) (sizeY / 10);
 }
