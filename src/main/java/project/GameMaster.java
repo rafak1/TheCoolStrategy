@@ -40,7 +40,6 @@ public class GameMaster {
     Label waveText;
     int currentWave = 1;
     Path enemyPath;
-    PathTransition enemyFlow;
     LinkedList <Enemy> currWave;
 
 
@@ -146,14 +145,20 @@ public class GameMaster {
      * Method responsible for removing/clearing everything in the level when leaving
      */
     void clearLevel() {
-        gameState = 0;
-        if (enemyThread != null && enemyThread.isAlive()) enemyThread.interrupt();
+        gameState=0;
+        if(enemyThread!=null && enemyThread.isAlive())
+        {enemyThread.interrupt();}
         scene.setRoot(selectionRoot);
-        Iterator <Enemy> iter=currWave.iterator();
-        while (iter.hasNext()) {
-            Enemy curr = iter.next();
-            if (curr != null) curr.kill();
-            iter.remove();
+        if(currWave!=null)
+        {
+            Iterator <Enemy> iter=currWave.iterator();
+            while(iter.hasNext())
+            {
+                Enemy curr=iter.next();
+                if(curr!=null)
+                {curr.kill();}
+                iter.remove();
+            }
         }
         this.setWave(1);
         Player.health.set(playerHealth);  //TODO IOIOIOIOIOIOIOO coś sie pierdoli

@@ -20,6 +20,7 @@ public class App extends Application {
         gridSize=sizeY/10;
         stage.setTitle("Tower Defence the Game!");
         Menu menu=new Menu(stage);
+        stage.setResizable(false);
         stage.show();
 
         stage.setFullScreen(true);

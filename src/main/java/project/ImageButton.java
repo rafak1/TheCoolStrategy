@@ -1,8 +1,13 @@
 package project;
 
+import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -30,6 +35,21 @@ public class ImageButton
 		theButton.setLayoutX(x);
 		theButton.setLayoutY(y);
 		theButton.setBackground(null);
+		EventHandler <MouseEvent> bigger=e->{
+			ScaleTransition makeBigger=new ScaleTransition(Duration.millis(75), (Node)e.getSource());
+			makeBigger.setToY(1.1);
+			makeBigger.setToX(1.1);
+			makeBigger.play();
+		};
+		EventHandler <MouseEvent> smaller=e->{
+			ScaleTransition reset=new ScaleTransition(Duration.millis(75), (Node)e.getSource());
+			reset.setToY(1);
+			reset.setToX(1);
+			reset.play();
+		};
+		theButton.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, bigger);
+		theButton.addEventFilter(MouseEvent.MOUSE_EXITED_TARGET, smaller);
+
 	}
 
 	/**
