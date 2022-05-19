@@ -59,11 +59,16 @@ public abstract class BasicEnemy implements Enemy {
     }
 
     void deleteEnemy(int a) {
-        if (pathTransition != null) pathTransition.stop();
-        isDead = true;
+        if(pathTransition!=null)
+        {
+            pathTransition.setOnFinished(null);
+            pathTransition.stop();
+        }
+        isDead=true;
         Player.changePlayerMoney(a);
-        if (enemyImageView != null) enemyImageView.setImage(null);
-        deployed = false;
+        if(enemyImageView!=null)
+        {enemyImageView.setImage(null);}
+        deployed=false;
     }
 
     /**

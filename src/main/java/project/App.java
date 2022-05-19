@@ -16,8 +16,8 @@ public class App extends Application {
     {
         Rectangle2D screenBounds=Screen.getPrimary().getBounds();
         sizeX=screenBounds.getWidth();
-        sizeY = screenBounds.getHeight();
-        gridSize = (double) sizeY / 10;
+        sizeY=screenBounds.getHeight();
+        gridSize=sizeY/10;
         stage.setTitle("Tower Defence the Game!");
         Menu menu=new Menu(stage);
         stage.show();

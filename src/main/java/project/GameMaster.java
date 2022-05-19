@@ -2,8 +2,6 @@ package project;
 
 import javafx.animation.PathTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -43,6 +41,7 @@ public class GameMaster {
     int currentWave = 1;
     Path enemyPath;
     PathTransition enemyFlow;
+    LinkedList <Enemy> currWave;
 
 
     /**
@@ -150,7 +149,7 @@ public class GameMaster {
         gameState = 0;
         if (enemyThread != null && enemyThread.isAlive()) enemyThread.interrupt();
         scene.setRoot(selectionRoot);
-        Iterator<Enemy> iter = enemies.get(currentWave - 1).iterator();
+        Iterator <Enemy> iter=currWave.iterator();
         while (iter.hasNext()) {
             Enemy curr = iter.next();
             if (curr != null) curr.kill();
@@ -194,8 +193,7 @@ public class GameMaster {
      * Should be called in a thread
      */
     void startEnemyFlow() throws InterruptedException {
-        LinkedList<Enemy> currWave;
-        boolean deployedThisCycle = false;
+        boolean deployedThisCycle;
         if (levelLoader == null) return;
         Enemy enemy;
         int clock = 0;
@@ -234,21 +232,19 @@ public class GameMaster {
                             }
                             if (!enemy.isDeployed() && !deployedThisCycle) {
                                 Enemy finalEnemy = enemy;
-                                Platform.runLater(() -> {
+                                Platform.runLater(() ->{
                                     finalEnemy.SetDeployed();
                                     finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
-                                    PathTransition next = new PathTransition();
+                                    PathTransition next=new PathTransition();
                                     next.setDuration(Duration.seconds(pathLength));
                                     masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
                                     next.setNode(finalEnemy.getEnemyImageView());
                                     next.setPath(enemyPath);
-                                    next.setOnFinished(new EventHandler<ActionEvent>() {
-                                        @Override
-                                        public void handle(ActionEvent actionEvent) {
-                                            if (gameState != 0) {
-                                                Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
-                                                finalEnemy.kill();
-                                            }
+                                    next.setOnFinished(actionEvent->{
+                                        if(gameState!=0)
+                                        {
+                                            Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
+                                            finalEnemy.kill();
                                         }
                                     });
                                     finalEnemy.setPathTransition(next);

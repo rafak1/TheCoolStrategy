@@ -8,7 +8,6 @@ import project.gameObjects.Enemies.Enemy;
 import project.gameObjects.Enemies.SmallEnemy;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -21,8 +20,6 @@ class NoSuchLevelException extends Throwable {
 public class LevelLoader {
     int[][] levelObjects;        //can be deleted and replaced only with path
     ArrayList<Pair<Integer, Integer>> path;
-    int startY;
-    int startX;
     LinkedList<LinkedList<Enemy>> enemies = new LinkedList<>();
     int waves;
     Path enemyPath;
@@ -37,17 +34,21 @@ public class LevelLoader {
      *
      * @param k id of  a level
      */
-    public void load(int k) throws NoSuchLevelException, IOException {
-        path = new ArrayList<>();
-        levelObjects = new int[gridSizeX][gridSizeY];
-        for (int i = 0; i < gridSizeX; i++) {
-            for (int j = 0; j < gridSizeY; j++) {
-                levelObjects[i][j] = 0;
+    public void load(int k) throws NoSuchLevelException
+    {
+        path=new ArrayList <>();
+        levelObjects=new int[gridSizeX][gridSizeY];
+        for(int i=0; i<gridSizeX; i++)
+        {
+            for(int j=0; j<gridSizeY; j++)
+            {
+                levelObjects[i][j]=0;
             }
         }
         FileReader fileReader;
-        try {
-            fileReader = new FileReader(System.getProperty("user.dir") + "\\src\\main\\java\\project\\Levels\\Level" + k);
+        try
+        {
+            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k);
         } catch (Throwable a) {
             a.printStackTrace();
             throw new NoSuchLevelException();
@@ -89,7 +90,7 @@ public class LevelLoader {
         enemyPath = new Path();
         Pair<Integer, Integer> curr = path.get(0);
         Pair<Integer, Integer> next;
-        enemyPath.getElements().add(new MoveTo(curr.getKey() * gridSize + (double) gridSize / 2, -(double) gridSize / 2));
+        enemyPath.getElements().add(new MoveTo(curr.getKey()*gridSize+gridSize/2, -(double)gridSize/2));
         int path_i = 1;
         boolean isXTheSame;
         curr = path.get(path_i++);
@@ -99,13 +100,13 @@ public class LevelLoader {
             isXTheSame = curr.getKey().equals(next.getKey());
             while ((isXTheSame && curr.getKey().equals(next.getKey())) || (!isXTheSame && curr.getValue().equals(next.getValue()))) {
                 if (path_i >= path.size()) {
-                    enemyPath.getElements().add(new LineTo(next.getKey() * gridSize + (double) gridSize / 2, (next.getValue() + 1) * gridSize + (double) gridSize / 2));
+                    enemyPath.getElements().add(new LineTo(next.getKey()*gridSize+gridSize/2, (next.getValue()+1)*gridSize+gridSize/2));
                     break outer;
                 }
                 next = path.get(path_i++);
             }
-            enemyPath.getElements().add(new LineTo(path.get(path_i - 2).getKey() * gridSize + (double) gridSize / 2, path.get(path_i - 2).getValue() * gridSize + (double) gridSize / 2));
-            curr = next;
+            enemyPath.getElements().add(new LineTo(path.get(path_i-2).getKey()*gridSize+gridSize/2, path.get(path_i-2).getValue()*gridSize+gridSize/2));
+            curr=next;
         }
     }
 

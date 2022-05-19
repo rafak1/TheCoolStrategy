@@ -17,9 +17,7 @@ public class Player {
      */
     public static void changePlayerHealth(int value) {
         health.addAndGet(value);
-        Platform.runLater(() -> {
-            GameMaster.healthText.setText(String.valueOf(health));
-        });
+        Platform.runLater(()->GameMaster.healthText.setText(String.valueOf(health)));
     }
 
 
@@ -30,8 +28,6 @@ public class Player {
      */
     public static void changePlayerMoney(int value) {
         money.addAndGet(value);
-        Platform.runLater(() -> {
-            GameMaster.moneyText.setText(String.valueOf(money));
-        });
+        Platform.runLater(()->GameMaster.moneyText.setText(String.valueOf(money)));
     }
 }
