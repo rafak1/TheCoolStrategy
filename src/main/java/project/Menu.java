@@ -38,14 +38,14 @@ public class Menu
         gc.drawImage(title, (sizeX-300)/2, (sizeY)/9);
 
 
-        ImageButton startButton=new ImageButton("/images/Button1.png", (sizeX-100)/3, sizeY/2, 100, 50);
+        ImageButton startButton = new ImageButton("/images/startbutton.png", (sizeX - 100) / 3, sizeY / 2, (int) (sizeX * 0.1), (int) (sizeY * 0.05));
         menuRoot.getChildren().add(startButton.get());
         startButton.get().setOnAction(e->{
             LevelSelection game=new LevelSelection();
             scene.setRoot(selectionRoot);
         });
 
-        ImageButton exitButton=new ImageButton("/images/Button2.png", (sizeX-100)*2/3, sizeY/2, 100, 50);
+        ImageButton exitButton = new ImageButton("/images/backbutton.png", (sizeX - 100) * 2 / 3, sizeY / 2, (int) (sizeX * 0.1), (int) (sizeY * 0.05));
         menuRoot.getChildren().add(exitButton.get());
         exitButton.get().setOnAction(arg0->System.exit(0));
     }

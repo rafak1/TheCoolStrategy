@@ -24,37 +24,40 @@ public class LevelSelection
 
 	public LevelSelection()
 	{
-		selectionRoot=new Group();
-		gameMaster=new GameMaster();
+		selectionRoot = new Group();
+		gameMaster = new GameMaster();
 
-		Button[] possibleLevels=new Button[10];
+		Button[] possibleLevels = new Button[6];
 
-		for(int i=0; i<10; i++)
-		{
+		for (int i = 0; i < 6; i++) {
 
-			Canvas canvas=new Canvas(sizeX, sizeY);
+			Canvas canvas = new Canvas(sizeX, sizeY);
 			selectionRoot.getChildren().add(canvas);
-			GraphicsContext gc=canvas.getGraphicsContext2D();
+			GraphicsContext gc = canvas.getGraphicsContext2D();
 			gc.setFill(Color.web("0xfd4d5d"));
 			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-			possibleLevels[i]=new Button(String.valueOf(i+1));
-			possibleLevels[i].setPrefSize(100, 20);
-			currentLevel=i;
-			possibleLevels[i].setOnAction(value->{
-                gameMaster.loadLevel(0);    //TODO change when levels added
-                scene.setRoot(masterRoot);
-            });
+			possibleLevels[i] = new ImageButton("/images/levelbutton" + (i + 1) + ".png", 0, 0, 0, 0).get();
+			possibleLevels[i].setPrefSize(sizeX * 0.2, sizeY * 0.1);
+			currentLevel = i;
+			int finalI = i;
+			possibleLevels[i].setOnAction(value -> {
+				gameMaster.loadLevel(finalI);
+				scene.setRoot(masterRoot);
+			});
 		}
-		FlowPane flow=new FlowPane((sizeX-500)/4, 30, possibleLevels);
+		FlowPane flow = new FlowPane((sizeX * 0.2), sizeY * 0.1, possibleLevels);
 		flow.setStyle("-fx-background-color: #fd4d5d;");
 		flow.setPrefWrapLength(sizeX);
 
 		selectionRoot.getChildren().add(flow);
 
 
-		ImageButton backButton=new ImageButton("/images/back.png", sizeX-125, sizeY-125, 100, 100);
+		ImageButton backButton = new ImageButton("/images/backbutton.png", sizeX * 0.8, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
+		ImageButton settingsButton = new ImageButton("/images/settingsbutton.png", sizeX * 0.15, sizeY * 0.8, (int) (sizeX * 0.15), (int) (sizeY * 0.1));
 		selectionRoot.getChildren().add(backButton.get());
-		backButton.get().setOnAction(e->scene.setRoot(menuRoot));
+		selectionRoot.getChildren().add(settingsButton.get());
+		backButton.get().setOnAction(e -> scene.setRoot(menuRoot));
+		settingsButton.get().setOnAction(e -> scene.setRoot(menuRoot)); //TODO
 	}
 }

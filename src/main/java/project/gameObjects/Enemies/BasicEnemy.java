@@ -27,7 +27,7 @@ public abstract class BasicEnemy implements Enemy {
     public int health;
     int moneyGiven = 10;
     public int damage = 1;
-    Boolean isDead = true;
+    Boolean isDead = false;
     String imageUrl = "/images/BasicEnemy.png";
 
 
@@ -64,7 +64,8 @@ public abstract class BasicEnemy implements Enemy {
             pathTransition.setOnFinished(null);
             pathTransition.stop();
         }
-        isDead=true;
+        isDead = true;
+        deployed = false;
         Player.changePlayerMoney(a);
         if(enemyImageView!=null)
         {enemyImageView.setImage(null);}

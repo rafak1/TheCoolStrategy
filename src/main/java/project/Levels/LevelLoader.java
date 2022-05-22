@@ -36,7 +36,8 @@ public class LevelLoader {
      */
     public void load(int k) throws NoSuchLevelException
     {
-        path=new ArrayList <>();
+        enemies.clear();
+        path = new ArrayList<>();
         levelObjects=new int[gridSizeX][gridSizeY];
         for(int i=0; i<gridSizeX; i++)
         {

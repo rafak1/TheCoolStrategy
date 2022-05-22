@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
@@ -40,7 +41,8 @@ public class GameMaster {
     Label waveText;
     int currentWave = 1;
     Path enemyPath;
-    LinkedList <Enemy> currWave;
+    LinkedList<Enemy> currWave;
+    GraphicsContext gc;
 
 
     /**
@@ -73,7 +75,7 @@ public class GameMaster {
 
         Canvas canvas = new Canvas(sizeX, sizeY);
         masterRoot.getChildren().add(canvas);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.web("0xfd4d5d"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -94,7 +96,7 @@ public class GameMaster {
 
         //path
         enemyPath = levelLoader.getEnemyPath();
-        masterRoot.getChildren().add(enemyPath);
+        //masterRoot.getChildren().add(enemyPath);
 
         //money and player health
         moneyText = new Label();
@@ -114,6 +116,7 @@ public class GameMaster {
         gc.drawImage(heart, sizeX - 275, sizeY - 100);
         gc.drawImage(coin, sizeX - 275, sizeY - 200);
 
+
         //wave number
         waveText = new Label();
         waveText.setText("wave: " + currentWave);
@@ -122,11 +125,11 @@ public class GameMaster {
         waveText.setLayoutY(30);
         masterRoot.getChildren().add(waveText);
         //buttons
-        ImageButton backButton = new ImageButton("/images/back.png", sizeX - 225, sizeY - 325, 100, 100);
+        ImageButton backButton = new ImageButton("/images/backbutton.png", sizeX * 0.86, sizeY * 0.7, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
         masterRoot.getChildren().add(backButton.get());
         backButton.get().setOnAction(e -> clearLevel());
 
-        ImageButton startLevelButton = new ImageButton("/images/start.png", sizeX - 225, sizeY - 475, 100, 100);
+        ImageButton startLevelButton = new ImageButton("/images/startbutton.png", sizeX * 0.86, sizeY * 0.58, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
         masterRoot.getChildren().add(startLevelButton.get());
         startLevelButton.get().setOnAction(e -> {
             gameState = 1;
@@ -145,24 +148,24 @@ public class GameMaster {
      * Method responsible for removing/clearing everything in the level when leaving
      */
     void clearLevel() {
-        gameState=0;
-        if(enemyThread!=null && enemyThread.isAlive())
-        {enemyThread.interrupt();}
-        scene.setRoot(selectionRoot);
-        if(currWave!=null)
-        {
-            Iterator <Enemy> iter=currWave.iterator();
-            while(iter.hasNext())
-            {
-                Enemy curr=iter.next();
-                if(curr!=null)
-                {curr.kill();}
+        gameState = 0;
+        if (enemyThread != null && enemyThread.isAlive()) {
+            enemyThread.interrupt();
+        }
+        if (currWave != null) {
+            Iterator<Enemy> iter = currWave.iterator();
+            while (iter.hasNext()) {
+                Enemy curr = iter.next();
+                if (curr != null) {
+                    curr.kill();
+                }
                 iter.remove();
             }
         }
+        scene.setRoot(selectionRoot);
         this.setWave(1);
-        Player.health.set(playerHealth);  //TODO IOIOIOIOIOIOIOO coś sie pierdoli
-        Player.money.set(startingMoney);  //TODO IOIOIOIOIOIOIOO coś sie pierdoli
+        Player.health.set(playerHealth);
+        Player.money.set(startingMoney);
     }
 
     /**
@@ -194,6 +197,35 @@ public class GameMaster {
     }
 
     /**
+     * Shows 'you lost' screen, then returns to level selection
+     */
+    void youLostScreen() {
+        gameState = 0;
+        if (currWave != null) {
+            for (Enemy curr : currWave) {
+                if (curr != null) {
+                    curr.getPathTransition().pause();
+                }
+            }
+        }
+        Platform.runLater(() -> {
+            Rectangle darkScreen = new Rectangle(sizeX, sizeY, Color.BLACK);
+            darkScreen.setOpacity(0.7);
+            masterRoot.getChildren().add(darkScreen);
+            ImageView youLost = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/youLost.png")).toString(), sizeX / 2, sizeY / 3, true, true)); // sizeX/5 sizeY/3
+            youLost.toFront();
+            youLost.setX(sizeX / 2 - sizeX / 4);
+            youLost.setY(sizeY / 2 - sizeY / 6);
+            masterRoot.getChildren().add(youLost);
+        });
+        try {
+            Thread.sleep(looseScreenTime);
+        } catch (InterruptedException ignored) {
+        }
+        this.clearLevel();
+    }
+
+    /**
      * starts to create and moves enemies currently loaded into GamePlane
      * Should be called in a thread
      */
@@ -206,25 +238,17 @@ public class GameMaster {
         while (currentWave < enemies.size()) {
             currWave = enemies.get(currentWave - 1);
             this.setWave(currentWave++);
-            while (true) {
+            while (gameState == 1) {
                 Thread.sleep(timeIntervals);
-                synchronized (enemies) {
-                    Iterator<Enemy> iter = currWave.iterator();
-                    clock++;
-                    while (iter.hasNext()) {
-                        enemy = iter.next();
-                        if (enemy != null && enemy.isDeployed()) {
-                            if (enemy.getY() == 0) {    //TODO ???
-                                iter.remove();
-                            }
-                        }
-                    }
-                    if (Player.health.get() <= 0) {
-                        this.clearLevel();
-                        break outer;
-                    }
-                    if (clock % 10 == 0) {
-                        iter = currWave.iterator();
+                if (currWave.isEmpty()) continue outer;
+                Iterator<Enemy> iter = currWave.iterator();
+                clock++;
+                if (Player.health.get() <= 0) {
+                    this.youLostScreen();
+                    break outer;
+                }
+                if (clock % 10 == 0) {
+                    iter = currWave.iterator();
                         clock = 0;
                         Player.changePlayerMoney(passiveIncome);
                         deployedThisCycle = false;
@@ -260,7 +284,6 @@ public class GameMaster {
                         }
                     }
                 }
-            }
         }
     }
 }
