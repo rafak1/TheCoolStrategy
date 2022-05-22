@@ -174,7 +174,6 @@ public class GameMaster {
     public void moveEnemies()
     {
         enemyThread=new Thread(()->{
-            Platform.setImplicitExit(false);
             try {
                 startEnemyFlow();
             } catch (InterruptedException ignored) {
