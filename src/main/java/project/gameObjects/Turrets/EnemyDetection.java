@@ -27,6 +27,8 @@ public class EnemyDetection
 			for(Turret t: allTowers)
 			{
 				t.findTarget();
+				if(t.target!=null)
+				{t.target.damageEnemy(t.damage);}
 			}
 		}
 	}

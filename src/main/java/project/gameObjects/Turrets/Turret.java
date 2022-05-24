@@ -85,6 +85,6 @@ public class Turret
 
 	boolean inRange(Enemy e)
 	{
-		return (turretRadius.getLayoutX()-e.getX())*(turretRadius.getLayoutX()-e.getX())+(turretRadius.getLayoutY()-e.getY())*(turretRadius.getLayoutY()-e.getY())<radius*radius;
+		return (turretRadius.getLayoutX()-e.getX()-25)*(turretRadius.getLayoutX()-e.getX()-25)+(turretRadius.getLayoutY()-e.getY()-25)*(turretRadius.getLayoutY()-e.getY()-25)<radius*radius;
 	}
 }
