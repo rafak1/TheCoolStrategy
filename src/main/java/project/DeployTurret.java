@@ -92,17 +92,18 @@ public class DeployTurret
 					if(Player.money.get()<BigTurret.price)
 					{
 						showMessage("You are broke", 180, 40, 2);
+					} else {
+						levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+						allTowers.add(new BigTurret(rowIndex, colIndex));
 					}
-					else {
-                        levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-                        allTowers.add(new BigTurret(rowIndex, colIndex));
-                    }
 				}
 			//}
 			//else
 			//{
 			//	showMessage("You can't place turrets\n while enemies are walking!", 250, 50, 3);
 			//}
+		} else {
+			showMessage("You can't place turrets here!", 250, 50, 3);
 		}
 	}
 /*

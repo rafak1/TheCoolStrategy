@@ -64,6 +64,13 @@ public class LevelLoader {
             path.add(a);
             levelObjects[a.getKey()][a.getValue()] = 1;
         }
+
+        int scenery = scanner.nextInt();   //Read scenery fields
+        for (int i = 0; i < scenery; i++) {
+            int sceneryX = scanner.nextInt();
+            int sceneryY = scanner.nextInt();
+            levelObjects[sceneryX][sceneryY] = 2;
+        }
         waves = scanner.nextInt();
         for (int i = 0; i < waves; i++) {
             LinkedList<Enemy> curr = new LinkedList<>();
@@ -94,7 +101,7 @@ public class LevelLoader {
         enemyPath.getElements().add(new MoveTo(curr.getKey()*gridSize+gridSize/2, -(double)gridSize/2));
         int path_i = 1;
         boolean isXTheSame;
-        curr = path.get(path_i++);
+        curr = path.get(path_i);
         outer:
         while (path_i < path.size()) {
             next = path.get(path_i++);
@@ -107,6 +114,8 @@ public class LevelLoader {
                 next = path.get(path_i++);
             }
             enemyPath.getElements().add(new LineTo(path.get(path_i-2).getKey()*gridSize+gridSize/2, path.get(path_i-2).getValue()*gridSize+gridSize/2));
+            if (path_i == path.size())
+                enemyPath.getElements().add(new LineTo(path.get(path_i - 1).getKey() * gridSize + gridSize / 2, (path.get(path_i - 1).getValue() + 1) * gridSize + gridSize / 2));
             curr=next;
         }
     }
