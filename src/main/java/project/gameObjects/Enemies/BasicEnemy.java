@@ -1,9 +1,14 @@
 package project.gameObjects.Enemies;
 
+import javafx.animation.Animation;
 import javafx.animation.PathTransition;
+import javafx.animation.ScaleTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import javafx.util.Duration;
+import project.MainVariables;
 import project.Player;
 
 public abstract class BasicEnemy implements Enemy {
@@ -21,10 +26,12 @@ public abstract class BasicEnemy implements Enemy {
     ImageView enemyImageView;
     PathTransition pathTransition;
     public int health;
+
     int moneyGiven;
     public int damage;
     Boolean isDead;
     String imageUrl;
+    ScaleTransition animation;
 
     /**
      * Damages an enemy by a given amount
@@ -70,6 +77,19 @@ public abstract class BasicEnemy implements Enemy {
         deployed=false;
     }
 
+    /**
+     * Starts walking animation
+     * Should be called after setting imageView
+     */
+    public void startAnimation() {
+        animation = new ScaleTransition();
+        animation.setDuration(Duration.millis(10));
+        animation.setToX(-1);
+        animation.setAutoReverse(true);
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.setNode(this.getEnemyImageView());
+        animation.play();
+    }
     public boolean isDeployed() {
         return deployed;
     }

@@ -77,11 +77,10 @@ public class DeployTurret
 					if(Player.money.get()<BigTurret.price)
 					{
 						showMessage("You are broke", 180, 40, 2);
+					} else {
+						levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+						allTowers.add(new BigTurret(rowIndex, colIndex));
 					}
-					else {
-                        levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-                        allTowers.add(new BigTurret(rowIndex, colIndex));
-                    }
 				}
 		}
 	}

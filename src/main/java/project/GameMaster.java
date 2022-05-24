@@ -24,6 +24,8 @@ import project.gameObjects.Turrets.EnemyDetection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
@@ -83,14 +85,24 @@ public class GameMaster {
 
         Image dirtImg = new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), gridSize, gridSize, true, true);
         Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), gridSize, gridSize, true, true);
+        Random random = new Random();
         for (int i = 0; i < gridSizeX; i++) {
             for (int j = 0; j < gridSizeY; j++) {
-                if (levelLoader.getLevelObjects()[i][j] != 0) {
-                    board[i][j] = new ImageView(dirtImg);
-                    grid.add(board[i][j], i, j, 1, 1);
-                } else {
-                    board[i][j] = new ImageView(grassImg);
-                    grid.add(board[i][j], i, j, 1, 1);
+                switch (levelLoader.getLevelObjects()[i][j]) {
+                    case 1:
+                        board[i][j] = new ImageView(dirtImg);
+                        grid.add(board[i][j], i, j, 1, 1);
+                        break;
+                    case 0:
+                        board[i][j] = new ImageView(grassImg);
+                        grid.add(board[i][j], i, j, 1, 1);
+                        break;
+                    case 2:
+                        Image sceneryImg = new Image(Objects.requireNonNull(getClass().getResource("/images/scenery" + ThreadLocalRandom.current().nextInt(0, 3) + ".png")).toString(), gridSize, gridSize, true, true);
+                        board[i][j] = new ImageView(sceneryImg);
+                        if (random.nextBoolean()) board[i][j].setScaleX(-1);
+                        grid.add(board[i][j], i, j, 1, 1);
+                        break;
                 }
             }
         }
@@ -214,7 +226,7 @@ public class GameMaster {
         gameState = 0;
         if (currWave != null) {
             for (Enemy curr : currWave) {
-                if (curr != null) {
+                if (curr != null && curr.getPathTransition() != null) {
                     curr.getPathTransition().pause();
                 }
             }
