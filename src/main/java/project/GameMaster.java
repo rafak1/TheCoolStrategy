@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static project.DeployTurret.allTowers;
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
@@ -47,6 +48,7 @@ public class GameMaster {
     Path enemyPath;
     public static LinkedList <Enemy> currWave;
     GraphicsContext gc;
+    public static EnemyDetection ed;
 
 
     /**
@@ -145,11 +147,12 @@ public class GameMaster {
 
         ImageButton startLevelButton = new ImageButton("/images/startbutton.png", sizeX * 0.86, sizeY * 0.58, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
         masterRoot.getChildren().add(startLevelButton.get());
-        startLevelButton.get().setOnAction(e -> {
-            gameState = 1;
+        startLevelButton.get().setOnAction(e ->{
+            gameState=1;
             masterRoot.getChildren().remove(startLevelButton.get());
             moveEnemies();
-            new EnemyDetection();
+            ed=new EnemyDetection();
+            ed.dispatcher();
         });
 
         Player.health.set(playerHealth);
@@ -173,6 +176,9 @@ public class GameMaster {
         {
             listener.interrupt();
         }
+        allTowers.clear();
+        if(ed!=null)
+        {ed.killThreads();}
         if(currWave!=null)
         {
             Iterator <Enemy> iter=currWave.iterator();
@@ -261,8 +267,8 @@ public class GameMaster {
         int clock = 0;
         outer:
         while (currentWave < enemies.size() || (enemies.size() == 1 && currentWave == 1)) {
-            currWave = new LinkedList<>(enemies.get(currentWave - 1));
-            this.setWave(currentWave);
+            currWave=new LinkedList <>(enemies.get(currentWave-1));
+            this.setWave(currentWave++);
             while (gameState == 1) {
                 Thread.sleep(timeIntervals);
                 if (currWave.isEmpty()) {

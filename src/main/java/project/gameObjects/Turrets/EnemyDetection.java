@@ -1,35 +1,45 @@
 package project.gameObjects.Turrets;
 
+import java.util.ArrayList;
+
 import static project.DeployTurret.allTowers;
-import static project.GameMaster.gameState;
 
 public class EnemyDetection
 {
 	public static Thread listener;
-	public EnemyDetection()
-	{
-		listener=new Thread(this::dispatcher);
-		listener.setDaemon(true);
-		listener.start();
-	}
+	ArrayList <Thread> turretThreads;
 
-	void dispatcher()
+	public void dispatcher()
 	{
 		//basically checks the location of each enemy every x seconds
-		while(gameState==1)
+		turretThreads=new ArrayList <>();
+		for(Turret t: allTowers)
 		{
-			Thread.onSpinWait();
-			try
-			{
-				Thread.sleep(50);
-			}catch(InterruptedException ignored) {}
+			Thread temp=new Thread(t::fightLogic);
+			temp.setDaemon(true);
+			temp.start();
+			turretThreads.add(temp);
+		}
+	}
 
-			for(Turret t: allTowers)
+	public void newTower(Turret t)
+	{
+		Thread temp=new Thread(t::fightLogic);
+		temp.setDaemon(true);
+		temp.start();
+		turretThreads.add(temp);
+	}
+
+	public void killThreads()
+	{
+		for(Thread th: turretThreads)
+		{
+			if(th!=null && th.isAlive())
 			{
-				t.findTarget();
-				if(t.target!=null)
-				{t.target.damageEnemy(t.damage);}
+				th.interrupt();
 			}
 		}
+
+		turretThreads.clear();
 	}
 }

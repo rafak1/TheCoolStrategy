@@ -66,15 +66,22 @@ public class DeployTurret
 				if (Player.money.get() < SmallTurret.price) {
 					showMessage("You are broke", 180, 40, 2);
 				} else {
-					levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-					allTowers.add(new SmallTurret(rowIndex, colIndex));
+					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
+					Turret t=new SmallTurret(rowIndex, colIndex);
+					allTowers.add(t);
+					if(ed!=null)
+					{ed.newTower(t);}
 				}
 			} else if (turretType == 2) {
 				if (Player.money.get() < BigTurret.price) {
 					showMessage("You are broke", 180, 40, 2);
-				} else {
-					levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-					allTowers.add(new BigTurret(rowIndex, colIndex));
+				} else
+				{
+					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
+					Turret t=new BigTurret(rowIndex, colIndex);
+					allTowers.add(t);
+					if(ed!=null)
+					{ed.newTower(t);}
 				}
 			}
 		} else {
@@ -96,15 +103,18 @@ public class DeployTurret
 		r.setWidth(width);
 		r.setHeight(height);
 		r.setFill(Color.RED);
+		r.setMouseTransparent(true);
 
 		Text text=new Text(s);
 		text.setFill(Color.BEIGE);
 		text.setStyle("-fx-font: 20 arial;");
+		text.setMouseTransparent(true);
 
 		StackPane stack = new StackPane();
 		stack.getChildren().addAll(r, text);
 		stack.setLayoutX(clickX);
 		stack.setLayoutY(clickY);
+		stack.setMouseTransparent(true);
 
 		masterRoot.getChildren().add(stack);
 

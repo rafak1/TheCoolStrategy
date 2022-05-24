@@ -20,7 +20,8 @@ public class BigTurret extends Turret
 		X=posX;
 		Y=posY;
 		radius=300;
-		damage=30;
+		frequency=900;
+		damage=10;
 		Player.changePlayerMoney(-price);
 		turretImage=drawTurret("/images/bigTurret.png");
 		rt=new RotateTransition(Duration.seconds(2), turretImage);
