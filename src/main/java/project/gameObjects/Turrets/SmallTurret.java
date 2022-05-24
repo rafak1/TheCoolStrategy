@@ -1,16 +1,10 @@
 package project.gameObjects.Turrets;
 
-import javafx.scene.Node;
 import project.Player;
 
 public class SmallTurret extends Turret
 {
-	Integer X;
-	Integer Y;
 	public static Integer price=25;
-	Integer radius=2;
-	Integer damage=20;
-	Node turretImage;
 
 	/**
 	 * Places a new turret
@@ -22,8 +16,11 @@ public class SmallTurret extends Turret
 	{
 		X=posX;
 		Y=posY;
+		radius=200;
+		damage=20;
 		Player.changePlayerMoney(-price);
-		turretImage=drawTurret("/images/smallTurret.png", X, Y);
+		turretImage=drawTurret("/images/smallTurret.png");
 		rotateTurret(turretImage);
+		createRadius();
 	}
 }
