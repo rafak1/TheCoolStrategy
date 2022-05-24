@@ -19,6 +19,8 @@ public interface Enemy {
 
     void SetDeployed();
 
+    public void startAnimation();
+
     double getX();
 
     double getY();
