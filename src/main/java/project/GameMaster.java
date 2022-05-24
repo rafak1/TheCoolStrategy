@@ -217,24 +217,36 @@ public class GameMaster {
     /**
      * Shows 'you lost' screen, then returns to level selection
      */
-    void youLostScreen() {
-        System.out.println("STOP");
-        gameState = 0;
-        if (currWave != null) {
-            for (Enemy curr : currWave) {
-                if (curr != null && curr.getPathTransition() != null) {
+    void youLostWon(boolean lw)
+    {
+        if(lw)
+        {System.out.println("YAY");}
+        else
+        {System.out.println("NAY");}
+        gameState=0;
+        if(currWave!=null)
+        {
+            for(Enemy curr: currWave)
+            {
+                if(curr!=null && curr.getPathTransition()!=null)
+                {
                     curr.getPathTransition().pause();
                 }
             }
         }
-        Platform.runLater(() -> {
-            Rectangle darkScreen = new Rectangle(sizeX, sizeY, Color.BLACK);
+        String src;
+        if(lw)
+        {src="/images/youWon.png";}
+        else
+        {src="/images/youLost.png";}
+        Platform.runLater(()->{
+            Rectangle darkScreen=new Rectangle(sizeX, sizeY, Color.BLACK);
             darkScreen.setOpacity(0.7);
             masterRoot.getChildren().add(darkScreen);
-            ImageView youLost = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/youLost.png")).toString(), sizeX / 2, sizeY / 3, true, true)); // sizeX/5 sizeY/3
+            ImageView youLost=new ImageView(new Image(Objects.requireNonNull(getClass().getResource(src)).toString(), sizeX/2, sizeY/3, true, true)); // sizeX/5 sizeY/3
             youLost.toFront();
-            youLost.setX(sizeX / 2 - sizeX / 4);
-            youLost.setY(sizeY / 2 - sizeY / 6);
+            youLost.setX(sizeX/2-sizeX/4);
+            youLost.setY(sizeY/2-sizeY/6);
             masterRoot.getChildren().add(youLost);
         });
         try {
@@ -269,7 +281,7 @@ public class GameMaster {
                 clock++;
                 if(Player.health.get()<=0)
                 {
-                    this.youLostScreen();
+                    this.youLostWon(false);
                     break outer;
                 }
                 if(clock%10==0) {
@@ -308,9 +320,10 @@ public class GameMaster {
                             });
                             enemy.setPathTransition(next);
                             next.play();
-                            deployedThisCycle = true;
+                            deployedThisCycle=true;
                         }
-                        else if (enemy.isDeployed() && enemy.isKilled()) {
+                        else if(enemy.isDeployed() && enemy.isKilled())
+                        {
                             iter.remove();
                             enemy.SetDeployed(false);
                         }
@@ -318,5 +331,7 @@ public class GameMaster {
                 }
             }
         }
+        if(Player.health.get()>0)
+        {youLostWon(true);}
     }
 }
