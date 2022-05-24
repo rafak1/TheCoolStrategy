@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import project.Levels.LevelLoader;
 import project.gameObjects.Enemies.Enemy;
+import project.gameObjects.Turrets.EnemyDetection;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,21 +30,22 @@ import java.util.concurrent.ThreadLocalRandom;
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
+import static project.gameObjects.Turrets.EnemyDetection.listener;
 
 public class GameMaster {
     public static LevelLoader levelLoader = new LevelLoader();
     public static Group masterRoot;
-    public LinkedList<LinkedList<Enemy>> enemies = new LinkedList<>();
+    public LinkedList <LinkedList <Enemy>> enemies;
     public static ImageView[][] board;
     public static GridPane grid;
     public static Label moneyText;
     public static Label healthText;
-    public static Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
+    public static volatile Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
     Thread enemyThread;
     Label waveText;
     int currentWave = 1;
     Path enemyPath;
-    LinkedList<Enemy> currWave;
+    public static LinkedList <Enemy> currWave;
     GraphicsContext gc;
 
 
@@ -147,6 +149,7 @@ public class GameMaster {
             gameState = 1;
             masterRoot.getChildren().remove(startLevelButton.get());
             moveEnemies();
+            new EnemyDetection();
         });
 
         Player.health.set(playerHealth);
@@ -159,16 +162,25 @@ public class GameMaster {
     /**
      * Method responsible for removing/clearing everything in the level when leaving
      */
-    void clearLevel() {
-        gameState = 0;
-        if (enemyThread != null && enemyThread.isAlive()) {
+    void clearLevel()
+    {
+        gameState=0;
+        if(enemyThread!=null && enemyThread.isAlive())
+        {
             enemyThread.interrupt();
         }
-        if (currWave != null) {
-            Iterator<Enemy> iter = currWave.iterator();
-            while (iter.hasNext()) {
-                Enemy curr = iter.next();
-                if (curr != null) {
+        if(listener!=null && listener.isAlive())
+        {
+            listener.interrupt();
+        }
+        if(currWave!=null)
+        {
+            Iterator <Enemy> iter=currWave.iterator();
+            while(iter.hasNext())
+            {
+                Enemy curr=iter.next();
+                if(curr!=null)
+                {
                     curr.kill();
                 }
                 iter.remove();
@@ -186,7 +198,6 @@ public class GameMaster {
     public void moveEnemies()
     {
         enemyThread=new Thread(()->{
-            Platform.setImplicitExit(false);
             try {
                 startEnemyFlow();
             } catch (InterruptedException ignored) {
@@ -248,55 +259,64 @@ public class GameMaster {
         int clock = 0;
         outer:
         while (currentWave < enemies.size()) {
-            currWave = new LinkedList<>(enemies.get(currentWave - 1));
-            this.setWave(currentWave++);
-            while (gameState == 1) {
+            currWave=enemies.get(currentWave-1);
+            this.setWave(currentWave);
+            while (gameState == 1)
+            {
                 Thread.sleep(timeIntervals);
-                if (currWave.isEmpty()) continue outer;
-                Iterator<Enemy> iter = currWave.iterator();
+                if(currWave.isEmpty())
+                {continue outer;}
                 clock++;
-                if (Player.health.get() <= 0) {
+                if(Player.health.get()<=0)
+                {
                     this.youLostScreen();
                     break outer;
                 }
-                if (clock % 10 == 0) {
-                    iter = currWave.iterator();
-                        clock = 0;
-                        Player.changePlayerMoney(passiveIncome);
-                        deployedThisCycle = false;
-                        while (iter.hasNext()) {
-                            enemy = iter.next();
-                            if (enemy == null) {
-                                if (!deployedThisCycle) iter.remove();
-                                deployedThisCycle = true;
-                                continue;
-                            }
-                            if (!enemy.isDeployed() && !deployedThisCycle) {
-                                Enemy finalEnemy = enemy;
-                                Platform.runLater(() ->{
-                                    finalEnemy.SetDeployed();
-                                    finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
-                                    finalEnemy.startAnimation();
-                                    PathTransition next=new PathTransition();
-                                    next.setDuration(Duration.seconds(pathLength));
-                                    masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
-                                    next.setNode(finalEnemy.getEnemyImageView());
-                                    next.setPath(enemyPath);
-                                    next.setOnFinished(actionEvent->{
-                                        if(gameState!=0)
-                                        {
-                                            Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
-                                            finalEnemy.kill();
-                                        }
-                                    });
-                                    finalEnemy.setPathTransition(next);
-                                    next.play();
-                                });
-                                deployedThisCycle = true;
-                            } else if (enemy.isDeployed() && enemy.isKilled()) iter.remove();
+                if(clock%10==0)
+                {
+                    Iterator <Enemy> iter=currWave.iterator();
+                    clock=0;
+                    Player.changePlayerMoney(passiveIncome);
+                    deployedThisCycle=false;
+                    while(iter.hasNext())
+                    {
+                        enemy=iter.next();
+                        if(enemy==null)
+                        {
+                            if(!deployedThisCycle)
+                            {iter.remove();}
+                            deployedThisCycle=true;
+                            continue;
                         }
+                        if(!enemy.isDeployed() && !deployedThisCycle)
+                        {
+                            Enemy finalEnemy=enemy;
+                            Platform.runLater(()->{
+                                finalEnemy.SetDeployed();
+                                finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
+                                PathTransition next=new PathTransition();
+                                next.setDuration(Duration.seconds(pathLength));
+                                masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
+                                next.setNode(finalEnemy.getEnemyImageView());
+                                next.setPath(enemyPath);
+                                next.setOnFinished(actionEvent->{
+                                    if(gameState!=0)
+                                    {
+                                        Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
+                                        if(!finalEnemy.isKilled())
+                                        {finalEnemy.kill();}
+                                    }
+                                });
+                                finalEnemy.setPathTransition(next);
+                                next.play();
+                            });
+                            deployedThisCycle=true;
+                        }
+                        else if(enemy.isDeployed() && enemy.isKilled())
+                        {iter.remove();}
                     }
                 }
+            }
         }
     }
 }

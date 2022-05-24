@@ -4,14 +4,12 @@ import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.util.Duration;
 import project.MainVariables;
 import project.Player;
-
-import java.util.Objects;
 
 public abstract class BasicEnemy implements Enemy {
     static {    //add all enemies and their ids here
@@ -28,53 +26,55 @@ public abstract class BasicEnemy implements Enemy {
     ImageView enemyImageView;
     PathTransition pathTransition;
     public int health;
-    int moneyGiven = 10;
-    public int damage = 1;
-    Boolean isDead = false;
-    String imageUrl = "/images/BasicEnemy.png";
+
+    int moneyGiven;
+    public int damage;
+    Boolean isDead;
+    String imageUrl;
     ScaleTransition animation;
-
-
-    public BasicEnemy() {
-        x = new SimpleDoubleProperty();
-        y = new SimpleDoubleProperty();
-        deployed = false;
-        pathIndex = 0;
-        enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
-    }
 
     /**
      * Damages an enemy by a given amount
+     *
      * @param value damage value
      */
-    public void damageEnemy(int value) {
-        health -= value;
-        if (health <= 0) {
+    public void damageEnemy(int value)
+    {
+        health-=value;
+        if(health<=0)
+        {
             this.kill();
         }
     }
 
-    public PathTransition getPathTransition() {
+    public PathTransition getPathTransition()
+    {
         return pathTransition;
     }
 
-    public void setPathTransition(PathTransition a) {
-        pathTransition = a;
+    public void setPathTransition(PathTransition a)
+    {
+        pathTransition=a;
     }
 
-    void deleteEnemy(int a) {
+
+    /**
+     * Deletes enemy's imageView
+     */
+    public void kill()
+    {
+
         if(pathTransition!=null)
         {
             pathTransition.setOnFinished(null);
             pathTransition.stop();
         }
-        isDead = true;
-        deployed = false;
-        Player.changePlayerMoney(a);
-        if (enemyImageView != null) {
-            enemyImageView.setImage(null);
-        }
-        deployed = false;
+        isDead=true;
+        deployed=false;
+        Player.changePlayerMoney(moneyGiven);
+        if(enemyImageView!=null)
+        {enemyImageView.setImage(null);}
+        deployed=false;
     }
 
     /**
@@ -90,15 +90,6 @@ public abstract class BasicEnemy implements Enemy {
         animation.setNode(this.getEnemyImageView());
         animation.play();
     }
-
-
-    /**
-     * Deletes enemy's imageView
-     */
-    public void kill() {
-        this.deleteEnemy(moneyGiven);
-    }
-
     public boolean isDeployed() {
         return deployed;
     }
@@ -128,8 +119,6 @@ public abstract class BasicEnemy implements Enemy {
         x.bind(a.translateXProperty());
         y.bind(a.translateYProperty());
     }
-
-    ;
 
     public int getEnemyDamage() {
         return damage;
