@@ -59,29 +59,26 @@ public class DeployTurret
 	 */
 	public void showContextMenu()
 	{
-        if (levelLoader.getLevelObjects()[rowIndex][colIndex] == 0) {
-            if (turretType == 0) {
-                showMessage("Select a Tower", 180, 40, 2);
-            } else if (turretType == 1) {
-                if (Player.money.get() < SmallTurret.price)
-				{
+		if (levelLoader.getLevelObjects()[rowIndex][colIndex] == 0) {
+			if (turretType == 0) {
+				showMessage("Select a Tower", 180, 40, 2);
+			} else if (turretType == 1) {
+				if (Player.money.get() < SmallTurret.price) {
 					showMessage("You are broke", 180, 40, 2);
+				} else {
+					levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+					allTowers.add(new SmallTurret(rowIndex, colIndex));
 				}
-					else {
-                    levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-                    allTowers.add(new SmallTurret(rowIndex, colIndex));
-                }
+			} else if (turretType == 2) {
+				if (Player.money.get() < BigTurret.price) {
+					showMessage("You are broke", 180, 40, 2);
+				} else {
+					levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+					allTowers.add(new BigTurret(rowIndex, colIndex));
 				}
-				else if(turretType==2)
-				{
-					if(Player.money.get()<BigTurret.price)
-					{
-						showMessage("You are broke", 180, 40, 2);
-					} else {
-						levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
-						allTowers.add(new BigTurret(rowIndex, colIndex));
-					}
-				}
+			}
+		} else {
+			showMessage("You can't place a turret here", 180, 40, 2);
 		}
 	}
 

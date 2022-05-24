@@ -17,7 +17,7 @@ public interface Enemy {
 
     boolean isDeployed();
 
-    void SetDeployed();
+    void SetDeployed(boolean a);
 
     public void startAnimation();
 
@@ -37,5 +37,7 @@ public interface Enemy {
 
     void setPathTransition(PathTransition a);
 
-    boolean isKilled();
+    default boolean isKilled() {
+        return false;
+    }
 }

@@ -6,9 +6,7 @@ import javafx.animation.ScaleTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.util.Duration;
-import project.MainVariables;
 import project.Player;
 
 public abstract class BasicEnemy implements Enemy {
@@ -25,7 +23,7 @@ public abstract class BasicEnemy implements Enemy {
     Image enemySprite;
     ImageView enemyImageView;
     PathTransition pathTransition;
-    public int health;
+    public int health = 10;
 
     int moneyGiven;
     public int damage;
@@ -38,12 +36,13 @@ public abstract class BasicEnemy implements Enemy {
      *
      * @param value damage value
      */
-    public void damageEnemy(int value)
-    {
-        health-=value;
-        if(health<=0)
-        {
-            this.kill();
+    public void damageEnemy(int value) {
+        if (!isDead) {
+            health -= value;
+            if (health <= 0) {
+                isDead = true;
+                this.kill();
+            }
         }
     }
 
@@ -70,11 +69,10 @@ public abstract class BasicEnemy implements Enemy {
             pathTransition.stop();
         }
         isDead=true;
-        deployed=false;
+        //deployed=false;
         Player.changePlayerMoney(moneyGiven);
         if(enemyImageView!=null)
         {enemyImageView.setImage(null);}
-        deployed=false;
     }
 
     /**
@@ -90,12 +88,13 @@ public abstract class BasicEnemy implements Enemy {
         animation.setNode(this.getEnemyImageView());
         animation.play();
     }
+
     public boolean isDeployed() {
         return deployed;
     }
 
-    public void SetDeployed() {
-        deployed = true;
+    public void SetDeployed(boolean a) {
+        deployed = a;
     }
 
     public double getX() {

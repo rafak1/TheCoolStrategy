@@ -181,6 +181,7 @@ public class GameMaster {
                 Enemy curr=iter.next();
                 if(curr!=null)
                 {
+                    System.out.println("clearlevel");
                     curr.kill();
                 }
                 iter.remove();
@@ -223,6 +224,7 @@ public class GameMaster {
      * Shows 'you lost' screen, then returns to level selection
      */
     void youLostScreen() {
+        System.out.println("STOP");
         gameState = 0;
         if (currWave != null) {
             for (Enemy curr : currWave) {
@@ -258,63 +260,64 @@ public class GameMaster {
         Enemy enemy;
         int clock = 0;
         outer:
-        while (currentWave < enemies.size()) {
-            currWave=enemies.get(currentWave-1);
+        while (currentWave < enemies.size() || (enemies.size() == 1 && currentWave == 1)) {
+            currWave = new LinkedList<>(enemies.get(currentWave - 1));
             this.setWave(currentWave);
-            while (gameState == 1)
-            {
+            while (gameState == 1) {
                 Thread.sleep(timeIntervals);
-                if(currWave.isEmpty())
-                {continue outer;}
+                if (currWave.isEmpty()) {
+                    continue outer;
+                }
                 clock++;
-                if(Player.health.get()<=0)
-                {
+                if (Player.health.get() <= 0) {
                     this.youLostScreen();
                     break outer;
                 }
-                if(clock%10==0)
-                {
-                    Iterator <Enemy> iter=currWave.iterator();
-                    clock=0;
+                if(clock%10==0) {
+                    /*System.out.println("----------------");
+                    for(int i=0; i<currWave.size();i++) if(currWave.get(i)!=null && currWave.get(i).isDeployed()) System.out.println(currWave.get(i));
+                    System.out.println("=================");*/
+                    Iterator<Enemy> iter = currWave.iterator();
+                    clock = 0;
                     Player.changePlayerMoney(passiveIncome);
-                    deployedThisCycle=false;
-                    while(iter.hasNext())
-                    {
-                        enemy=iter.next();
-                        if(enemy==null)
-                        {
-                            if(!deployedThisCycle)
-                            {iter.remove();}
+                    deployedThisCycle = false;
+                    while (iter.hasNext()) {
+                        enemy = iter.next();
+                        if (enemy == null) {
+                            if (!deployedThisCycle) {
+                                iter.remove();
+                            }
                             deployedThisCycle=true;
                             continue;
                         }
-                        if(!enemy.isDeployed() && !deployedThisCycle)
-                        {
-                            Enemy finalEnemy=enemy;
-                            Platform.runLater(()->{
-                                finalEnemy.SetDeployed();
-                                finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
-                                PathTransition next=new PathTransition();
-                                finalEnemy.startAnimation();
-                                next.setDuration(Duration.seconds(pathLength));
-                                masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
-                                next.setNode(finalEnemy.getEnemyImageView());
-                                next.setPath(enemyPath);
-                                next.setOnFinished(actionEvent->{
-                                    if(gameState!=0)
-                                    {
-                                        Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
-                                        if(!finalEnemy.isKilled())
-                                        {finalEnemy.kill();}
+                        if(!enemy.isDeployed() && !deployedThisCycle) {
+                            //System.out.println(enemy + " deployed");
+                            PathTransition next = new PathTransition();
+                            enemy.SetDeployed(true);
+                            enemy.setEnemyImageView(new ImageView(enemy.getEnemySprite()));
+                            enemy.startAnimation();
+                            next.setDuration(Duration.seconds(pathLength));
+                            Enemy finalEnemy = enemy;
+                            Platform.runLater(() -> masterRoot.getChildren().add(finalEnemy.getEnemyImageView()));
+                            next.setNode(enemy.getEnemyImageView());
+                            next.setPath(enemyPath);
+                            next.setOnFinished(actionEvent -> {
+                                if (gameState != 0) {
+                                    Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
+                                    if (!finalEnemy.isKilled()) {
+                                        System.out.println("lambda");
+                                        finalEnemy.kill();
                                     }
-                                });
-                                finalEnemy.setPathTransition(next);
-                                next.play();
+                                }
                             });
-                            deployedThisCycle=true;
+                            enemy.setPathTransition(next);
+                            next.play();
+                            deployedThisCycle = true;
                         }
-                        else if(enemy.isDeployed() && enemy.isKilled())
-                        {iter.remove();}
+                        else if (enemy.isDeployed() && enemy.isKilled()) {
+                            iter.remove();
+                            enemy.SetDeployed(false);
+                        }
                     }
                 }
             }
