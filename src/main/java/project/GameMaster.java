@@ -295,6 +295,7 @@ public class GameMaster {
                                 finalEnemy.SetDeployed();
                                 finalEnemy.setEnemyImageView(new ImageView(finalEnemy.getEnemySprite()));
                                 PathTransition next=new PathTransition();
+                                finalEnemy.startAnimation();
                                 next.setDuration(Duration.seconds(pathLength));
                                 masterRoot.getChildren().add(finalEnemy.getEnemyImageView());
                                 next.setNode(finalEnemy.getEnemyImageView());
