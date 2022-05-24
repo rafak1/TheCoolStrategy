@@ -221,7 +221,6 @@ public class GameMaster {
      */
     void setWave(int a) {
         Platform.runLater(() -> {
-            currentWave = a;
             waveText.setText("wave: " + a);
         });
     }
@@ -266,16 +265,21 @@ public class GameMaster {
         Enemy enemy;
         int clock = 0;
         outer:
-        while (currentWave < enemies.size() || (enemies.size() == 1 && currentWave == 1)) {
-            currWave=new LinkedList <>(enemies.get(currentWave-1));
-            this.setWave(currentWave++);
-            while (gameState == 1) {
+        while(currentWave<=enemies.size())
+        {
+            currWave=enemies.get(currentWave-1);
+            this.setWave(currentWave);
+            currentWave++;
+            while(gameState==1)
+            {
                 Thread.sleep(timeIntervals);
-                if (currWave.isEmpty()) {
+                if(currWave.isEmpty())
+                {
                     continue outer;
                 }
                 clock++;
-                if (Player.health.get() <= 0) {
+                if(Player.health.get()<=0)
+                {
                     this.youLostScreen();
                     break outer;
                 }

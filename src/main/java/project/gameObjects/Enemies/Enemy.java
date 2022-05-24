@@ -37,7 +37,5 @@ public interface Enemy {
 
     void setPathTransition(PathTransition a);
 
-    default boolean isKilled() {
-        return false;
-    }
+    boolean isKilled();
 }
