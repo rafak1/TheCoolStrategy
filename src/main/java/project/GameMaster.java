@@ -44,7 +44,7 @@ public class GameMaster {
     public static volatile Integer gameState; //this variable tells us what's the current state of the game - enemies are walking/level not started/time to place turrets etc
     Thread enemyThread;
     Label waveText;
-    int currentWave = 1;
+    int currentWave=0;
     Path enemyPath;
     public static LinkedList <Enemy> currWave;
     GraphicsContext gc;
@@ -134,8 +134,8 @@ public class GameMaster {
 
 
         //wave number
-        waveText = new Label();
-        waveText.setText("wave: " + currentWave);
+        waveText=new Label();
+        waveText.setText("wave: "+1);
         waveText.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
         waveText.setLayoutX(sizeX - 270);
         waveText.setLayoutY(30);
@@ -193,8 +193,8 @@ public class GameMaster {
                 iter.remove();
             }
         }
+        currentWave=0;
         scene.setRoot(selectionRoot);
-        this.setWave(1);
         Player.health.set(playerHealth);
         Player.money.set(startingMoney);
     }
@@ -212,17 +212,6 @@ public class GameMaster {
         });
         enemyThread.setDaemon(true);
         enemyThread.start();
-    }
-
-    /**
-     * Sets waveText to a given value
-     *
-     * @param a value
-     */
-    void setWave(int a) {
-        Platform.runLater(() -> {
-            waveText.setText("wave: " + a);
-        });
     }
 
     /**
@@ -265,10 +254,10 @@ public class GameMaster {
         Enemy enemy;
         int clock = 0;
         outer:
-        while(currentWave<=enemies.size())
+        while(currentWave<enemies.size())
         {
-            currWave=enemies.get(currentWave-1);
-            this.setWave(currentWave);
+            currWave=enemies.get(currentWave);
+            Platform.runLater(()->waveText.setText("wave: "+currentWave));
             currentWave++;
             while(gameState==1)
             {
@@ -284,9 +273,6 @@ public class GameMaster {
                     break outer;
                 }
                 if(clock%10==0) {
-                    /*System.out.println("----------------");
-                    for(int i=0; i<currWave.size();i++) if(currWave.get(i)!=null && currWave.get(i).isDeployed()) System.out.println(currWave.get(i));
-                    System.out.println("=================");*/
                     Iterator<Enemy> iter = currWave.iterator();
                     clock = 0;
                     Player.changePlayerMoney(passiveIncome);

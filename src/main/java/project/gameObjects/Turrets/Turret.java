@@ -23,7 +23,7 @@ public class Turret
 	Integer Y;
 	Integer radius;
 	Integer damage;
-	long frequency;
+	long rateOfFire;
 	RotateTransition rt;
 	Node turretImage;
 	Circle turretRadius;
@@ -76,7 +76,7 @@ public class Turret
 			}
 			try
 			{
-				Thread.sleep(frequency);
+				Thread.sleep(rateOfFire);
 			}catch(InterruptedException ignored) {}
 		}
 	}
@@ -111,7 +111,7 @@ public class Turret
 
 	boolean findTarget()
 	{
-		for(Enemy e: currWave)
+		for(Enemy e: currWave)//TODO: SYNCHRONIZED ENEMIES
 		{
 			if(e!=null && e.isDeployed())
 			{

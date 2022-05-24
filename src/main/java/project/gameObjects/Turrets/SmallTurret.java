@@ -20,7 +20,7 @@ public class SmallTurret extends Turret
 		X=posX;
 		Y=posY;
 		radius=200;
-		frequency=300;
+		rateOfFire=300;
 		damage=3;
 		Player.changePlayerMoney(-price);
 		turretImage=drawTurret("/images/smallTurret.png");
