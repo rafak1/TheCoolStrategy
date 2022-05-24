@@ -1,16 +1,13 @@
 package project.gameObjects.Turrets;
 
-import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 import project.gameObjects.Enemies.Enemy;
 
 import java.util.Objects;
-import java.util.Queue;
 
 import static project.GameMaster.*;
 import static project.MainVariables.gridSizeY;
@@ -22,10 +19,10 @@ public class Turret
 	Integer Y;
 	Integer radius;
 	Integer damage;
-	Queue <Enemy> inside;
 	RotateTransition rt;
 	Node turretImage;
 	Circle turretRadius;
+	Enemy target;
 
 	/**
 	 * Draws a turret on the board
@@ -43,14 +40,8 @@ public class Turret
 	/**
 	 * Rotates turret
 	 */
-	void rotateTurret(Node turret)
+	void idle()
 	{
-		rt=new RotateTransition(Duration.seconds(1), turret);
-		rt.setFromAngle(-45);
-		rt.setByAngle(45);
-		rt.setCycleCount(Animation.INDEFINITE);
-		rt.setAutoReverse(true);
-
 		rt.play();
 	}
 
@@ -60,9 +51,40 @@ public class Turret
 		circle.setLayoutX(X*sizeY/gridSizeY+50);
 		circle.setLayoutY(Y*sizeY/gridSizeY+50);
 		circle.setRadius(radius);
-		circle.setOpacity(0);
+		circle.setOpacity(0.4);
 		circle.setMouseTransparent(true);
 		turretRadius=circle;
 		masterRoot.getChildren().add(turretRadius);
+	}
+
+	void followAnEnemy(Enemy e)
+	{
+		rt.pause();
+		//TODO: Follows an enemy
+	}
+
+	void findTarget()
+	{
+		for(int i=0; i<currWave.size(); i++)
+		{
+			Enemy e=currWave.get(i);
+			if(e!=null && e.isDeployed())
+			{
+				if(inRange(e))
+				{
+					if(target!=e)
+					{rt.pause();}
+					target=e;
+					return;
+				}
+			}
+		}
+		target=null;
+		idle();
+	}
+
+	boolean inRange(Enemy e)
+	{
+		return (turretRadius.getLayoutX()-e.getX())*(turretRadius.getLayoutX()-e.getX())+(turretRadius.getLayoutY()-e.getY())*(turretRadius.getLayoutY()-e.getY())<radius*radius;
 	}
 }
