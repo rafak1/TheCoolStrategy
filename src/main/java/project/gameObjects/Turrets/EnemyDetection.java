@@ -8,10 +8,10 @@ import static project.GameMaster.gameState;
 
 public class EnemyDetection
 {
-
+	public static Thread listener;
 	public EnemyDetection()
 	{
-		Thread listener=new Thread(this::dispatcher);
+		listener=new Thread(this::dispatcher);
 		listener.setDaemon(true);
 		listener.start();
 	}
@@ -47,6 +47,11 @@ public class EnemyDetection
 				}
 			}
 		}
+	}
+
+	void enemyDied()
+	{
+
 	}
 
 	void addToTurret()

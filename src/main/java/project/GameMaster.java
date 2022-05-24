@@ -28,6 +28,7 @@ import java.util.Objects;
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
+import static project.gameObjects.Turrets.EnemyDetection.listener;
 
 public class GameMaster {
     public static LevelLoader levelLoader = new LevelLoader();
@@ -149,16 +150,25 @@ public class GameMaster {
     /**
      * Method responsible for removing/clearing everything in the level when leaving
      */
-    void clearLevel() {
-        gameState = 0;
-        if (enemyThread != null && enemyThread.isAlive()) {
+    void clearLevel()
+    {
+        gameState=0;
+        if(enemyThread!=null && enemyThread.isAlive())
+        {
             enemyThread.interrupt();
         }
-        if (currWave != null) {
-            Iterator<Enemy> iter = currWave.iterator();
-            while (iter.hasNext()) {
-                Enemy curr = iter.next();
-                if (curr != null) {
+        if(listener!=null && listener.isAlive())
+        {
+            listener.interrupt();
+        }
+        if(currWave!=null)
+        {
+            Iterator <Enemy> iter=currWave.iterator();
+            while(iter.hasNext())
+            {
+                Enemy curr=iter.next();
+                if(curr!=null)
+                {
                     curr.kill();
                 }
                 iter.remove();
