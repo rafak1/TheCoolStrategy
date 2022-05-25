@@ -83,30 +83,21 @@ public class Turret
 	{
 		while(gameState==1)
 		{
-			if (target != null && !target.isKilled() && target.isDeployed() && inRange(target)) {
-				isIdle = false;
+			if(!findTarget())
+			{
+				if(!isIdle)
+				{idle();}
+				isIdle=true;
+			}
+			else
+			{
+				isIdle=false;
 				followAnEnemy();
 				shootAnimation();
-				synchronized (target) {
-					if (target != null) {
-						target.damageEnemy(damage);
-					}
-				}
-			} else {
-				if (!findTarget()) {
-					if (!isIdle) {
-						idle();
-					}
-					isIdle = true;
-				} else {
-					isIdle = false;
-					followAnEnemy();
-					shootAnimation();
-					synchronized (target) {
-						if (target != null) {
-							target.damageEnemy(damage);
-						}
-					}
+				synchronized(target)
+				{
+					if(target!=null)
+					{target.damageEnemy(damage);}
 				}
 			}
 			try
@@ -131,7 +122,7 @@ public class Turret
 				if (e != null && e.isDeployed()) {
 					if (inRange(e))
 					{
-						double a=((double)e.getPathTransition().getCurrentTime().toMillis())/(double)e.getPathTransition().getDuration().toMillis();
+						double a=e.getPathTransition().getCurrentTime().toMillis()/e.getPathTransition().getDuration().toMillis();
 						if(a>minimum)
 						{
 							curr=e;
