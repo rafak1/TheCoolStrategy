@@ -2,6 +2,7 @@ package project.gameObjects.Turrets;
 
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,24 +48,26 @@ public class Turret
 	/**
 	 * Rotates turret
 	 */
-	void idle()
-	{
-		rt.stop();
-		rt.setDuration(Duration.millis(800));
-		rt.setNode(turretImage);
-		rt.setCycleCount(Animation.INDEFINITE);
-		rt.setToAngle(turretImage.getRotate()+360);
-		rt.play();
+	void idle() {
+		Platform.runLater(() -> {
+			rt.stop();
+			rt.setDuration(Duration.millis(800));
+			rt.setNode(turretImage);
+			rt.setCycleCount(Animation.INDEFINITE);
+			rt.setToAngle(turretImage.getRotate() + 360);
+			rt.play();
+		});
 	}
 
-	void followAnEnemy()
-	{
-		rt.stop();
-		rt.setDuration(Duration.millis(100));
-		rt.setCycleCount(1);
-		rt.setToAngle(Math.toDegrees(Math.atan2(target.getX()+50-turretRadius.getLayoutX(), turretRadius.getLayoutY()-50-target.getY())));
-		rt.setAutoReverse(false);
-		rt.play();
+	void followAnEnemy() {
+		Platform.runLater(() -> {
+			rt.stop();
+			rt.setDuration(Duration.millis(100));
+			rt.setCycleCount(1);
+			rt.setToAngle(Math.toDegrees(Math.atan2(target.getX() + 50 - turretRadius.getLayoutX(), turretRadius.getLayoutY() - 50 - target.getY())));
+			rt.setAutoReverse(false);
+			rt.play();
+		});
 	}
 
 	void createRadius()

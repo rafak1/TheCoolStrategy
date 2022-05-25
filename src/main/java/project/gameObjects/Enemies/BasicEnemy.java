@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
@@ -96,17 +97,19 @@ public abstract class BasicEnemy implements Enemy {
      * Should be called after setting imageView
      */
     public void startAnimation() {
-        animation = new ScaleTransition();
-        sequence = new Timeline();
-        animation.setDuration(Duration.millis(5));
-        animation.setToX(-1);
-        animation.setAutoReverse(true);
-        animation.setCycleCount(Animation.INDEFINITE);
-        animation.setNode(this.getEnemyImageView());
-        //sequence.getKeyFrames().add(new KeyFrame( Duration.ZERO, event -> {System.out.println("started"); animation.play(); System.out.println("played"); new PauseTransition(Duration.millis(100));}));
-        //sequence.setCycleCount(Animation.INDEFINITE);
-        //sequence.play();  //TODO
-        animation.play();
+        Platform.runLater(() -> {
+            animation = new ScaleTransition();
+            sequence = new Timeline();
+            animation.setDuration(Duration.millis(5));
+            animation.setToX(-1);
+            animation.setAutoReverse(true);
+            animation.setCycleCount(Animation.INDEFINITE);
+            animation.setNode(this.getEnemyImageView());
+            //sequence.getKeyFrames().add(new KeyFrame( Duration.ZERO, event -> {System.out.println("started"); animation.play(); System.out.println("played"); new PauseTransition(Duration.millis(100));}));
+            //sequence.setCycleCount(Animation.INDEFINITE);
+            //sequence.play();  //TODO
+            animation.play();
+        });
     }
 
     public boolean isDeployed() {
