@@ -51,7 +51,7 @@ public class Turret
 	void idle() {
 		Platform.runLater(() -> {
 			rt.stop();
-			rt.setDuration(Duration.millis(800));
+			rt.setDuration(Duration.millis(1000));
 			rt.setNode(turretImage);
 			rt.setCycleCount(Animation.INDEFINITE);
 			rt.setToAngle(turretImage.getRotate() + 360);
@@ -64,7 +64,7 @@ public class Turret
 			rt.stop();
 			rt.setDuration(Duration.millis(100));
 			rt.setCycleCount(1);
-			rt.setToAngle(Math.toDegrees(Math.atan2(target.getX() + 50 - turretRadius.getLayoutX(), turretRadius.getLayoutY() - 50 - target.getY())));
+			rt.setToAngle((Math.toDegrees(Math.atan2(target.getX()+50-turretRadius.getLayoutX(), turretRadius.getLayoutY()-50-target.getY()))));
 			rt.setAutoReverse(false);
 			rt.play();
 		});

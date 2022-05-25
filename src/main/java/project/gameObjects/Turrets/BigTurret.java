@@ -16,17 +16,17 @@ public class BigTurret extends Turret
 	 */
 	public BigTurret(int posX, int posY)
 	{
-        X = posX;
+		X=posX;
 		Y=posY;
 		radius=200;
-		rateOfFire=900;
-		damage=20;
+		rateOfFire=100;
+		damage=1;
 		Player.changePlayerMoney(-price);
 		turretImage=drawTurret("/images/gameObjects/bigTurret.png");
 		rt=new RotateTransition();
 		rotate=new Rotate();
-        idle();
-        createRadius();
-    }
+		idle();
+		createRadius();
+	}
 
 }
