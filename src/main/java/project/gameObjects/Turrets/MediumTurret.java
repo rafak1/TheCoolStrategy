@@ -6,7 +6,7 @@ import project.Player;
 
 public class MediumTurret extends Turret
 {
-	public static Integer price=1;
+	public static Integer price=40;
 
 	/**
 	 * Places a new turret
