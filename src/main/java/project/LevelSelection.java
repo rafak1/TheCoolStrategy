@@ -16,15 +16,13 @@ import static project.Menu.scene;
 /**
  * You can select a level from this class
  */
-public class LevelSelection
-{
-	public static Group selectionRoot;
+public class LevelSelection {
+	public static Group selectionRoot = new Group();
+	static Settings settingsRoot = new Settings(selectionRoot);
 	GameMaster gameMaster;
 	int currentLevel;
 
-	public LevelSelection()
-	{
-		selectionRoot = new Group();
+	public LevelSelection() {
 		gameMaster = new GameMaster();
 
 		Button[] possibleLevels = new Button[6];
@@ -53,11 +51,12 @@ public class LevelSelection
 		selectionRoot.getChildren().add(flow);
 
 
-		ImageButton backButton=new ImageButton("/images/UI/backbutton.png", sizeX*0.8, sizeY*0.8, (int)(sizeX*0.1), (int)(sizeY*0.1));
-		ImageButton settingsButton=new ImageButton("/images/UI/settingsbutton.png", sizeX*0.15, sizeY*0.8, (int)(sizeX*0.15), (int)(sizeY*0.1));
+		ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.8, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
+		ImageButton settingsButton = new ImageButton("/images/UI/settingsbutton.png", sizeX * 0.15, sizeY * 0.8, (int) (sizeX * 0.15), (int) (sizeY * 0.1));
 		selectionRoot.getChildren().add(backButton.get());
 		selectionRoot.getChildren().add(settingsButton.get());
-		backButton.get().setOnAction(e->scene.setRoot(menuRoot));
-		settingsButton.get().setOnAction(e->scene.setRoot(menuRoot)); //TODO
+		backButton.get().setOnAction(e -> scene.setRoot(menuRoot));
+		settingsButton.get().setOnAction(e -> scene.setRoot(settingsRoot.getSettingsRoot()));
 	}
+
 }

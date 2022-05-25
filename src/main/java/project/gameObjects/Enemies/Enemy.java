@@ -38,4 +38,6 @@ public interface Enemy {
     void setPathTransition(PathTransition a);
 
     boolean isKilled();
+
+    double getEnemySpeed();
 }

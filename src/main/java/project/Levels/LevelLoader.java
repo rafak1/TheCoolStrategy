@@ -85,7 +85,8 @@ public class LevelLoader {
                 Enemy toAdd = null;
                 try {
                     toAdd = toAddClass.getConstructor().newInstance();
-                } catch (Throwable ignore) {
+                } catch (Throwable a) {
+                    a.printStackTrace();
                 }
                 curr.add(toAdd);
             }

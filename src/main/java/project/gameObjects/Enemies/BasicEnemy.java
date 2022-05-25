@@ -3,20 +3,26 @@ package project.gameObjects.Enemies;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import project.MessagesAndEffects;
 import project.Player;
+import project.Settings;
 
 public abstract class BasicEnemy implements Enemy {
     static {    //add all enemies and their ids here
         //System.out.println("enemies - loaded");
         Enemy.enemyId.put(1, SmallEnemy.class);
         Enemy.enemyId.put(2, BigEnemy.class);
+        Enemy.enemyId.put(3, FastEnemy.class);
+        Enemy.enemyId.put(4, BigFastEnemy.class);
     }
 
+    double enemySpeed = 1;
     boolean deployed;
     DoubleProperty x;
     DoubleProperty y;
@@ -24,13 +30,21 @@ public abstract class BasicEnemy implements Enemy {
     Image enemySprite;
     ImageView enemyImageView;
     PathTransition pathTransition;
-    public int health = 10;
+    Timeline sequence;
+    public int health = (int) (10 * Settings.difficultyMultiplier);
 
     int moneyGiven;
     public int damage;
     Boolean isDead;
     String imageUrl;
     ScaleTransition animation;
+
+    public BasicEnemy() {
+        isDead = false;
+        deployed = false;
+        x = new SimpleDoubleProperty();
+        y = new SimpleDoubleProperty();
+    }
 
     /**
      * Damages an enemy by a given amount
@@ -41,6 +55,7 @@ public abstract class BasicEnemy implements Enemy {
         if (!isDead) {
             health -= value;
             if (health <= 0) {
+                Player.changePlayerMoney(moneyGiven);
                 isDead = true;
                 this.kill();
             }
@@ -65,14 +80,13 @@ public abstract class BasicEnemy implements Enemy {
     {
         MessagesAndEffects.showEffect("/images/gameObjects/tombstone.png", getX(), getY(), 0.5);
 
-        if(pathTransition!=null)
-        {
+        if (sequence != null) sequence.stop();
+        if (pathTransition != null) {
             pathTransition.setOnFinished(null);
             pathTransition.stop();
         }
         isDead=true;
         //deployed=false;
-        Player.changePlayerMoney(moneyGiven);
         if(enemyImageView!=null)
         {enemyImageView.setImage(null);}
     }
@@ -83,11 +97,15 @@ public abstract class BasicEnemy implements Enemy {
      */
     public void startAnimation() {
         animation = new ScaleTransition();
-        animation.setDuration(Duration.millis(10));
+        sequence = new Timeline();
+        animation.setDuration(Duration.millis(5));
         animation.setToX(-1);
         animation.setAutoReverse(true);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.setNode(this.getEnemyImageView());
+        //sequence.getKeyFrames().add(new KeyFrame( Duration.ZERO, event -> {System.out.println("started"); animation.play(); System.out.println("played"); new PauseTransition(Duration.millis(100));}));
+        //sequence.setCycleCount(Animation.INDEFINITE);
+        //sequence.play();  //TODO
         animation.play();
     }
 
@@ -127,5 +145,9 @@ public abstract class BasicEnemy implements Enemy {
 
     public boolean isKilled() {
         return isDead;
+    }
+
+    public double getEnemySpeed() {
+        return enemySpeed;
     }
 }

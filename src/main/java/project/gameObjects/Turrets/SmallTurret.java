@@ -17,18 +17,18 @@ public class SmallTurret extends Turret
 	 */
 	public SmallTurret(int posX, int posY)
 	{
-		X=posX;
-		Y=posY;
-		radius=200;
-		rateOfFire=300;
-		rotationDelay=1;
-		damage=3;
-		Player.changePlayerMoney(-price);
-		turretImage=drawTurret("/images/gameObjects/smallTurret.png");
-		rt=new RotateTransition(Duration.seconds(rotationDelay), turretImage);
-		rotate=new Rotate();
-		idle();
-		createRadius();
-	}
+        X = posX;
+        Y = posY;
+        radius = 200;
+        rateOfFire = 300;
+        rotationDelay = 1;
+        damage = 2;
+        Player.changePlayerMoney(-price);
+        turretImage = drawTurret("/images/gameObjects/smallTurret.png");
+        rt = new RotateTransition(Duration.seconds(rotationDelay), turretImage);
+        rotate = new Rotate();
+        idle();
+        createRadius();
+    }
 
 }

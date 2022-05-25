@@ -85,25 +85,28 @@ public class GameMaster {
         gc.setFill(Color.web("0xfd4d5d"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/dirt.png")).toString(), gridSize, gridSize, true, true);
-        Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/grass.png")).toString(), gridSize, gridSize, true, true);
-        Random random=new Random();
+        Image dirtImg = new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/dirt.png")).toString(), gridSize, gridSize, true, true);
+        Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/desert.png")).toString(), gridSize, gridSize, true, true);
+        Random random = new Random();
         for(int i=0; i<gridSizeX; i++)
         {
             for(int j=0; j<gridSizeY; j++)
             {
-                switch(levelLoader.getLevelObjects()[i][j])
-                {
+                switch(levelLoader.getLevelObjects()[i][j]) {
                     case 1:
-                        board[i][j]=new ImageView(dirtImg);
+                        board[i][j] = new ImageView(dirtImg);
+                        if (random.nextBoolean()) board[i][j].setScaleX(-1);
+                        if (random.nextBoolean()) board[i][j].setScaleY(-1);
                         grid.add(board[i][j], i, j, 1, 1);
                         break;
                     case 0:
-                        board[i][j]=new ImageView(grassImg);
+                        board[i][j] = new ImageView(grassImg);
+                        if (random.nextBoolean()) board[i][j].setScaleX(-1);
+                        if (random.nextBoolean()) board[i][j].setScaleY(-1);
                         grid.add(board[i][j], i, j, 1, 1);
                         break;
                     case 2:
-                        Image sceneryImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/scenery"+ThreadLocalRandom.current().nextInt(0, 3)+".png")).toString(), gridSize, gridSize, true, true);
+                        Image sceneryImg = new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/scenery" + ThreadLocalRandom.current().nextInt(0, 3) + ".png")).toString(), gridSize, gridSize, true, true);
                         board[i][j] = new ImageView(sceneryImg);
                         if (random.nextBoolean()) board[i][j].setScaleX(-1);
                         grid.add(board[i][j], i, j, 1, 1);
@@ -190,7 +193,6 @@ public class GameMaster {
                 Enemy curr=iter.next();
                 if(curr!=null)
                 {
-                    System.out.println("clearlevel");
                     curr.kill();
                 }
                 iter.remove();
@@ -307,7 +309,7 @@ public class GameMaster {
                             enemy.SetDeployed(true);
                             enemy.setEnemyImageView(new ImageView(enemy.getEnemySprite()));
                             enemy.startAnimation();
-                            next.setDuration(Duration.seconds(pathLength));
+                            next.setDuration(Duration.seconds(pathLength * (1 / Settings.difficultyMultiplier) * enemy.getEnemySpeed()));
                             Enemy finalEnemy = enemy;
                             Platform.runLater(() -> masterRoot.getChildren().add(finalEnemy.getEnemyImageView()));
                             next.setNode(enemy.getEnemyImageView());
@@ -316,7 +318,6 @@ public class GameMaster {
                                 if (gameState != 0) {
                                     Player.changePlayerHealth(-finalEnemy.getEnemyDamage());
                                     if (!finalEnemy.isKilled()) {
-                                        System.out.println("lambda");
                                         finalEnemy.kill();
                                     }
                                 }
