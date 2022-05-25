@@ -84,21 +84,30 @@ public class Turret
 	{
 		while(gameState==1)
 		{
-			if(!findTarget())
-			{
-				if(!isIdle)
-				{idle();}
-				isIdle=true;
-			}
-			else
-			{
-				isIdle=false;
+			if (target != null && !target.isKilled() && target.isDeployed() && inRange(target)) {
+				isIdle = false;
 				followAnEnemy();
 				shootAnimation();
-				synchronized(target)
-				{
-					if(target!=null)
-					{target.damageEnemy(damage);}
+				synchronized (target) {
+					if (target != null) {
+						target.damageEnemy(damage);
+					}
+				}
+			} else {
+				if (!findTarget()) {
+					if (!isIdle) {
+						idle();
+					}
+					isIdle = true;
+				} else {
+					isIdle = false;
+					followAnEnemy();
+					shootAnimation();
+					synchronized (target) {
+						if (target != null) {
+							target.damageEnemy(damage);
+						}
+					}
 				}
 			}
 			try
