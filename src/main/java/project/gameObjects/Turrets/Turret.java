@@ -111,26 +111,32 @@ public class Turret
 
 	boolean findTarget()
 	{
-		synchronized(currWave)
-		{
-			for(Enemy e: currWave)//TODO: SYNCHRONIZED ENEMIES
+		Enemy min = null;
+		double minDistance = 10000000;
+		synchronized (currWave) {
+			for (Enemy e : currWave)//TODO: SYNCHRONIZED ENEMIES
 			{
-				if(e!=null && e.isDeployed())
-				{
-					if(inRange(e))
-					{
-						target=e;
-						return true;
+				if (e != null && e.isDeployed()) {
+					if (inRange(e) && minDistance > this.distance(e)) {
+						min = e;
+						minDistance = this.distance(e);
 					}
 				}
 			}
-			target=null;
+			if (min != null) {
+				target = min;
+				return true;
+			}
+			target = null;
 			return false;
 		}
 	}
 
-	boolean inRange(Enemy e)
-	{
-		return (turretRadius.getLayoutX()-e.getX()-50)*(turretRadius.getLayoutX()-e.getX()-50)+(turretRadius.getLayoutY()-e.getY()-50)*(turretRadius.getLayoutY()-e.getY()-50)<radius*radius;
+	boolean inRange(Enemy e) {
+		return (turretRadius.getLayoutX() - e.getX() - 50) * (turretRadius.getLayoutX() - e.getX() - 50) + (turretRadius.getLayoutY() - e.getY() - 50) * (turretRadius.getLayoutY() - e.getY() - 50) < radius * radius;
+	}
+
+	double distance(Enemy e) {
+		return (turretRadius.getLayoutX() - e.getX() - 50) * (turretRadius.getLayoutX() - e.getX() - 50) + (turretRadius.getLayoutY() - e.getY() - 50) * (turretRadius.getLayoutY() - e.getY() - 50);
 	}
 }
