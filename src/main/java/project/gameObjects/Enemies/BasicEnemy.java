@@ -7,6 +7,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import project.MessagesAndEffects;
 import project.Player;
 
 public abstract class BasicEnemy implements Enemy {
@@ -62,6 +63,7 @@ public abstract class BasicEnemy implements Enemy {
      */
     public void kill()
     {
+        MessagesAndEffects.showEffect("/images/tombstone.png", getX(), getY(), 0.5);
 
         if(pathTransition!=null)
         {

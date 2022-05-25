@@ -1,14 +1,11 @@
 package project.gameObjects.Turrets;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
-import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
+import project.MessagesAndEffects;
 import project.gameObjects.Enemies.Enemy;
 
 import java.util.Objects;
@@ -67,7 +64,9 @@ public class Turret
 		while(gameState==1)
 		{
 			if(!findTarget())
-			{idle();}
+			{
+				idle();
+			}
 			else
 			{
 				followAnEnemy();
@@ -89,24 +88,7 @@ public class Turret
 
 	void shootAnimation()
 	{
-		Image explosionImage=new Image(Objects.requireNonNull(getClass().getResource("/images/explosion.png")).toString(), sizeY/10, sizeY/10, true, true);
-		ImageView iv=new ImageView(explosionImage);
-		iv.setX(turretRadius.getLayoutX()-50);
-		iv.setY(turretRadius.getLayoutY()-50);
-		Platform.runLater(()->masterRoot.getChildren().add(iv));
-
-
-		//fancy fade away transition
-		FadeTransition ft=new FadeTransition(Duration.seconds(0.2), iv);
-		ft.setFromValue(1.0);
-		ft.setToValue(0);
-		ft.setCycleCount(4);
-		ft.play();
-
-		//remove after it fades away
-		PauseTransition transition=new PauseTransition(Duration.seconds(0.2));
-		transition.play();
-		transition.setOnFinished(e->masterRoot.getChildren().remove(iv));
+		MessagesAndEffects.showEffect("/images/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2);
 	}
 
 	boolean findTarget()
