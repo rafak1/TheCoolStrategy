@@ -71,7 +71,11 @@ public class Turret
 			{
 				followAnEnemy();
 				shootAnimation();
-				target.damageEnemy(damage);
+				synchronized(target)
+				{
+					if(target!=null)
+					{target.damageEnemy(damage);}
+				}
 			}
 			try
 			{
@@ -88,24 +92,27 @@ public class Turret
 
 	void shootAnimation()
 	{
-		MessagesAndEffects.showEffect("/images/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2);
+		MessagesAndEffects.showEffect("/images/gameObjects/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2);
 	}
 
 	boolean findTarget()
 	{
-		for(Enemy e: currWave)//TODO: SYNCHRONIZED ENEMIES
+		synchronized(currWave)
 		{
-			if(e!=null && e.isDeployed())
+			for(Enemy e: currWave)//TODO: SYNCHRONIZED ENEMIES
 			{
-				if(inRange(e))
+				if(e!=null && e.isDeployed())
 				{
-					target=e;
-					return true;
+					if(inRange(e))
+					{
+						target=e;
+						return true;
+					}
 				}
 			}
+			target=null;
+			return false;
 		}
-		target=null;
-		return false;
 	}
 
 	boolean inRange(Enemy e)

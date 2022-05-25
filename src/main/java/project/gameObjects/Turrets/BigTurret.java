@@ -23,7 +23,7 @@ public class BigTurret extends Turret
 		rateOfFire=900;
 		damage=10;
 		Player.changePlayerMoney(-price);
-		turretImage=drawTurret("/images/bigTurret.png");
+		turretImage=drawTurret("/images/gameObjects/bigTurret.png");
 		rt=new RotateTransition(Duration.seconds(2), turretImage);
 		rt.setFromAngle(-45);
 		rt.setByAngle(45);

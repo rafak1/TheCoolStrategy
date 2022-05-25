@@ -75,32 +75,35 @@ public class GameMaster {
         }
         for(int i=0; i<gridSizeX; i++)
         {
-            RowConstraints row = new RowConstraints(gridSize);
+            RowConstraints row=new RowConstraints(gridSize);
             grid.getRowConstraints().add(row);
         }
 
-        Canvas canvas = new Canvas(sizeX, sizeY);
+        Canvas canvas=new Canvas(sizeX, sizeY);
         masterRoot.getChildren().add(canvas);
-        gc = canvas.getGraphicsContext2D();
+        gc=canvas.getGraphicsContext2D();
         gc.setFill(Color.web("0xfd4d5d"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        Image dirtImg = new Image(Objects.requireNonNull(getClass().getResource("/images/dirt.png")).toString(), gridSize, gridSize, true, true);
-        Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/grass.png")).toString(), gridSize, gridSize, true, true);
-        Random random = new Random();
-        for (int i = 0; i < gridSizeX; i++) {
-            for (int j = 0; j < gridSizeY; j++) {
-                switch (levelLoader.getLevelObjects()[i][j]) {
+        Image dirtImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/dirt.png")).toString(), gridSize, gridSize, true, true);
+        Image grassImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/grass.png")).toString(), gridSize, gridSize, true, true);
+        Random random=new Random();
+        for(int i=0; i<gridSizeX; i++)
+        {
+            for(int j=0; j<gridSizeY; j++)
+            {
+                switch(levelLoader.getLevelObjects()[i][j])
+                {
                     case 1:
-                        board[i][j] = new ImageView(dirtImg);
+                        board[i][j]=new ImageView(dirtImg);
                         grid.add(board[i][j], i, j, 1, 1);
                         break;
                     case 0:
-                        board[i][j] = new ImageView(grassImg);
+                        board[i][j]=new ImageView(grassImg);
                         grid.add(board[i][j], i, j, 1, 1);
                         break;
                     case 2:
-                        Image sceneryImg = new Image(Objects.requireNonNull(getClass().getResource("/images/scenery" + ThreadLocalRandom.current().nextInt(0, 3) + ".png")).toString(), gridSize, gridSize, true, true);
+                        Image sceneryImg=new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/scenery"+ThreadLocalRandom.current().nextInt(0, 3)+".png")).toString(), gridSize, gridSize, true, true);
                         board[i][j] = new ImageView(sceneryImg);
                         if (random.nextBoolean()) board[i][j].setScaleX(-1);
                         grid.add(board[i][j], i, j, 1, 1);
@@ -120,32 +123,32 @@ public class GameMaster {
         moneyText.setText(String.valueOf(Player.money));
         healthText.setText(String.valueOf(Player.health));
         moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        moneyText.setLayoutX(sizeX - 180);
-        moneyText.setLayoutY(sizeY - 110);
+        moneyText.setLayoutX(sizeX-180);
+        moneyText.setLayoutY(sizeY-110);
         healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        healthText.setLayoutX(sizeX - 180);
-        healthText.setLayoutY(sizeY - 210);
+        healthText.setLayoutX(sizeX-180);
+        healthText.setLayoutY(sizeY-210);
         masterRoot.getChildren().add(moneyText);
         masterRoot.getChildren().add(healthText);
-        Image coin = new Image(Objects.requireNonNull(getClass().getResource("/images/heart.png")).toString(), 75, 75, true, true);
-        Image heart = new Image(Objects.requireNonNull(getClass().getResource("/images/coin.png")).toString(), 75, 75, true, true);
-        gc.drawImage(heart, sizeX - 275, sizeY - 100);
-        gc.drawImage(coin, sizeX - 275, sizeY - 200);
+        Image coin=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/heart.png")).toString(), 75, 75, true, true);
+        Image heart=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/coin.png")).toString(), 75, 75, true, true);
+        gc.drawImage(heart, sizeX-275, sizeY-100);
+        gc.drawImage(coin, sizeX-275, sizeY-200);
 
 
         //wave number
         waveText=new Label();
         waveText.setText("wave: "+1);
         waveText.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-        waveText.setLayoutX(sizeX - 270);
+        waveText.setLayoutX(sizeX-270);
         waveText.setLayoutY(30);
         masterRoot.getChildren().add(waveText);
         //buttons
-        ImageButton backButton = new ImageButton("/images/backbutton.png", sizeX * 0.86, sizeY * 0.7, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
+        ImageButton backButton=new ImageButton("/images/UI/backbutton.png", sizeX*0.86, sizeY*0.7, (int)(sizeX*0.2), (int)(sizeY*0.08));
         masterRoot.getChildren().add(backButton.get());
         backButton.get().setOnAction(e -> clearLevel());
 
-        ImageButton startLevelButton = new ImageButton("/images/startbutton.png", sizeX * 0.86, sizeY * 0.58, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
+        ImageButton startLevelButton=new ImageButton("/images/UI/startbutton.png", sizeX*0.86, sizeY*0.58, (int)(sizeX*0.2), (int)(sizeY*0.08));
         masterRoot.getChildren().add(startLevelButton.get());
         startLevelButton.get().setOnAction(e ->{
             gameState=1;
@@ -236,9 +239,9 @@ public class GameMaster {
         }
         String src;
         if(lw)
-        {src="/images/youWon.png";}
+        {src="/images/UI/youWon.png";}
         else
-        {src="/images/youLost.png";}
+        {src="/images/UI/youLost.png";}
         Platform.runLater(()->{
             Rectangle darkScreen=new Rectangle(sizeX, sizeY, Color.BLACK);
             darkScreen.setOpacity(0.7);

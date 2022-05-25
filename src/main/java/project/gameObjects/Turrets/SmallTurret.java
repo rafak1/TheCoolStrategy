@@ -23,7 +23,7 @@ public class SmallTurret extends Turret
 		rateOfFire=300;
 		damage=3;
 		Player.changePlayerMoney(-price);
-		turretImage=drawTurret("/images/smallTurret.png");
+		turretImage=drawTurret("/images/gameObjects/smallTurret.png");
 		rt=new RotateTransition(Duration.seconds(1), turretImage);
 		rt.setFromAngle(-45);
 		rt.setByAngle(45);

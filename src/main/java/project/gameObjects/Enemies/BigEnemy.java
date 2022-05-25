@@ -18,8 +18,8 @@ public class BigEnemy extends BasicEnemy {
         health=20;
         moneyGiven=10;
         isDead=false;
-        imageUrl="/images/BigEnemy.png";
-        enemySprite=new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
+	    imageUrl="/images/gameObjects/BigEnemy.png";
+	    enemySprite=new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
     }
 
 }

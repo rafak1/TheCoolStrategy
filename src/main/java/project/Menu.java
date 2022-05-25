@@ -34,18 +34,18 @@ public class Menu
         gc.setFill(Color.web("0xfd4d5d"));
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        Image title=new Image(Objects.requireNonNull(getClass().getResource("/images/title.png")).toString());
+        Image title=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/title.png")).toString());
         gc.drawImage(title, (sizeX-300)/2, (sizeY)/9);
 
 
-        ImageButton startButton = new ImageButton("/images/startbutton.png", (sizeX - 100) / 3, sizeY / 2, (int) (sizeX * 0.1), (int) (sizeY * 0.05));
+        ImageButton startButton=new ImageButton("/images/UI/startbutton.png", (sizeX-100)/3, sizeY/2, (int)(sizeX*0.1), (int)(sizeY*0.05));
         menuRoot.getChildren().add(startButton.get());
         startButton.get().setOnAction(e->{
             LevelSelection game=new LevelSelection();
             scene.setRoot(selectionRoot);
         });
 
-        ImageButton exitButton = new ImageButton("/images/backbutton.png", (sizeX - 100) * 2 / 3, sizeY / 2, (int) (sizeX * 0.1), (int) (sizeY * 0.05));
+        ImageButton exitButton=new ImageButton("/images/UI/backbutton.png", (sizeX-100)*2/3, sizeY/2, (int)(sizeX*0.1), (int)(sizeY*0.05));
         menuRoot.getChildren().add(exitButton.get());
         exitButton.get().setOnAction(arg0->System.exit(0));
     }

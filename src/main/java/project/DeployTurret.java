@@ -85,9 +85,9 @@ public class DeployTurret
 
 	void drawButtons()
 	{
-		Button smallButton=singleButton("/images/smallTurret.png", sizeX-290, sizeY-600, SmallTurret.price);
+		Button smallButton=singleButton("/images/gameObjects/smallTurret.png", sizeX-290, sizeY-600, SmallTurret.price);
 		smallButton.setOnAction(e->turretType=1);
-		Button bigButton=singleButton("/images/bigTurret.png", sizeX-290, sizeY-750, BigTurret.price);
+		Button bigButton=singleButton("/images/gameObjects/bigTurret.png", sizeX-290, sizeY-750, BigTurret.price);
 		bigButton.setOnAction(e->turretType=2);
 	}
 

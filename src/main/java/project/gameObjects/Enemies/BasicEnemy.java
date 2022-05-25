@@ -63,7 +63,7 @@ public abstract class BasicEnemy implements Enemy {
      */
     public void kill()
     {
-        MessagesAndEffects.showEffect("/images/tombstone.png", getX(), getY(), 0.5);
+        MessagesAndEffects.showEffect("/images/gameObjects/tombstone.png", getX(), getY(), 0.5);
 
         if(pathTransition!=null)
         {

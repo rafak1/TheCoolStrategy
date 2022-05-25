@@ -19,7 +19,7 @@ public class SmallEnemy extends BasicEnemy
         health=10;
         moneyGiven=5;
         isDead=false;
-        imageUrl="/images/BasicEnemy.png";
+        imageUrl="/images/gameObjects/BasicEnemy.png";
         enemySprite=new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY/10, MainVariables.sizeY/10, true, true);
     }
 }
