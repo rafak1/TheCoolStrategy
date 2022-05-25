@@ -2,7 +2,7 @@ package project.gameObjects.Turrets;
 
 import java.util.ArrayList;
 
-import static project.DeployTurret.allTowers;
+import static project.gameObjects.Turrets.DeployTurret.allTowers;
 
 public class EnemyDetection
 {

@@ -4,9 +4,9 @@ import javafx.animation.RotateTransition;
 import javafx.scene.transform.Rotate;
 import project.Player;
 
-public class BigTurret extends Turret
+public class MediumTurret extends Turret
 {
-	public static Integer price=75;
+	public static Integer price=1;
 
 	/**
 	 * Places a new turret
@@ -14,19 +14,19 @@ public class BigTurret extends Turret
 	 * @param posX row of new turret
 	 * @param posY column of new turret
 	 */
-	public BigTurret(int posX, int posY)
+	public MediumTurret(int posX, int posY)
 	{
-        X = posX;
+		X=posX;
 		Y=posY;
-		radius=200;
-		rateOfFire=900;
-		damage=20;
+		radius=300;
+		rateOfFire=400;
+		damage=3;
 		Player.changePlayerMoney(-price);
-		turretImage=drawTurret("/images/gameObjects/bigTurret.png");
+		turretImage=drawTurret("/images/gameObjects/mediumTurret.png");
 		rt=new RotateTransition();
 		rotate=new Rotate();
-        idle();
-        createRadius();
-    }
+		idle();
+		createRadius();
+	}
 
 }

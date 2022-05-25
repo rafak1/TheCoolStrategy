@@ -1,4 +1,4 @@
-package project;
+package project.gameObjects.Turrets;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -7,9 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import project.gameObjects.Turrets.BigTurret;
-import project.gameObjects.Turrets.SmallTurret;
-import project.gameObjects.Turrets.Turret;
+import project.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -66,10 +64,28 @@ public class DeployTurret
 					if(ed!=null)
 					{ed.newTower(t);}
 				}
-			} else if (turretType == 2) {
-				if (Player.money.get() < BigTurret.price) {
+			} else if(turretType==2)
+			{
+				if(Player.money.get()<MediumTurret.price)
+				{
 					showMessage("You are broke", 180, 40, clickX, clickY, 2);
-				} else
+				}
+				else
+				{
+					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
+					Turret t=new MediumTurret(rowIndex, colIndex);
+					allTowers.add(t);
+					if(ed!=null)
+					{ed.newTower(t);}
+				}
+			}
+			else if(turretType==3)
+			{
+				if(Player.money.get()<BigTurret.price)
+				{
+					showMessage("You are broke", 180, 40, clickX, clickY, 2);
+				}
+				else
 				{
 					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
 					Turret t=new BigTurret(rowIndex, colIndex);
@@ -79,7 +95,7 @@ public class DeployTurret
 				}
 			}
 		} else {
-			showMessage("You can't place a turret here", 180, 40, clickX, clickY, 2);
+			showMessage("You can't place a turret here", 250, 40, clickX, clickY, 2);
 		}
 	}
 
@@ -87,8 +103,10 @@ public class DeployTurret
 	{
 		Button smallButton=singleButton("/images/gameObjects/smallTurret.png", sizeX-290, sizeY-600, SmallTurret.price);
 		smallButton.setOnAction(e->turretType=1);
-		Button bigButton=singleButton("/images/gameObjects/bigTurret.png", sizeX-290, sizeY-750, BigTurret.price);
-		bigButton.setOnAction(e->turretType=2);
+		Button mediumButton=singleButton("/images/gameObjects/mediumTurret.png", sizeX-290, sizeY-750, MediumTurret.price);
+		mediumButton.setOnAction(e->turretType=2);
+		Button bigButton=singleButton("/images/gameObjects/bigTurret.png", sizeX-290, sizeY-900, BigTurret.price);
+		bigButton.setOnAction(e->turretType=3);
 	}
 
 	Button singleButton(String path, double posX, double posY, Integer price)

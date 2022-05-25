@@ -28,8 +28,8 @@ public class Turret
 	Node turretImage;
 	Circle turretRadius;
 	Enemy target;
-	double rotationDelay;
 	Rotate rotate;
+	boolean isIdle;
 
 	/**
 	 * Draws a turret on the board
@@ -50,10 +50,10 @@ public class Turret
 	void idle()
 	{
 		rt.stop();
-		rt.setDuration(Duration.millis(rateOfFire/2.0));
+		rt.setDuration(Duration.millis(800));
+		rt.setNode(turretImage);
 		rt.setCycleCount(Animation.INDEFINITE);
-		rt.setToAngle(turretImage.getRotate()+25);
-		rt.setAutoReverse(true);
+		rt.setToAngle(turretImage.getRotate()+360);
 		rt.play();
 	}
 
@@ -85,10 +85,13 @@ public class Turret
 		{
 			if(!findTarget())
 			{
-				idle();
+				if(!isIdle)
+				{idle();}
+				isIdle=true;
 			}
 			else
 			{
+				isIdle=false;
 				followAnEnemy();
 				shootAnimation();
 				synchronized(target)
@@ -131,6 +134,11 @@ public class Turret
 
 	boolean inRange(Enemy e)
 	{
-		return (turretRadius.getLayoutX()-e.getX()-50)*(turretRadius.getLayoutX()-e.getX()-50)+(turretRadius.getLayoutY()-e.getY()-50)*(turretRadius.getLayoutY()-e.getY()-50)<radius*radius;
+		return distance(e)<radius*radius;
+	}
+
+	double distance(Enemy e)
+	{
+		return (turretRadius.getLayoutX()-e.getX()-50)*(turretRadius.getLayoutX()-e.getX()-50)+(turretRadius.getLayoutY()-e.getY()-50)*(turretRadius.getLayoutY()-e.getY()-50);
 	}
 }

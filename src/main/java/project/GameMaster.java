@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import project.Levels.LevelLoader;
 import project.gameObjects.Enemies.Enemy;
+import project.gameObjects.Turrets.DeployTurret;
 import project.gameObjects.Turrets.EnemyDetection;
 
 import java.util.Iterator;
@@ -27,10 +28,10 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static project.DeployTurret.allTowers;
 import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
 import static project.Menu.scene;
+import static project.gameObjects.Turrets.DeployTurret.allTowers;
 import static project.gameObjects.Turrets.EnemyDetection.listener;
 
 public class GameMaster {
