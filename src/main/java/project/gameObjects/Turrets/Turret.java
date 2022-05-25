@@ -9,7 +9,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import project.MessagesAndEffects;
-import project.Settings;
 import project.gameObjects.Enemies.Enemy;
 
 import java.util.Objects;
@@ -116,16 +115,18 @@ public class Turret
 	boolean findTarget()
 	{
 		synchronized(currWave) {
-			double minimum = Double.MAX_VALUE;
-			Enemy curr = null;
+			double minimum=0;
+			Enemy curr=null;
 			for (Enemy e : currWave)//TODO: SYNCHRONIZED ENEMIES
 			{
 				if (e != null && e.isDeployed()) {
-					if (inRange(e)) {
-						double a = ((double) e.getPathTransition().getCurrentTime().toMillis()) * (1 / e.getEnemySpeed()) * Settings.difficultyMultiplier;
-						if (a < minimum) {
-							curr = e;
-							minimum = a;
+					if (inRange(e))
+					{
+						double a=((double)e.getPathTransition().getCurrentTime().toMillis())/(double)e.getPathTransition().getDuration().toMillis();
+						if(a>minimum)
+						{
+							curr=e;
+							minimum=a;
 						}
 					}
 				}
