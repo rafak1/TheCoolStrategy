@@ -64,7 +64,25 @@ public class Turret
 			rt.stop();
 			rt.setDuration(Duration.millis(100));
 			rt.setCycleCount(1);
-			rt.setToAngle((Math.toDegrees(Math.atan2(target.getX()+50-turretRadius.getLayoutX(), turretRadius.getLayoutY()-50-target.getY()))));
+			double angle=Math.toDegrees(Math.atan2(turretRadius.getLayoutY()-50-target.getY(), target.getX()+50-turretRadius.getLayoutX()));
+			angle=90-angle;
+			if(angle<0)
+			{
+				angle+=360;
+			}
+			turretImage.setRotate(turretImage.getRotate()%360);
+			if(turretImage.getRotate()-angle>180)
+			{
+				rt.setToAngle(360+angle);
+			}
+			else if(turretImage.getRotate()-angle<-180)
+			{
+				rt.setToAngle(angle-360);
+			}
+			else
+			{
+				rt.setToAngle(angle);
+			}
 			rt.setAutoReverse(false);
 			rt.play();
 		});
@@ -145,11 +163,6 @@ public class Turret
 
 	boolean inRange(Enemy e)
 	{
-		return distance(e)<radius*radius;
-	}
-
-	double distance(Enemy e)
-	{
-		return (turretRadius.getLayoutX()-e.getX()-50)*(turretRadius.getLayoutX()-e.getX()-50)+(turretRadius.getLayoutY()-e.getY()-50)*(turretRadius.getLayoutY()-e.getY()-50);
+		return (turretRadius.getLayoutX()-e.getX()-50)*(turretRadius.getLayoutX()-e.getX()-50)+(turretRadius.getLayoutY()-e.getY()-50)*(turretRadius.getLayoutY()-e.getY()-50)<radius*radius;
 	}
 }
