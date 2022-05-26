@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -23,25 +22,25 @@ public class Settings {
     GameMaster gameMaster;
 
     public Settings(Group menuRoot) {
-        settingsRoot = new Group();
-        gameMaster = new GameMaster();
+        settingsRoot=new Group();
+        gameMaster=new GameMaster();
 
 
         //background
-        Canvas canvas = new Canvas(sizeX, sizeY);
+        Canvas canvas=new Canvas(sizeX, sizeY);
         settingsRoot.getChildren().add(canvas);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.web("0xfd4d5d"));
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        GraphicsContext gc=canvas.getGraphicsContext2D();
+        Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
+        gc.drawImage(background, 0, 0, sizeX, sizeY);
 
         //difficulty slider
-        Label difficultyText = new Label();
+        Label difficultyText=new Label();
         difficultyText.setText("difficulty");
-        difficultyText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY / 22)));
-        difficultyText.setLayoutX(sizeX * 0.43);
-        difficultyText.setLayoutY(sizeY * 0.15);
+        difficultyText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY/22)));
+        difficultyText.setLayoutX(sizeX*0.43);
+        difficultyText.setLayoutY(sizeY*0.15);
         settingsRoot.getChildren().add(difficultyText);
-        Slider difficulty = new Slider(0.5, 2, difficultyMultiplier);
+        Slider difficulty=new Slider(0.5, 2, difficultyMultiplier);
         difficulty.setSnapToTicks(true);
         difficulty.setMajorTickUnit(0.5);
         difficulty.setMinorTickCount(0);

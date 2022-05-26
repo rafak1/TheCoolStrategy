@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -31,8 +30,8 @@ public class Menu
         Canvas canvas=new Canvas(sizeX, sizeY);
         menuRoot.getChildren().add(canvas);
         GraphicsContext gc=canvas.getGraphicsContext2D();
-        gc.setFill(Color.web("0xfd4d5d"));
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
+        gc.drawImage(background, 0, 0, sizeX, sizeY);
 
         Image title=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/title.png")).toString());
         gc.drawImage(title, (sizeX-300)/2, (sizeY)/9);
