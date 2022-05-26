@@ -15,8 +15,10 @@ import java.util.Scanner;
 
 import static project.MainVariables.*;
 
-class NoSuchLevelException extends Throwable {
-}
+class NoSuchLevelException extends Throwable
+{}
+
+class WrongFileFormat extends Throwable{}
 
 public class LevelLoader {
     int[][] levelObjects;        //can be deleted and replaced only with path
@@ -32,7 +34,7 @@ public class LevelLoader {
     }
 
 
-    public void load(File f) throws NoSuchLevelException
+    public void load(File f) throws NoSuchLevelException, WrongFileFormat
     {
         FileReader fileReader;
         try
@@ -51,7 +53,7 @@ public class LevelLoader {
      *
      * @param k id of  a level
      */
-    public void load(int k) throws NoSuchLevelException
+    public void load(int k) throws NoSuchLevelException, WrongFileFormat
     {
         FileReader fileReader;
         try
@@ -65,7 +67,7 @@ public class LevelLoader {
         loader(fileReader);
     }
 
-    void loader(FileReader fileReader)
+    void loader(FileReader fileReader) throws WrongFileFormat
     {
         enemies.clear();
         path=new ArrayList <>();
@@ -77,19 +79,27 @@ public class LevelLoader {
                 levelObjects[i][j]=0;
             }
         }
-        Scanner scanner = new Scanner(fileReader);
+        Scanner scanner=new Scanner(fileReader);
         //read from level file
-        pathLength = scanner.nextInt();
-        passiveIncome = scanner.nextInt();
-        int x = scanner.nextInt();
-        for (int i=0; i < x; i++) {
-            Pair<Integer, Integer> a = new Pair<>(scanner.nextInt(), scanner.nextInt());
+        try
+        {
+            pathLength=scanner.nextInt();
+        }catch(Exception e)
+        {
+            throw new WrongFileFormat();
+        }
+        passiveIncome=scanner.nextInt();
+        int x=scanner.nextInt();
+        for(int i=0; i<x; i++)
+        {
+            Pair <Integer, Integer> a=new Pair <>(scanner.nextInt(), scanner.nextInt());
             path.add(a);
-            levelObjects[a.getKey()][a.getValue()] = 1;
+            levelObjects[a.getKey()][a.getValue()]=1;
         }
 
-        int scenery = scanner.nextInt();   //Read scenery fields
-        for (int i = 0; i < scenery; i++) {
+        int scenery=scanner.nextInt();   //Read scenery fields
+        for(int i=0; i<scenery; i++)
+        {
             int sceneryX = scanner.nextInt();
             int sceneryY = scanner.nextInt();
             levelObjects[sceneryX][sceneryY] = 2;

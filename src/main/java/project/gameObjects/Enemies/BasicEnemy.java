@@ -14,6 +14,8 @@ import project.MessagesAndEffects;
 import project.Player;
 import project.Settings;
 
+import static project.GameMaster.masterRoot;
+
 public abstract class BasicEnemy implements Enemy {
     static {    //add all enemies and their ids here
         //System.out.println("enemies - loaded");
@@ -79,7 +81,7 @@ public abstract class BasicEnemy implements Enemy {
      */
     public void kill()
     {
-        MessagesAndEffects.showEffect("/images/gameObjects/tombstone.png", getX(), getY(), 0.5);
+        MessagesAndEffects.showEffect("/images/gameObjects/tombstone.png", getX(), getY(), 0.5, masterRoot);
 
         if (sequence != null) sequence.stop();
         if (pathTransition != null) {

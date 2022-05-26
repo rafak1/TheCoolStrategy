@@ -3,6 +3,7 @@ package project;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,7 +15,6 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
-import static project.GameMaster.masterRoot;
 import static project.MainVariables.sizeY;
 
 public class MessagesAndEffects
@@ -27,15 +27,15 @@ public class MessagesAndEffects
 	 * @param y        where to place it
 	 * @param duration how long it lasts
 	 */
-	public static void showEffect(String src, double x, double y, double duration)
+	public static void showEffect(String src, double x, double y, double duration, Group root)
 	{
 		Image tempImage=new Image(Objects.requireNonNull(MessagesAndEffects.class.getResource(src)).toString(), sizeY/10, sizeY/10, true, true);
 		ImageView iv=new ImageView(tempImage);
 		iv.setX(x);
 		iv.setY(y);
 		iv.setMouseTransparent(true);
-		Platform.runLater(()->masterRoot.getChildren().add(iv));
-		fade(duration, iv);
+		Platform.runLater(()->root.getChildren().add(iv));
+		fade(duration, iv, root);
 
 
 	}
@@ -50,7 +50,7 @@ public class MessagesAndEffects
 	 * @param positionY where to put the message
 	 * @param duration  how long the message is shown
 	 */
-	public static void showMessage(String s, double width, double height, double positionX, double positionY, double duration)
+	public static void showMessage(String s, double width, double height, double positionX, double positionY, double duration, Group root)
 	{
 		Rectangle r=new Rectangle();
 		r.setWidth(width);
@@ -69,8 +69,8 @@ public class MessagesAndEffects
 		stack.setLayoutY(positionY);
 		stack.setMouseTransparent(true);
 
-		masterRoot.getChildren().add(stack);
-		fade(duration, stack);
+		root.getChildren().add(stack);
+		fade(duration, stack, root);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class MessagesAndEffects
 	 * @param duration how long it lasts
 	 * @param node     the node to be removed
 	 */
-	static void fade(double duration, Node node)
+	static void fade(double duration, Node node, Group root)
 	{
 		//fancy fade away transition
 		FadeTransition ft=new FadeTransition(Duration.seconds(duration), node);
@@ -91,6 +91,6 @@ public class MessagesAndEffects
 		//remove after it fades away
 		PauseTransition transition=new PauseTransition(Duration.seconds(duration));
 		transition.play();
-		transition.setOnFinished(e->masterRoot.getChildren().remove(node));
+		transition.setOnFinished(e->root.getChildren().remove(node));
 	}
 }

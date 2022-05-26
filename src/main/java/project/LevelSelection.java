@@ -17,6 +17,7 @@ import static project.MainVariables.sizeX;
 import static project.MainVariables.sizeY;
 import static project.Menu.menuRoot;
 import static project.Menu.scene;
+import static project.MessagesAndEffects.showMessage;
 
 /**
  * You can select a level from this class
@@ -26,10 +27,12 @@ public class LevelSelection {
 	static Settings settingsRoot = new Settings(selectionRoot);
 	GameMaster gameMaster;
 	int currentLevel;
+	boolean wrongFile;
 
 	public LevelSelection(Stage stage)
 	{
 		gameMaster=new GameMaster();
+		wrongFile=false;
 
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Open Resource File");
@@ -64,13 +67,23 @@ public class LevelSelection {
 		possibleLevels[5].setOnAction(value->{
 			try
 			{
+				//can't load the file
 				levelLoader.load(fileChooser.showOpenDialog(stage));
 			}catch(Throwable a)
 			{
+				wrongFile=true;
 				a.printStackTrace();
 			}
-			gameMaster.loadLevel();
-			scene.setRoot(masterRoot);
+			if(!wrongFile)
+			{
+				gameMaster.loadLevel();
+				scene.setRoot(masterRoot);
+			}
+			else
+			{
+				System.out.println("ASSSSSSSS");
+				showMessage("Wrong file format!", 200.0, 40.0, sizeX/2-100, sizeY/2-20, 2, selectionRoot);
+			}
 		});
 
 		FlowPane flow=new FlowPane((sizeX*0.2), sizeY*0.1, possibleLevels);

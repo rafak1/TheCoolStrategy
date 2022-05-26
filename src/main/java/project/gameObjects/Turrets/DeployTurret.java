@@ -53,10 +53,10 @@ public class DeployTurret
 	{
 		if (levelLoader.getLevelObjects()[rowIndex][colIndex] == 0) {
 			if (turretType == 0) {
-				showMessage("Select a Tower", 180, 40, clickX, clickY, 2);
+				showMessage("Select a Tower", 180, 40, clickX, clickY, 2, masterRoot);
 			} else if (turretType == 1) {
 				if (Player.money.get() < SmallTurret.price) {
-					showMessage("You are broke", 180, 40, clickX, clickY, 2);
+					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				} else {
 					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
 					Turret t=new SmallTurret(rowIndex, colIndex);
@@ -68,7 +68,7 @@ public class DeployTurret
 			{
 				if(Player.money.get()<MediumTurret.price)
 				{
-					showMessage("You are broke", 180, 40, clickX, clickY, 2);
+					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				}
 				else
 				{
@@ -83,7 +83,7 @@ public class DeployTurret
 			{
 				if(Player.money.get()<BigTurret.price)
 				{
-					showMessage("You are broke", 180, 40, clickX, clickY, 2);
+					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				}
 				else
 				{
@@ -95,7 +95,7 @@ public class DeployTurret
 				}
 			}
 		} else {
-			showMessage("You can't place a turret here", 250, 40, clickX, clickY, 2);
+			showMessage("You can't place a turret here", 250, 40, clickX, clickY, 2, masterRoot);
 		}
 	}
 

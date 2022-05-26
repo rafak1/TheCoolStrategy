@@ -130,7 +130,7 @@ public class Turret
 
 	void shootAnimation()
 	{
-		MessagesAndEffects.showEffect("/images/gameObjects/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2);
+		MessagesAndEffects.showEffect("/images/gameObjects/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2, masterRoot);
 	}
 
 	boolean findTarget()
