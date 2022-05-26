@@ -21,13 +21,19 @@ based on classic tower defence games.
     * Added basic menu
     * Added level selection
     * Added enemy flow
+* 26.05.2022
+    * Added turrets, and their logic
+    * Added level loading
+    * Added basic settings
+    * Set basic graphics
+    * Added more enemies and turrets
 
 ## TODO
-* Level creator
-* Graphic interface
-* Placing turrets
-* Turret logic
-* Levels
+* Load a level from external file
+* Sounds
+* Add more graphics
+* Optimise processes
+* Add more enemies and turrets
 
 ## Installation
 ```
