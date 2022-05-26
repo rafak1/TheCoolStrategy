@@ -6,9 +6,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.util.Objects;
 
+import static project.GameMaster.levelLoader;
 import static project.GameMaster.masterRoot;
 import static project.MainVariables.sizeX;
 import static project.MainVariables.sizeY;
@@ -24,37 +27,60 @@ public class LevelSelection {
 	GameMaster gameMaster;
 	int currentLevel;
 
-	public LevelSelection() {
-		gameMaster = new GameMaster();
+	public LevelSelection(Stage stage)
+	{
+		gameMaster=new GameMaster();
 
-		Button[] possibleLevels = new Button[6];
+		FileChooser fileChooser=new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		Button[] possibleLevels=new Button[6];
+		Canvas canvas=new Canvas(sizeX, sizeY);
+		selectionRoot.getChildren().add(canvas);
+		GraphicsContext gc=canvas.getGraphicsContext2D();
+		//drawing background
+		Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
+		gc.drawImage(background, 0, 0, sizeX, sizeY);
 
-		for (int i = 0; i < 6; i++)
+		for(int i=0; i<5; i++)
 		{
-
-			Canvas canvas=new Canvas(sizeX, sizeY);
-			selectionRoot.getChildren().add(canvas);
-			GraphicsContext gc=canvas.getGraphicsContext2D();
-			Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
-			gc.drawImage(background, 0, 0, sizeX, sizeY);
-
 			possibleLevels[i]=new ImageButton("/images/UI/levelbutton"+(i+1)+".png", 0, 0, 0, 0).get();
 			possibleLevels[i].setPrefSize(sizeX*0.2, sizeY*0.1);
-			currentLevel=i;
 			int finalI=i;
 			possibleLevels[i].setOnAction(value->{
-				gameMaster.loadLevel(finalI);
+				currentLevel=finalI;
+				try
+				{
+					levelLoader.load(finalI);
+				}catch(Throwable a)
+				{
+					a.printStackTrace();
+				}
+				gameMaster.loadLevel();
 				scene.setRoot(masterRoot);
 			});
 		}
+		possibleLevels[5]=new ImageButton("/images/UI/levelbutton6.png", 0, 0, 0, 0).get();
+		possibleLevels[5].setPrefSize(sizeX*0.2, sizeY*0.1);
+		possibleLevels[5].setOnAction(value->{
+			try
+			{
+				levelLoader.load(fileChooser.showOpenDialog(stage));
+			}catch(Throwable a)
+			{
+				a.printStackTrace();
+			}
+			gameMaster.loadLevel();
+			scene.setRoot(masterRoot);
+		});
+
 		FlowPane flow=new FlowPane((sizeX*0.2), sizeY*0.1, possibleLevels);
 		flow.setPrefWrapLength(sizeX);
 
 		selectionRoot.getChildren().add(flow);
 
 
-		ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.8, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
-		ImageButton settingsButton = new ImageButton("/images/UI/settingsbutton.png", sizeX * 0.15, sizeY * 0.8, (int) (sizeX * 0.15), (int) (sizeY * 0.1));
+		ImageButton backButton=new ImageButton("/images/UI/backbutton.png", sizeX*0.8, sizeY*0.8, (int)(sizeX*0.1), (int)(sizeY*0.1));
+		ImageButton settingsButton=new ImageButton("/images/UI/settingsbutton.png", sizeX*0.15, sizeY*0.8, (int)(sizeX*0.15), (int)(sizeY*0.1));
 		selectionRoot.getChildren().add(backButton.get());
 		selectionRoot.getChildren().add(settingsButton.get());
 		backButton.get().setOnAction(e -> scene.setRoot(menuRoot));

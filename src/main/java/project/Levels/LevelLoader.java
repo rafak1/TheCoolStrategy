@@ -7,6 +7,7 @@ import javafx.util.Pair;
 import project.gameObjects.Enemies.Enemy;
 import project.gameObjects.Enemies.SmallEnemy;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,14 +20,30 @@ class NoSuchLevelException extends Throwable {
 
 public class LevelLoader {
     int[][] levelObjects;        //can be deleted and replaced only with path
-    ArrayList<Pair<Integer, Integer>> path;
-    LinkedList<LinkedList<Enemy>> enemies = new LinkedList<>();
+    ArrayList <Pair <Integer, Integer>> path;
+    LinkedList <LinkedList <Enemy>> enemies=new LinkedList <>();
     int waves;
     Path enemyPath;
-    static SmallEnemy loadIds = null;
+    static SmallEnemy loadIds=null;
 
-    public LevelLoader() {
-        loadIds = new SmallEnemy();
+    public LevelLoader()
+    {
+        loadIds=new SmallEnemy();
+    }
+
+
+    public void load(File f) throws NoSuchLevelException
+    {
+        FileReader fileReader;
+        try
+        {
+            fileReader=new FileReader(f);
+        }catch(Throwable a)
+        {
+            a.printStackTrace();
+            throw new NoSuchLevelException();
+        }
+        loader(fileReader);
     }
 
     /**
@@ -36,8 +53,22 @@ public class LevelLoader {
      */
     public void load(int k) throws NoSuchLevelException
     {
+        FileReader fileReader;
+        try
+        {
+            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k);
+        }catch(Throwable a)
+        {
+            a.printStackTrace();
+            throw new NoSuchLevelException();
+        }
+        loader(fileReader);
+    }
+
+    void loader(FileReader fileReader)
+    {
         enemies.clear();
-        path = new ArrayList<>();
+        path=new ArrayList <>();
         levelObjects=new int[gridSizeX][gridSizeY];
         for(int i=0; i<gridSizeX; i++)
         {
@@ -46,20 +77,12 @@ public class LevelLoader {
                 levelObjects[i][j]=0;
             }
         }
-        FileReader fileReader;
-        try
-        {
-            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k);
-        } catch (Throwable a) {
-            a.printStackTrace();
-            throw new NoSuchLevelException();
-        }
         Scanner scanner = new Scanner(fileReader);
         //read from level file
         pathLength = scanner.nextInt();
         passiveIncome = scanner.nextInt();
         int x = scanner.nextInt();
-        for (int i = 0; i < x; i++) {
+        for (int i=0; i < x; i++) {
             Pair<Integer, Integer> a = new Pair<>(scanner.nextInt(), scanner.nextInt());
             path.add(a);
             levelObjects[a.getKey()][a.getValue()] = 1;

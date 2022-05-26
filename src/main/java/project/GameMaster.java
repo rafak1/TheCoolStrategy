@@ -53,25 +53,20 @@ public class GameMaster {
 
 
     /**
-     * loads an i-th level from GameMaster
-     *
-     * @param n level id
+     * loads a level from GameMaster
      */
-    public void loadLevel(int n) {
-        try {
-            levelLoader.load(n);
-        } catch (Throwable a) {
-            a.printStackTrace();
-        }
-        gridSize = (int) (sizeY / 10);
-        gameState = 0;
-        masterRoot = new Group();
-        grid = new GridPane();
-        enemies = levelLoader.getEnemies();
-        board = new ImageView[gridSizeX][gridSizeY];
+    public void loadLevel()
+    {
+        gridSize=(int)(sizeY/10);
+        gameState=0;
+        masterRoot=new Group();
+        grid=new GridPane();
+        enemies=levelLoader.getEnemies();
+        board=new ImageView[gridSizeX][gridSizeY];
 
-        for (int i = 0; i < gridSizeY; i++) {
-            ColumnConstraints column = new ColumnConstraints(gridSize);
+        for(int i=0; i<gridSizeY; i++)
+        {
+            ColumnConstraints column=new ColumnConstraints(gridSize);
             grid.getColumnConstraints().add(column);
         }
         for(int i=0; i<gridSizeX; i++)

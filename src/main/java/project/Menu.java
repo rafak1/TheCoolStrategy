@@ -40,7 +40,7 @@ public class Menu
         ImageButton startButton=new ImageButton("/images/UI/startbutton.png", (sizeX-100)/3, sizeY/2, (int)(sizeX*0.1), (int)(sizeY*0.05));
         menuRoot.getChildren().add(startButton.get());
         startButton.get().setOnAction(e->{
-            LevelSelection game=new LevelSelection();
+            LevelSelection game=new LevelSelection(stage);
             scene.setRoot(selectionRoot);
         });
 
