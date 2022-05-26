@@ -299,7 +299,10 @@ public class GameMaster {
                         enemy = iter.next();
                         if (enemy == null) {
                             if (!deployedThisCycle) {
-                                iter.remove();
+                                synchronized(currWave)
+                                {
+                                    iter.remove();
+                                }
                             }
                             deployedThisCycle=true;
                             continue;

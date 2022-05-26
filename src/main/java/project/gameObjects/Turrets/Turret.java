@@ -51,7 +51,7 @@ public class Turret
 	void idle() {
 		Platform.runLater(() -> {
 			rt.stop();
-			rt.setDuration(Duration.millis(1000));
+			rt.setDuration(Duration.millis(5000));
 			rt.setNode(turretImage);
 			rt.setCycleCount(Animation.INDEFINITE);
 			rt.setToAngle(turretImage.getRotate() + 360);
