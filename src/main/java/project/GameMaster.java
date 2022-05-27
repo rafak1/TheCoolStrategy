@@ -54,6 +54,7 @@ public class GameMaster {
 
     /**
      * loads a level from GameMaster
+     * TODO move this method to level loader class
      */
     public void loadLevel()
     {
@@ -327,7 +328,10 @@ public class GameMaster {
                         }
                         else if(enemy.isDeployed() && enemy.isKilled())
                         {
-                            iter.remove();
+                            synchronized(currWave)
+                            {
+                                iter.remove();
+                            }
                             enemy.SetDeployed(false);
                         }
                     }

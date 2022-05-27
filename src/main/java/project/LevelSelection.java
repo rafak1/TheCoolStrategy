@@ -81,7 +81,7 @@ public class LevelSelection {
 			}
 			else
 			{
-				System.out.println("ASSSSSSSS");
+				wrongFile=false;
 				showMessage("Wrong file format!", 200.0, 40.0, sizeX/2-100, sizeY/2-20, 2, selectionRoot);
 			}
 		});
