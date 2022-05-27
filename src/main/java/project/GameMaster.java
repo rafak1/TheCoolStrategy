@@ -56,7 +56,7 @@ public class GameMaster {
      * loads a level from GameMaster
      * TODO move this method to level loader class
      */
-    public void loadLevel()
+    public void levelCreator()
     {
         gridSize=(int)(sizeY/10);
         gameState=0;

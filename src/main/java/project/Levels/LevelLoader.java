@@ -58,7 +58,7 @@ public class LevelLoader {
         FileReader fileReader;
         try
         {
-            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k);
+            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k+".lvl");
         }catch(Throwable a)
         {
             a.printStackTrace();

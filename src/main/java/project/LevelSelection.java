@@ -36,6 +36,7 @@ public class LevelSelection {
 
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Level", "*.lvl"));
 		Button[] possibleLevels=new Button[6];
 		Canvas canvas=new Canvas(sizeX, sizeY);
 		selectionRoot.getChildren().add(canvas);
@@ -58,7 +59,7 @@ public class LevelSelection {
 				{
 					a.printStackTrace();
 				}
-				gameMaster.loadLevel();
+				gameMaster.levelCreator();
 				scene.setRoot(masterRoot);
 			});
 		}
@@ -76,7 +77,7 @@ public class LevelSelection {
 			}
 			if(!wrongFile)
 			{
-				gameMaster.loadLevel();
+				gameMaster.levelCreator();
 				scene.setRoot(masterRoot);
 			}
 			else
