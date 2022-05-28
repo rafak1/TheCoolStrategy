@@ -17,20 +17,22 @@ public class Menu
 {
     public static Group menuRoot;
     public static Scene scene;
-
+    public static SoundHandler soundHandler = new SoundHandler();
     /**
      * Creates menu on a given stage
      */
-    public Menu(Stage stage)
-    {
-        menuRoot=new Group();
-        scene=new Scene(menuRoot);
+    public Menu(Stage stage) {
+        soundHandler.startMusic(1.0);
+
+
+        menuRoot = new Group();
+        scene = new Scene(menuRoot);
         stage.setScene(scene);
 
-        Canvas canvas=new Canvas(sizeX, sizeY);
+        Canvas canvas = new Canvas(sizeX, sizeY);
         menuRoot.getChildren().add(canvas);
-        GraphicsContext gc=canvas.getGraphicsContext2D();
-        Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Image background = new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
         gc.drawImage(background, 0, 0, sizeX, sizeY);
 
         Image title=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/title.png")).toString());

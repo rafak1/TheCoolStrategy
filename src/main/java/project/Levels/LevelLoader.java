@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import static java.lang.Math.abs;
 import static project.MainVariables.*;
 
-class NoSuchLevelException extends Throwable
-{}
 
-class WrongFileFormat extends Throwable{}
+
+
+
+
+
+
 
 public class LevelLoader {
     int[][] levelObjects;        //can be deleted and replaced only with path
@@ -34,14 +38,11 @@ public class LevelLoader {
     }
 
 
-    public void load(File f) throws NoSuchLevelException, WrongFileFormat
-    {
+    public void load(File f) throws NoSuchLevelException, WrongFileFormatException, IncorrectPathException, IncorrectEnemyIdException {
         FileReader fileReader;
-        try
-        {
-            fileReader=new FileReader(f);
-        }catch(Throwable a)
-        {
+        try {
+            fileReader = new FileReader(f);
+        } catch (Throwable a) {
             a.printStackTrace();
             throw new NoSuchLevelException();
         }
@@ -53,30 +54,24 @@ public class LevelLoader {
      *
      * @param k id of  a level
      */
-    public void load(int k) throws NoSuchLevelException, WrongFileFormat
-    {
+    public void load(int k) throws NoSuchLevelException, WrongFileFormatException, IncorrectPathException, IncorrectEnemyIdException {
         FileReader fileReader;
-        try
-        {
-            fileReader=new FileReader(System.getProperty("user.dir")+"\\src\\main\\java\\project\\Levels\\Level"+k+".lvl");
-        }catch(Throwable a)
-        {
+        try {
+            fileReader = new FileReader(System.getProperty("user.dir") + "\\src\\main\\java\\project\\Levels\\Level" + k + ".lvl");
+        } catch (Throwable a) {
             a.printStackTrace();
             throw new NoSuchLevelException();
         }
         loader(fileReader);
     }
 
-    void loader(FileReader fileReader) throws WrongFileFormat
-    {
+    void loader(FileReader fileReader) throws WrongFileFormatException, IncorrectPathException, IncorrectEnemyIdException {
         enemies.clear();
-        path=new ArrayList <>();
-        levelObjects=new int[gridSizeX][gridSizeY];
-        for(int i=0; i<gridSizeX; i++)
-        {
-            for(int j=0; j<gridSizeY; j++)
-            {
-                levelObjects[i][j]=0;
+        path = new ArrayList<>();
+        levelObjects = new int[gridSizeX][gridSizeY];
+        for (int i = 0; i < gridSizeX; i++) {
+            for (int j = 0; j < gridSizeY; j++) {
+                levelObjects[i][j] = 0;
             }
         }
         Scanner scanner=new Scanner(fileReader);
@@ -86,7 +81,7 @@ public class LevelLoader {
             pathLength=scanner.nextInt();
         }catch(Exception e)
         {
-            throw new WrongFileFormat();
+            throw new WrongFileFormatException();
         }
         passiveIncome=scanner.nextInt();
         int x=scanner.nextInt();
@@ -94,7 +89,6 @@ public class LevelLoader {
         {
             Pair <Integer, Integer> a=new Pair <>(scanner.nextInt(), scanner.nextInt());
             path.add(a);
-            levelObjects[a.getKey()][a.getValue()]=1;
         }
 
         int scenery=scanner.nextInt();   //Read scenery fields
@@ -120,6 +114,7 @@ public class LevelLoader {
                     toAdd = toAddClass.getConstructor().newInstance();
                 } catch (Throwable a) {
                     a.printStackTrace();
+                    throw new IncorrectEnemyIdException();
                 }
                 curr.add(toAdd);
             }
@@ -128,29 +123,27 @@ public class LevelLoader {
         createPath();
     }
 
-    void createPath() {
+    /**
+     * Creates a Path with a path currently from LevelLoader
+     */
+    void createPath() throws IncorrectPathException {
         enemyPath = new Path();
         Pair<Integer, Integer> curr = path.get(0);
-        Pair<Integer, Integer> next;
-        enemyPath.getElements().add(new MoveTo(curr.getKey()*gridSize+gridSize/2, -(double)gridSize/2));
+        levelObjects[curr.getKey()][curr.getValue()] = 1;
+        if (curr.getValue() != 0) throw new IncorrectPathException();
+        enemyPath.getElements().add(new MoveTo(curr.getKey() * gridSize + gridSize / 2, -(double) gridSize / 2));
         int path_i = 1;
-        boolean isXTheSame;
-        curr = path.get(path_i);
-        outer:
         while (path_i < path.size()) {
-            next = path.get(path_i++);
-            isXTheSame = curr.getKey().equals(next.getKey());
-            while ((isXTheSame && curr.getKey().equals(next.getKey())) || (!isXTheSame && curr.getValue().equals(next.getValue()))) {
-                if (path_i >= path.size()) {
-                    enemyPath.getElements().add(new LineTo(next.getKey()*gridSize+gridSize/2, (next.getValue()+1)*gridSize+gridSize/2));
-                    break outer;
-                }
-                next = path.get(path_i++);
-            }
-            enemyPath.getElements().add(new LineTo(path.get(path_i-2).getKey()*gridSize+gridSize/2, path.get(path_i-2).getValue()*gridSize+gridSize/2));
-            if (path_i == path.size())
+            if (((abs((path.get(path_i).getKey() - curr.getKey())) == 1 || abs((path.get(path_i).getValue() - curr.getValue())) == 1) && !(abs((path.get(path_i).getKey() - curr.getKey())) == 1 && abs((path.get(path_i).getValue() - curr.getValue())) == 1)) && levelObjects[path.get(path_i).getKey()][path.get(path_i).getValue()] == 0) {
+                curr = path.get(path_i);
+                levelObjects[curr.getKey()][curr.getValue()] = 1;
+                enemyPath.getElements().add(new LineTo(curr.getKey() * gridSize + gridSize / 2, curr.getValue() * gridSize + gridSize / 2));
+                path_i++;
+            } else throw new IncorrectPathException();
+            if (path_i == path.size()) {
+                if ((path.get(path_i - 1).getValue() != gridSizeY - 1)) throw new IncorrectPathException();
                 enemyPath.getElements().add(new LineTo(path.get(path_i - 1).getKey() * gridSize + gridSize / 2, (path.get(path_i - 1).getValue() + 1) * gridSize + gridSize / 2));
-            curr=next;
+            }
         }
     }
 

@@ -15,6 +15,12 @@
             <artifactId>javafx-controls</artifactId>
             <version>17.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>17.0.1</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -1,7 +1,8 @@
 module project {
-	requires javafx.controls;
-	exports project;
-	exports project.gameObjects.Enemies;
-	exports project.Levels;
-	exports project.gameObjects.Turrets;
+    requires javafx.controls;
+    requires javafx.media;
+    exports project;
+    exports project.gameObjects.Enemies;
+    exports project.Levels;
+    exports project.gameObjects.Turrets;
 }

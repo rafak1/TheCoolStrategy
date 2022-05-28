@@ -70,26 +70,23 @@ public class GameMaster {
             ColumnConstraints column=new ColumnConstraints(gridSize);
             grid.getColumnConstraints().add(column);
         }
-        for(int i=0; i<gridSizeX; i++)
-        {
-            RowConstraints row=new RowConstraints(gridSize);
+        for (int i = 0; i < gridSizeX; i++) {
+            RowConstraints row = new RowConstraints(gridSize);
             grid.getRowConstraints().add(row);
         }
 
-        Canvas canvas=new Canvas(sizeX, sizeY);
+        Canvas canvas = new Canvas(sizeX, sizeY);
         masterRoot.getChildren().add(canvas);
-        gc=canvas.getGraphicsContext2D();
-        gc.setFill(Color.web("0xfd4d5d"));
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc = canvas.getGraphicsContext2D();
+        ImageView background = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/backgradient.png")).toString(), sizeX, sizeY, true, true));
+        masterRoot.getChildren().add(background);
 
         Image dirtImg = new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/dirt.png")).toString(), gridSize, gridSize, true, true);
         Image grassImg = new Image(Objects.requireNonNull(getClass().getResource("/images/terrain/desert.png")).toString(), gridSize, gridSize, true, true);
         Random random = new Random();
-        for(int i=0; i<gridSizeX; i++)
-        {
-            for(int j=0; j<gridSizeY; j++)
-            {
-                switch(levelLoader.getLevelObjects()[i][j]) {
+        for (int i = 0; i < gridSizeX; i++) {
+            for (int j = 0; j < gridSizeY; j++) {
+                switch (levelLoader.getLevelObjects()[i][j]) {
                     case 1:
                         board[i][j] = new ImageView(dirtImg);
                         if (random.nextBoolean()) board[i][j].setScaleX(-1);
@@ -123,24 +120,29 @@ public class GameMaster {
         moneyText.setText(String.valueOf(Player.money));
         healthText.setText(String.valueOf(Player.health));
         moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        moneyText.setLayoutX(sizeX-180);
-        moneyText.setLayoutY(sizeY-110);
+        moneyText.setLayoutX(sizeX - 180);
+        moneyText.setLayoutY(sizeY - 110);
         healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        healthText.setLayoutX(sizeX-180);
-        healthText.setLayoutY(sizeY-210);
+        healthText.setLayoutX(sizeX - 180);
+        healthText.setLayoutY(sizeY - 210);
         masterRoot.getChildren().add(moneyText);
         masterRoot.getChildren().add(healthText);
-        Image coin=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/heart.png")).toString(), 75, 75, true, true);
-        Image heart=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/coin.png")).toString(), 75, 75, true, true);
-        gc.drawImage(heart, sizeX-275, sizeY-100);
-        gc.drawImage(coin, sizeX-275, sizeY-200);
+
+        ImageView coin = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/coin.png")).toString(), 75, 75, true, true));
+        masterRoot.getChildren().add(coin);
+        coin.setX(sizeX - 275);
+        coin.setY(sizeY - 100);
+        ImageView heart = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/heart.png")).toString(), 75, 75, true, true));
+        masterRoot.getChildren().add(heart);
+        heart.setX(sizeX - 275);
+        heart.setY(sizeY - 200);
 
 
         //wave number
-        waveText=new Label();
-        waveText.setText("wave: "+1);
+        waveText = new Label();
+        waveText.setText("wave: " + 1);
         waveText.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-        waveText.setLayoutX(sizeX-270);
+        waveText.setLayoutX(sizeX - 270);
         waveText.setLayoutY(30);
         masterRoot.getChildren().add(waveText);
         //buttons

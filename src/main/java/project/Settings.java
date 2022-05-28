@@ -1,5 +1,7 @@
 package project;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -68,12 +70,20 @@ public class Settings {
         volumeText.setLayoutX(sizeX * 0.43);
         volumeText.setLayoutY(sizeY * 0.35);
         settingsRoot.getChildren().add(volumeText);
-        Slider volume = new Slider(0, 10, difficultyMultiplier);
+        Slider volume = new Slider(0, 1.0, SoundHandler.musicPlayer.getVolume());
         volume.setMajorTickUnit(0.5);
         volume.setTranslateX(sizeX * 0.25);
         volume.setTranslateY(sizeY * 0.4);
         volume.setPrefSize(sizeX * 0.5, sizeY * 0.1);
         settingsRoot.getChildren().add(volume);
+        volume.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
+                if (!isNowChanging) {
+                    SoundHandler.musicPlayer.setVolume(volume.getValue());
+                }
+            }
+        });
 
         ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.8, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
         settingsRoot.getChildren().add(backButton.get());
