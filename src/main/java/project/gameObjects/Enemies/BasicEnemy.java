@@ -34,6 +34,7 @@ public abstract class BasicEnemy implements Enemy {
     ImageView enemyImageView;
     PathTransition pathTransition;
     Timeline sequence;
+    double waveMultiplier;
     public int health = (int) (10 * Settings.difficultyMultiplier);
 
     int moneyGiven;
@@ -42,7 +43,9 @@ public abstract class BasicEnemy implements Enemy {
     String imageUrl;
     ScaleTransition animation;
 
-    public BasicEnemy() {
+    public BasicEnemy(int wave) {
+        waveMultiplier = 1 + ((double) wave) / 2;
+        health *= waveMultiplier;
         isDead = false;
         deployed = false;
         x = new SimpleDoubleProperty();

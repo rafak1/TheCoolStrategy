@@ -7,11 +7,11 @@ import project.Settings;
 import java.util.Objects;
 
 public class BigFastEnemy extends BasicEnemy {
-    public BigFastEnemy() {
-        super();
-        enemySpeed = 0.4;
+    public BigFastEnemy(int wave) {
+        super(wave);
+        enemySpeed = 0.6;
         damage = 20;
-        health = (int) (17 * Settings.difficultyMultiplier);
+        health = (int) (17 * Settings.difficultyMultiplier * waveMultiplier);
         moneyGiven = 25;
         imageUrl = "/images/gameObjects/BigFastEnemy.png";
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);

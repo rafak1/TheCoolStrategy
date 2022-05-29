@@ -34,7 +34,7 @@ public class LevelLoader {
 
     public LevelLoader()
     {
-        loadIds=new SmallEnemy();
+        loadIds = new SmallEnemy(0);
     }
 
 
@@ -111,7 +111,8 @@ public class LevelLoader {
                 Class<? extends Enemy> toAddClass = Enemy.enemyId.get(z);
                 Enemy toAdd = null;
                 try {
-                    toAdd = toAddClass.getConstructor().newInstance();
+                    Class<?>[] cl = {int.class};
+                    toAdd = toAddClass.getConstructor(cl).newInstance(i);
                 } catch (Throwable a) {
                     a.printStackTrace();
                     throw new IncorrectEnemyIdException();

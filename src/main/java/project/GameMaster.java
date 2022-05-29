@@ -311,7 +311,10 @@ public class GameMaster {
                             enemy.SetDeployed(true);
                             enemy.setEnemyImageView(new ImageView(enemy.getEnemySprite()));
                             enemy.startAnimation();
-                            next.setDuration(Duration.seconds(pathLength * (1 / Settings.difficultyMultiplier) * enemy.getEnemySpeed()));
+                            if (Settings.difficultyMultiplier == 2.0)
+                                next.setDuration(Duration.seconds(pathLength * 0.8 * enemy.getEnemySpeed()));
+                            else
+                                next.setDuration(Duration.seconds(pathLength * (1 / Settings.difficultyMultiplier) * enemy.getEnemySpeed()));
                             Enemy finalEnemy = enemy;
                             Platform.runLater(() -> masterRoot.getChildren().add(finalEnemy.getEnemyImageView()));
                             next.setNode(enemy.getEnemyImageView());
