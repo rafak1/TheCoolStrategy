@@ -119,41 +119,41 @@ public class GameMaster {
         healthText = new Label();
         moneyText.setText(String.valueOf(Player.money));
         healthText.setText(String.valueOf(Player.health));
-        moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        moneyText.setLayoutX(sizeX - 180);
-        moneyText.setLayoutY(sizeY - 110);
-        healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 70));
-        healthText.setLayoutX(sizeX - 180);
-        healthText.setLayoutY(sizeY - 210);
+        moneyText.setFont(Font.font("Verdana", FontWeight.BOLD, sizeX * 0.037));
+        moneyText.setLayoutX(sizeX * 0.91);
+        moneyText.setLayoutY(sizeY * 0.89);
+        healthText.setFont(Font.font("Verdana", FontWeight.BOLD, sizeX * 0.037));
+        healthText.setLayoutX(sizeX * 0.91);
+        healthText.setLayoutY(sizeY * 0.8);
         masterRoot.getChildren().add(moneyText);
         masterRoot.getChildren().add(healthText);
 
-        ImageView coin = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/coin.png")).toString(), 75, 75, true, true));
+        ImageView coin = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/coin.png")).toString(), sizeX * 0.0378, sizeX * 0.0378, true, true));
         masterRoot.getChildren().add(coin);
-        coin.setX(sizeX - 275);
-        coin.setY(sizeY - 100);
-        ImageView heart = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/heart.png")).toString(), 75, 75, true, true));
+        coin.setX(sizeX * 0.86);
+        coin.setY(sizeY * 0.9);
+        ImageView heart = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/heart.png")).toString(), sizeX * 0.0378, sizeX * 0.0378, true, true));
         masterRoot.getChildren().add(heart);
-        heart.setX(sizeX - 275);
-        heart.setY(sizeY - 200);
+        heart.setX(sizeX * 0.86);
+        heart.setY(sizeY * 0.815);
 
 
         //wave number
         waveText = new Label();
         waveText.setText("wave: " + 1);
-        waveText.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-        waveText.setLayoutX(sizeX - 270);
-        waveText.setLayoutY(30);
+        waveText.setFont(Font.font("Verdana", FontWeight.BOLD, sizeX * 0.025));
+        waveText.setLayoutX(sizeX * 0.863);
+        waveText.setLayoutY(sizeY * 0.028);
         masterRoot.getChildren().add(waveText);
         //buttons
-        ImageButton backButton=new ImageButton("/images/UI/backbutton.png", sizeX*0.86, sizeY*0.7, (int)(sizeX*0.2), (int)(sizeY*0.08));
+        ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.86, sizeY * 0.7, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
         masterRoot.getChildren().add(backButton.get());
         backButton.get().setOnAction(e -> clearLevel());
 
-        ImageButton startLevelButton=new ImageButton("/images/UI/startbutton.png", sizeX*0.86, sizeY*0.58, (int)(sizeX*0.2), (int)(sizeY*0.08));
+        ImageButton startLevelButton = new ImageButton("/images/UI/startbutton.png", sizeX * 0.86, sizeY * 0.58, (int) (sizeX * 0.2), (int) (sizeY * 0.08));
         masterRoot.getChildren().add(startLevelButton.get());
-        startLevelButton.get().setOnAction(e ->{
-            gameState=1;
+        startLevelButton.get().setOnAction(e -> {
+            gameState = 1;
             masterRoot.getChildren().remove(startLevelButton.get());
             moveEnemies();
             ed=new EnemyDetection();

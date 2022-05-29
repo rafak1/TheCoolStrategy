@@ -101,18 +101,17 @@ public class DeployTurret
 
 	void drawButtons()
 	{
-		Button smallButton=singleButton("/images/gameObjects/smallTurret.png", sizeX-290, sizeY-600, SmallTurret.price);
-		smallButton.setOnAction(e->turretType=1);
-		Button mediumButton=singleButton("/images/gameObjects/mediumTurret.png", sizeX-290, sizeY-750, MediumTurret.price);
-		mediumButton.setOnAction(e->turretType=2);
-		Button bigButton=singleButton("/images/gameObjects/bigTurret.png", sizeX-290, sizeY-900, BigTurret.price);
-		bigButton.setOnAction(e->turretType=3);
+		Button smallButton = singleButton("/images/gameObjects/smallTurret.png", sizeX * 0.853, sizeY * 0.444, SmallTurret.price);
+		smallButton.setOnAction(e -> turretType = 1);
+		Button mediumButton = singleButton("/images/gameObjects/mediumTurret.png", sizeX * 0.853, sizeY * 0.306, MediumTurret.price);
+		mediumButton.setOnAction(e -> turretType = 2);
+		Button bigButton = singleButton("/images/gameObjects/bigTurret.png", sizeX * 0.853, sizeY * 0.167, BigTurret.price);
+		bigButton.setOnAction(e -> turretType = 3);
 	}
 
-	Button singleButton(String path, double posX, double posY, Integer price)
-	{
-		Button button=new Button(price+" $");
-		button.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).toString(), 100, 100, true, true)));
+	Button singleButton(String path, double posX, double posY, Integer price) {
+		Button button = new Button(price + " $");
+		button.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).toString(), sizeX * 0.0505, sizeX * 0.0505, true, true)));
 		button.setLayoutX(posX);
 		button.setLayoutY(posY);
 		button.setStyle("-fx-font-size:40");
