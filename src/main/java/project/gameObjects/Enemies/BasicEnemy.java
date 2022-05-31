@@ -1,9 +1,6 @@
 package project.gameObjects.Enemies;
 
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -35,6 +32,7 @@ public abstract class BasicEnemy implements Enemy {
     PathTransition pathTransition;
     Timeline sequence;
     double waveMultiplier;
+    int animationSpeed;
     public int health = (int) (10 * Settings.difficultyMultiplier);
 
     int moneyGiven;
@@ -44,6 +42,7 @@ public abstract class BasicEnemy implements Enemy {
     ScaleTransition animation;
 
     public BasicEnemy(int wave) {
+        animationSpeed = 300;
         waveMultiplier = 1 + ((double) wave) / 2;
         health *= waveMultiplier;
         isDead = false;
@@ -76,6 +75,7 @@ public abstract class BasicEnemy implements Enemy {
     public void setPathTransition(PathTransition a)
     {
         pathTransition=a;
+        animationSpeed*= 1+2/pathTransition.getDuration().toMillis();
     }
 
 
@@ -102,7 +102,20 @@ public abstract class BasicEnemy implements Enemy {
      * Should be called after setting imageView
      */
     public void startAnimation() {
-        Platform.runLater(() -> {
+        animation = new ScaleTransition();
+        animation.setDuration(Duration.millis(50));
+        animation.setToX(-enemyImageView.scaleXProperty().get());
+        animation.setCycleCount(1);
+        animation.setNode(enemyImageView);
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis(animationSpeed),
+                        event->{
+                            animation.setToX(-enemyImageView.scaleXProperty().get());
+                            animation.play();}
+                )
+        );
+        /*Platform.runLater(() -> {
             animation = new ScaleTransition();
             sequence = new Timeline();
             animation.setDuration(Duration.millis(5));
@@ -111,9 +124,14 @@ public abstract class BasicEnemy implements Enemy {
             animation.setCycleCount(Animation.INDEFINITE);
             animation.setNode(this.getEnemyImageView());
             //sequence.getKeyFrames().add(new KeyFrame( Duration.ZERO, event -> {System.out.println("started"); animation.play(); System.out.println("played"); new PauseTransition(Duration.millis(100));}));
-            //sequence.setCycleCount(Animation.INDEFINITE);
+            //sequence.setCycleCount(Animationt.INDEFINITE);
             //sequence.play();  //TODO
             animation.play();
+        });*/
+        Platform.runLater(()-> {
+            timeline.setAutoReverse(true);
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
         });
     }
 
