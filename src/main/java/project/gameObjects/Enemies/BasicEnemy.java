@@ -20,6 +20,8 @@ public abstract class BasicEnemy implements Enemy {
         Enemy.enemyId.put(2, BigEnemy.class);
         Enemy.enemyId.put(3, FastEnemy.class);
         Enemy.enemyId.put(4, BigFastEnemy.class);
+        Enemy.enemyId.put(5, BigBigEnemy.class);
+        Enemy.enemyId.put(6, BigBigBigEnemy.class);
     }
 
     double enemySpeed = 1;
@@ -115,19 +117,6 @@ public abstract class BasicEnemy implements Enemy {
                             animation.play();}
                 )
         );
-        /*Platform.runLater(() -> {
-            animation = new ScaleTransition();
-            sequence = new Timeline();
-            animation.setDuration(Duration.millis(5));
-            animation.setToX(-1);
-            animation.setAutoReverse(true);
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setNode(this.getEnemyImageView());
-            //sequence.getKeyFrames().add(new KeyFrame( Duration.ZERO, event -> {System.out.println("started"); animation.play(); System.out.println("played"); new PauseTransition(Duration.millis(100));}));
-            //sequence.setCycleCount(Animationt.INDEFINITE);
-            //sequence.play();  //TODO
-            animation.play();
-        });*/
         Platform.runLater(()-> {
             timeline.setAutoReverse(true);
             timeline.setCycleCount(Animation.INDEFINITE);

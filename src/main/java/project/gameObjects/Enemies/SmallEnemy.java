@@ -14,7 +14,7 @@ public class SmallEnemy extends BasicEnemy
         pathIndex = 0;
         damage = 1;
         health = (int) (10 * Settings.difficultyMultiplier * waveMultiplier);
-        moneyGiven = 5;
+        moneyGiven = 3;
         imageUrl = "/images/gameObjects/BasicEnemy.png";
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
     }

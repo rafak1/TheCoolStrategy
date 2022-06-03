@@ -14,9 +14,9 @@ public class BigEnemy extends BasicEnemy {
         damage = 5;
         if (Settings.difficultyMultiplier == 2.0) health = (int) (20 * 1.7 * waveMultiplier);
         else health = (int) (20 * Settings.difficultyMultiplier * waveMultiplier);
-        moneyGiven = 10;
+        moneyGiven = 7;
         imageUrl = "/images/gameObjects/BigEnemy.png";
-        enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
+        enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 9, MainVariables.sizeY / 10, true, true);
     }
 
 }

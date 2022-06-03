@@ -25,24 +25,30 @@ public class Settings {
 
     public Settings(Group menuRoot) {
         settingsRoot=new Group();
-        gameMaster=new GameMaster();
+        gameMaster = new GameMaster();
 
 
         //background
-        Canvas canvas=new Canvas(sizeX, sizeY);
+        Canvas canvas = new Canvas(sizeX, sizeY);
         settingsRoot.getChildren().add(canvas);
-        GraphicsContext gc=canvas.getGraphicsContext2D();
-        Image background=new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Image background = new Image(Objects.requireNonNull(getClass().getResource("/images/UI/background.png")).toString());
         gc.drawImage(background, 0, 0, sizeX, sizeY);
 
+        //background gradient
+        ImageView gradient = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/images/UI/backgradient.png")).toString(), sizeX * 0.8, sizeY * 0.8, true, true));
+        gradient.setX(sizeX * 0.1);
+        gradient.setY(sizeY * 0.1);
+        settingsRoot.getChildren().add(gradient);
+
         //difficulty slider
-        Label difficultyText=new Label();
+        Label difficultyText = new Label();
         difficultyText.setText("difficulty");
-        difficultyText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY/22)));
-        difficultyText.setLayoutX(sizeX*0.43);
-        difficultyText.setLayoutY(sizeY*0.15);
+        difficultyText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY / 22)));
+        difficultyText.setLayoutX(sizeX * 0.43);
+        difficultyText.setLayoutY(sizeY * 0.15);
         settingsRoot.getChildren().add(difficultyText);
-        Slider difficulty=new Slider(0.5, 2, difficultyMultiplier);
+        Slider difficulty = new Slider(0.5, 2, difficultyMultiplier);
         difficulty.setSnapToTicks(true);
         difficulty.setMajorTickUnit(0.5);
         difficulty.setMinorTickCount(0);
@@ -85,7 +91,7 @@ public class Settings {
             }
         });
 
-        ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.8, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
+        ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.75, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
         settingsRoot.getChildren().add(backButton.get());
         backButton.get().setOnAction(e -> {
             scene.setRoot(menuRoot);

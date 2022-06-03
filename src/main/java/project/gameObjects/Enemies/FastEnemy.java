@@ -12,7 +12,7 @@ public class FastEnemy extends BasicEnemy {
         enemySpeed = 0.5;
         damage = 5;
         health = (int) (7 * Settings.difficultyMultiplier * waveMultiplier);
-        moneyGiven = 12;
+        moneyGiven = 10;
         imageUrl = "/images/gameObjects/FastEnemy.png";
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 10, MainVariables.sizeY / 10, true, true);
     }
