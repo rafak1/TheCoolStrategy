@@ -4,17 +4,16 @@ import javafx.animation.RotateTransition;
 import javafx.scene.transform.Rotate;
 import project.Player;
 
-public class BigTurret extends Turret
-{
-	public static Integer price=75;
+public class BigTurret extends BasicTurret {
+    public static Integer price = 75;
 
-	/**
-	 * Places a new turret
-	 *
-	 * @param posX row of new turret
-	 * @param posY column of new turret
-	 */
-	public BigTurret(int posX, int posY)
+    /**
+     * Places a new turret
+     *
+     * @param posX row of new turret
+     * @param posY column of new turret
+     */
+    public BigTurret(int posX, int posY)
 	{
 		X=posX;
 		Y=posY;

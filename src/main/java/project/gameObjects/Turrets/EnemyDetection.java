@@ -11,28 +11,25 @@ public class EnemyDetection
 
 	public void dispatcher()
 	{
-		//basically checks the location of each enemy every x seconds
-		turretThreads=new ArrayList <>();
-		for(Turret t: allTowers)
-		{
-			Thread temp=new Thread(t::fightLogic);
-			temp.setDaemon(true);
-			temp.start();
-			turretThreads.add(temp);
-		}
-	}
+        //basically checks the location of each enemy every x seconds
+        turretThreads = new ArrayList<>();
+        for (BasicTurret t : allTowers) {
+            Thread temp = new Thread(t::fightLogic);
+            temp.setDaemon(true);
+            temp.start();
+            turretThreads.add(temp);
+        }
+    }
 
-	public void newTower(Turret t)
-	{
-		Thread temp=new Thread(t::fightLogic);
-		temp.setDaemon(true);
-		temp.start();
-		turretThreads.add(temp);
-	}
+    public void newTower(BasicTurret t) {
+        Thread temp = new Thread(t::fightLogic);
+        temp.setDaemon(true);
+        temp.start();
+        turretThreads.add(temp);
+    }
 
-	public void killThreads()
-	{
-		for(Thread th: turretThreads)
+    public void killThreads() {
+        for (Thread th : turretThreads)
 		{
 			if(th!=null && th.isAlive())
 			{

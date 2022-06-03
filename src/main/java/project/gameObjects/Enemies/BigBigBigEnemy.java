@@ -12,8 +12,8 @@ public class BigBigBigEnemy extends BasicEnemy {
         pathIndex = 0;
         damage = 75;
         enemySpeed = 2.0;
-        if (Settings.difficultyMultiplier == 2.0) health = (int) (500 * 1.7 * waveMultiplier);
-        else health = (int) (250 * Settings.difficultyMultiplier * waveMultiplier);
+        if (Settings.difficultyMultiplier == 2.0) health = (int) (200 * 1.7 * waveMultiplier);
+        else health = (int) (200 * Settings.difficultyMultiplier * waveMultiplier);
         moneyGiven = 100;
         imageUrl = "/images/gameObjects/BigBigBigEnemy.png";
         enemySprite = new Image(Objects.requireNonNull(getClass().getResource(imageUrl)).toString(), MainVariables.sizeY / 8, MainVariables.sizeY / 8, true, true);

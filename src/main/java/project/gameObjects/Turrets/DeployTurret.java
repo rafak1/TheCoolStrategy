@@ -17,25 +17,23 @@ import static project.MainVariables.sizeX;
 import static project.MainVariables.sizeY;
 import static project.MessagesAndEffects.showMessage;
 
-public class DeployTurret
-{
-	Node clickedNode;
-	Integer turretType;//0-not selected, 1-small turret, 2- big turret
-	Double clickX;
-	Double clickY;
-	Integer colIndex;
-	Integer rowIndex;
-	public static ArrayList <Turret> allTowers=new ArrayList <>();//I don't know if wee need it, but it may be useful
+public class DeployTurret {
+    Node clickedNode;
+    Integer turretType;//0-not selected, 1-small turret, 2- big turret
+    Double clickX;
+    Double clickY;
+    Integer colIndex;
+    Integer rowIndex;
+    public static ArrayList<BasicTurret> allTowers = new ArrayList<>();//I don't know if wee need it, but it may be useful
 
-	/**
-	 * Placing turrets on the map
-	 */
-	public DeployTurret()
-	{
-		turretType=0;
-		drawButtons();
+    /**
+     * Placing turrets on the map
+     */
+    public DeployTurret() {
+        turretType = 0;
+        drawButtons();
 
-		EventHandler <MouseEvent> eventHandler=e->{
+        EventHandler<MouseEvent> eventHandler = e -> {
 			clickX=e.getSceneX();
 			clickY=e.getSceneY();
 			clickedNode=e.getPickResult().getIntersectedNode();
@@ -58,11 +56,12 @@ public class DeployTurret
 				if (Player.money.get() < SmallTurret.price) {
 					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				} else {
-					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
-					Turret t=new SmallTurret(rowIndex, colIndex);
-					allTowers.add(t);
-					if(ed!=null)
-					{ed.newTower(t);}
+                    levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+                    BasicTurret t = new SmallTurret(rowIndex, colIndex);
+                    allTowers.add(t);
+                    if (ed != null) {
+                        ed.newTower(t);
+                    }
 				}
 			} else if(turretType==2)
 			{
@@ -70,13 +69,13 @@ public class DeployTurret
 				{
 					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				}
-				else
-				{
-					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
-					Turret t=new MediumTurret(rowIndex, colIndex);
-					allTowers.add(t);
-					if(ed!=null)
-					{ed.newTower(t);}
+				else {
+                    levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+                    BasicTurret t = new MediumTurret(rowIndex, colIndex);
+                    allTowers.add(t);
+                    if (ed != null) {
+                        ed.newTower(t);
+                    }
 				}
 			}
 			else if(turretType==3)
@@ -85,13 +84,13 @@ public class DeployTurret
 				{
 					showMessage("You are broke", 180, 40, clickX, clickY, 2, masterRoot);
 				}
-				else
-				{
-					levelLoader.getLevelObjects()[rowIndex][colIndex]=2;
-					Turret t=new BigTurret(rowIndex, colIndex);
-					allTowers.add(t);
-					if(ed!=null)
-					{ed.newTower(t);}
+				else {
+                    levelLoader.getLevelObjects()[rowIndex][colIndex] = 2;
+                    BasicTurret t = new BigTurret(rowIndex, colIndex);
+                    allTowers.add(t);
+                    if (ed != null) {
+                        ed.newTower(t);
+                    }
 				}
 			}
 		} else {
