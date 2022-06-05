@@ -25,7 +25,6 @@ public class App extends Application {
 
         stage.setFullScreen(true);
     }
-
     public static void main(String[] args) {
         launch();
     }
