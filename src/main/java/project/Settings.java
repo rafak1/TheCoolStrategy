@@ -19,12 +19,13 @@ import static project.MainVariables.sizeY;
 import static project.Menu.scene;
 
 public class Settings {
-    public static double difficultyMultiplier = 1;
+
+    public static double difficultyMultiplier = SystemInfo.pref.getDouble("difficulty", 1.0);
     Group settingsRoot;
     GameMaster gameMaster;
 
     public Settings(Group menuRoot) {
-        settingsRoot=new Group();
+        settingsRoot = new Group();
         gameMaster = new GameMaster();
 
 
@@ -86,6 +87,7 @@ public class Settings {
             @Override
             public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
                 if (!isNowChanging) {
+                    SystemInfo.pref.putDouble("volume", volume.getValue());
                     SoundHandler.musicPlayer.setVolume(volume.getValue());
                 }
             }
@@ -95,6 +97,7 @@ public class Settings {
         settingsRoot.getChildren().add(backButton.get());
         backButton.get().setOnAction(e -> {
             scene.setRoot(menuRoot);
+            SystemInfo.pref.putDouble("difficulty", difficulty.valueProperty().get());
             difficultyMultiplier = difficulty.valueProperty().get();
         });
     }

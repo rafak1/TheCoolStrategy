@@ -22,7 +22,8 @@ public class Menu
      * Creates menu on a given stage
      */
     public Menu(Stage stage) {
-        soundHandler.startMusic(1.0);
+        double volume = SystemInfo.pref.getDouble("volume", 1.0);
+        soundHandler.startMusic(volume);
 
 
         menuRoot = new Group();
