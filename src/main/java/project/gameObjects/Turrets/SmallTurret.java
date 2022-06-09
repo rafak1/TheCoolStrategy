@@ -27,7 +27,7 @@ public class SmallTurret extends BasicTurret
 	    radius=sizeY/gridSizeY*1.5;
 	    rateOfFire=300;
 	    damage=2;
-	    sound=new Media(Objects.requireNonNull(getClass().getResource("/music/minigun.m4a")).toString());
+	    sound=new Media(Objects.requireNonNull(getClass().getResource("/music/turret.m4a")).toString());
 	    musicPlayer=new MediaPlayer(sound);
 	    musicPlayer.setVolume(effectsSound);
 	    musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);

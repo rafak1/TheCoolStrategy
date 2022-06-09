@@ -6,12 +6,17 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import project.MessagesAndEffects;
 import project.Player;
 import project.Settings;
 
+import java.util.Objects;
+
 import static project.GameMaster.masterRoot;
+import static project.MainVariables.effectsSound;
 
 public abstract class BasicEnemy implements Enemy {
     static {    //add all enemies and their ids here
@@ -35,22 +40,25 @@ public abstract class BasicEnemy implements Enemy {
     Timeline sequence;
     double waveMultiplier;
     int animationSpeed;
-    public int health = (int) (10 * Settings.difficultyMultiplier);
+    public int health=(int)(10*Settings.difficultyMultiplier);
 
     int moneyGiven;
     public int damage;
     Boolean isDead;
     String imageUrl;
     ScaleTransition animation;
+    Media sound;
+    MediaPlayer musicPlayer;
 
-    public BasicEnemy(int wave) {
-        animationSpeed = 300;
-        waveMultiplier = 1 + ((double) wave) / 2;
-        health *= waveMultiplier;
-        isDead = false;
-        deployed = false;
-        x = new SimpleDoubleProperty();
-        y = new SimpleDoubleProperty();
+    public BasicEnemy(int wave)
+    {
+        animationSpeed=300;
+        waveMultiplier=1+((double)wave)/2;
+        health*=waveMultiplier;
+        isDead=false;
+        deployed=false;
+        x=new SimpleDoubleProperty();
+        y=new SimpleDoubleProperty();
     }
 
     /**
@@ -86,10 +94,17 @@ public abstract class BasicEnemy implements Enemy {
      */
     public void kill()
     {
+        sound=new Media(Objects.requireNonNull(getClass().getResource("/music/death.mp3")).toString());
+        musicPlayer=new MediaPlayer(sound);
+        musicPlayer.setVolume(effectsSound);
+        if(musicPlayer!=null)
+        {musicPlayer.play();}
         MessagesAndEffects.showEffect("/images/gameObjects/tombstone.png", getX(), getY(), 0.5, masterRoot);
 
-        if (sequence != null) sequence.stop();
-        if (pathTransition != null) {
+        if(sequence!=null)
+        {sequence.stop();}
+        if(pathTransition!=null)
+        {
             pathTransition.setOnFinished(null);
             pathTransition.stop();
         }
