@@ -14,14 +14,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
+import static project.LevelSelection.selectionRoot;
 import static project.MainVariables.*;
-
-
-
-
-
-
-
+import static project.MessagesAndEffects.showMessage;
 
 
 public class LevelLoader {
