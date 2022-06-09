@@ -21,7 +21,7 @@ import static project.MainVariables.sizeY;
 public class BasicTurret {
     Integer X;
     Integer Y;
-    Integer radius;
+    double radius;
     Integer damage;
     long rateOfFire;
     RotateTransition rt;
