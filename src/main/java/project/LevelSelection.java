@@ -31,12 +31,10 @@ public class LevelSelection {
 	static Settings settingsRoot = new Settings(selectionRoot);
 	GameMaster gameMaster;
 	int currentLevel;
-	boolean wrongFile;
 
 	public LevelSelection(Stage stage)
 	{
 		gameMaster=new GameMaster();
-		wrongFile=false;
 
 		FileChooser fileChooser=new FileChooser();
 		fileChooser.setTitle("Open Resource File");
@@ -85,22 +83,16 @@ public class LevelSelection {
 			try {
 				//can't load the file
 				levelLoader.load(fileChooser.showOpenDialog(stage));
-			} catch (WrongFileFormatException a) {
-				wrongFile = true;
-				showMessage("Wrong file format!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
-			} catch (IncorrectPathException a) {
-				wrongFile = true;
-				showMessage("Incorrect enemy path!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
-			} catch (IncorrectEnemyIdException a) {
-				wrongFile = true;
-				showMessage("Incorrect enemy ID!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
-			} catch (NoSuchLevelException a) {
-				wrongFile = true;
-				showMessage("No such level!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
-			}
-			if (!wrongFile) {
 				gameMaster.levelCreator();
 				scene.setRoot(masterRoot);
+			} catch (WrongFileFormatException a) {
+				showMessage("Wrong file format!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
+			} catch (IncorrectPathException a) {
+				showMessage("Incorrect enemy path!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
+			} catch (IncorrectEnemyIdException a) {
+				showMessage("Incorrect enemy ID!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
+			} catch (NoSuchLevelException a) {
+				showMessage("No such level!", 200.0, 40.0, sizeX / 2 - 100, sizeY / 2 - 20, 2, selectionRoot);
 			}
 		});
 	}
