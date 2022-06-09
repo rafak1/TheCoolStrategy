@@ -94,7 +94,7 @@ public class Settings {
         volumeEffectsText.setLayoutX(sizeX*0.43);
         volumeEffectsText.setLayoutY(sizeY*0.55);
         settingsRoot.getChildren().add(volumeEffectsText);
-        Slider volumeEffects=new Slider(0, 1.0, SoundHandler.musicPlayer.getVolume());
+        Slider volumeEffects=new Slider(0, 1.0, effectsSound);
         volumeEffects.setMajorTickUnit(0.5);
         volumeEffects.setTranslateX(sizeX*0.25);
         volumeEffects.setTranslateY(sizeY*0.6);
