@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import project.Levels.LevelLoader;
 import project.gameObjects.Enemies.Enemy;
+import project.gameObjects.Turrets.BasicTurret;
 import project.gameObjects.Turrets.DeployTurret;
 import project.gameObjects.Turrets.EnemyDetection;
 
@@ -181,6 +182,8 @@ public class GameMaster {
         {
             listener.interrupt();
         }
+        for(BasicTurret x: allTowers)
+            x.stopFireSound();
         allTowers.clear();
         if(ed!=null)
         {ed.killThreads();}

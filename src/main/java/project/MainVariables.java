@@ -9,7 +9,8 @@ public class MainVariables {
     public static long pathLength = 10;
     public static long timeIntervals = 100;
     public static int passiveIncome=1;
-    public static int startingMoney=50;
+    public static int startingMoney=500;
     public static double gridSize=(sizeY/10);
-    public static long looseScreenTime = 2000;
+    public static long looseScreenTime=2000;
+    public static double effectsSound=SystemInfo.pref.getDouble("volumeEffects", 1.0);
 }

@@ -1,7 +1,5 @@
 package project;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,8 +12,7 @@ import javafx.scene.text.FontWeight;
 
 import java.util.Objects;
 
-import static project.MainVariables.sizeX;
-import static project.MainVariables.sizeY;
+import static project.MainVariables.*;
 import static project.Menu.scene;
 
 public class Settings {
@@ -72,33 +69,50 @@ public class Settings {
 
         //volume slider
         Label volumeText = new Label();
-        volumeText.setText("volume");
-        volumeText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY / 22)));
-        volumeText.setLayoutX(sizeX * 0.43);
-        volumeText.setLayoutY(sizeY * 0.35);
+        volumeText.setText("music volume");
+        volumeText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY/22)));
+        volumeText.setLayoutX(sizeX*0.43);
+        volumeText.setLayoutY(sizeY*0.35);
         settingsRoot.getChildren().add(volumeText);
-        Slider volume = new Slider(0, 1.0, SoundHandler.musicPlayer.getVolume());
+        Slider volume=new Slider(0, 1.0, SoundHandler.musicPlayer.getVolume());
         volume.setMajorTickUnit(0.5);
-        volume.setTranslateX(sizeX * 0.25);
-        volume.setTranslateY(sizeY * 0.4);
-        volume.setPrefSize(sizeX * 0.5, sizeY * 0.1);
+        volume.setTranslateX(sizeX*0.25);
+        volume.setTranslateY(sizeY*0.4);
+        volume.setPrefSize(sizeX*0.5, sizeY*0.1);
         settingsRoot.getChildren().add(volume);
-        volume.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isNowChanging) {
-                if (!isNowChanging) {
-                    SystemInfo.pref.putDouble("volume", volume.getValue());
-                    SoundHandler.musicPlayer.setVolume(volume.getValue());
-                }
-            }
+
+
+        volume.valueProperty().addListener((observable, oldValue, newValue)->{
+            SystemInfo.pref.putDouble("volume", (Double)newValue);
+            SoundHandler.musicPlayer.setVolume((Double)newValue);
         });
 
-        ImageButton backButton = new ImageButton("/images/UI/backbutton.png", sizeX * 0.75, sizeY * 0.8, (int) (sizeX * 0.1), (int) (sizeY * 0.1));
+
+        Label volumeEffectsText=new Label();
+        volumeEffectsText.setText("effects volume");
+        volumeEffectsText.setFont(Font.font("Verdana", FontWeight.BOLD, (sizeY/22)));
+        volumeEffectsText.setLayoutX(sizeX*0.43);
+        volumeEffectsText.setLayoutY(sizeY*0.55);
+        settingsRoot.getChildren().add(volumeEffectsText);
+        Slider volumeEffects=new Slider(0, 1.0, SoundHandler.musicPlayer.getVolume());
+        volumeEffects.setMajorTickUnit(0.5);
+        volumeEffects.setTranslateX(sizeX*0.25);
+        volumeEffects.setTranslateY(sizeY*0.6);
+        volumeEffects.setPrefSize(sizeX*0.5, sizeY*0.1);
+        settingsRoot.getChildren().add(volumeEffects);
+
+
+        volumeEffects.valueProperty().addListener((observable, oldValue, newValue)->{
+            SystemInfo.pref.putDouble("volumeEffects", (Double)newValue);
+            effectsSound=(Double)newValue;
+        });
+
+        ImageButton backButton=new ImageButton("/images/UI/backbutton.png", sizeX*0.75, sizeY*0.8, (int)(sizeX*0.1), (int)(sizeY*0.1));
         settingsRoot.getChildren().add(backButton.get());
-        backButton.get().setOnAction(e -> {
+        backButton.get().setOnAction(e->{
             scene.setRoot(menuRoot);
             SystemInfo.pref.putDouble("difficulty", difficulty.valueProperty().get());
-            difficultyMultiplier = difficulty.valueProperty().get();
+            difficultyMultiplier=difficulty.valueProperty().get();
         });
     }
 

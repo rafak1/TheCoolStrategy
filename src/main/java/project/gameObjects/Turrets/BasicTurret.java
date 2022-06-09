@@ -6,6 +6,8 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -30,15 +32,18 @@ public class BasicTurret {
     Enemy target;
     Rotate rotate;
     boolean isIdle;
+    Media sound;
+    MediaPlayer musicPlayer;
 
     /**
      * Draws a turret on the board
      *
      * @param imgSrc path to the image
      */
-    public Node drawTurret(String imgSrc) {
-        Image turretImage = new Image(Objects.requireNonNull(getClass().getResource(imgSrc)).toString(), sizeY / 10, sizeY / 10, true, true);
-        board[X][Y] = new ImageView(turretImage);
+    public Node drawTurret(String imgSrc)
+    {
+        Image turretImage=new Image(Objects.requireNonNull(getClass().getResource(imgSrc)).toString(), sizeY/10, sizeY/10, true, true);
+        board[X][Y]=new ImageView(turretImage);
         grid.add(board[X][Y], X, Y, 1, 1);
         return board[X][Y];
     }
@@ -103,12 +108,14 @@ public class BasicTurret {
         while (gameState == 1) {
             if (!findTarget()) {
                 if (!isIdle) {
+                    stopFireSound();
                     idle();
                 }
                 isIdle = true;
             } else {
                 isIdle = false;
                 followAnEnemy();
+                playFireSound();
                 shootAnimation();
                 synchronized (target) {
                     if (target != null) {
@@ -116,22 +123,39 @@ public class BasicTurret {
                     }
                 }
             }
-            try {
+            try
+            {
                 Thread.sleep(rateOfFire);
-            } catch (InterruptedException ignored) {
+            }catch(InterruptedException ignored)
+            {
             }
         }
     }
 
-    void shootAnimation() {
-        MessagesAndEffects.showEffect("/images/gameObjects/explosion.png", turretRadius.getLayoutX() - 50, turretRadius.getLayoutY() - 50, 0.2, masterRoot);
+    public void stopFireSound()
+    {
+        if(musicPlayer!=null)
+        {musicPlayer.stop();}
     }
 
-    boolean findTarget() {
-        synchronized (currWave) {
-            double minimum = 0;
-            Enemy curr = null;
-            for (Enemy e : currWave)//TODO: SYNCHRONIZED ENEMIES
+    private void playFireSound()
+    {
+        if(musicPlayer!=null)
+        {musicPlayer.play();}
+    }
+
+    void shootAnimation()
+    {
+        MessagesAndEffects.showEffect("/images/gameObjects/explosion.png", turretRadius.getLayoutX()-50, turretRadius.getLayoutY()-50, 0.2, masterRoot);
+    }
+
+    boolean findTarget()
+    {
+        synchronized(currWave)
+        {
+            double minimum=0;
+            Enemy curr=null;
+            for(Enemy e: currWave)//TODO: SYNCHRONIZED ENEMIES
             {
                 if (e != null && e.isDeployed()) {
                     if (inRange(e)) {
