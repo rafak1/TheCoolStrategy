@@ -27,7 +27,7 @@ public class MediumTurret extends BasicTurret
 	    radius=sizeY/gridSizeY*2.5;
 	    rateOfFire=400;
 	    damage=3;
-	    sound=new Media(Objects.requireNonNull(getClass().getResource("/music/turret.m4a")).toString());
+	    sound=new Media(Objects.requireNonNull(getClass().getResource("/music/mediumTurret.m4a")).toString());
 	    musicPlayer=new MediaPlayer(sound);
 	    musicPlayer.setVolume(effectsSound);
 	    musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
