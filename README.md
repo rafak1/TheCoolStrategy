@@ -43,6 +43,6 @@ mvn clean package
 
 Or you can use *Build Artifacts* on your IDE to create an executable .jar file
 ## Contributors
-* Kamil Chrząszczyk
-* Rafał Kajca
+* Kamil Chrząszczyk (50%)
+* Rafał Kajca (50%)
 
